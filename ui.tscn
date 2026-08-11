@@ -1,0 +1,316 @@
+[gd_scene format=3 uid="uid://depnew03ouro2"]
+
+[ext_resource type="Texture2D" uid="uid://dxrnsshm4tfsi" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Pause/B_Button13.png" id="1_etlur"]
+[ext_resource type="Texture2D" uid="uid://c3w0kpxeltj78" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Pause/B_Button15.png" id="2_7rqds"]
+[ext_resource type="Texture2D" uid="uid://4oputsx1xvep" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Pause/B_Button14.png" id="3_nvb2n"]
+[ext_resource type="Texture2D" uid="uid://d2vo5x8245q33" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Back/B_Button55.png" id="4_os5c7"]
+[ext_resource type="Texture2D" uid="uid://cch0ewiaoogi8" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Back/B_Button57.png" id="5_b2p7n"]
+[ext_resource type="Texture2D" uid="uid://ftf8rgthmwg1" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Back/B_Button56.png" id="6_vkygq"]
+[ext_resource type="Texture2D" uid="uid://bwipxtf0s5re" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Home/B_Button16.png" id="7_sosvr"]
+[ext_resource type="Texture2D" uid="uid://4jhp8rmjl4e" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Home/B_Button18.png" id="8_ndy3v"]
+[ext_resource type="Texture2D" uid="uid://drdj4jm61b70e" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Home/B_Button17.png" id="9_x2s2p"]
+[ext_resource type="Texture2D" uid="uid://dy6mj8hxaq8sx" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Restart/B_Button70.png" id="10_v8jk5"]
+[ext_resource type="Texture2D" uid="uid://3ad8dw3l5r8a" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Restart/B_Button72.png" id="11_cka8k"]
+[ext_resource type="Texture2D" uid="uid://dcuind3p7oh61" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Restart/B_Button71.png" id="12_53buu"]
+[ext_resource type="Texture2D" uid="uid://74rtfe23ijxo" path="res://General_Assets/Assests_png/Original/Hearts_Blue_1.png" id="15_nvb2n"]
+[ext_resource type="Texture2D" uid="uid://cyorkdvtntxl8" path="res://General_Assets/Assests_png/Original/Hearts_Blue_5.png" id="16_os5c7"]
+[ext_resource type="Texture2D" uid="uid://c8metolnpcr31" path="res://_Cheok_Kai_Ren/character/character_portrait.png" id="17_nvb2n"]
+
+[sub_resource type="GDScript" id="GDScript_etlur"]
+script/source = "extends CanvasLayer
+
+@onready var pause_button: TextureButton = $PauseButton
+@onready var pause_menu: Control = $PauseMenu
+
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+	pause_menu.hide()
+
+	pause_button.pressed.connect(_on_pause_button_pressed)
+
+
+func _on_pause_button_pressed() -> void:
+	if get_tree().paused:
+		resume_game()
+	else:
+		pause_game()
+		
+func _on_resume_button_pressed():
+	resume_game()
+
+func _on_restart_button_pressed():
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+
+func _on_main_menu_button_pressed():
+	get_tree().paused = false
+	get_tree().change_scene_to_file(\"res://Scenes/MainMenu.tscn\")
+
+
+func pause_game() -> void:
+	get_tree().paused = true
+
+	pause_button.hide()
+	pause_menu.show()
+
+
+func resume_game() -> void:
+	get_tree().paused = false
+
+	pause_menu.hide()
+	pause_button.show()
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_gs482"]
+
+[sub_resource type="GDScript" id="GDScript_7rqds"]
+script/source = "extends Control
+
+
+# ==========================
+# HEALTH SETTINGS
+# ==========================
+
+@export var full_heart_texture: Texture2D
+@export var empty_heart_texture: Texture2D
+
+
+# ==========================
+# NODE REFERENCES
+# ==========================
+
+@onready var potrait: TextureRect = $Potrait
+
+@onready var hearts: Array[TextureRect] = [
+	$Hearts/Heart1,
+	$Hearts/Heart2,
+	$Hearts/Heart3,
+	$Hearts/Heart4,
+	$Hearts/Heart5
+]
+
+#@onready var coin_count: Label = $CoinCount
+#@onready var key_count: Label = $KeyCount
+
+
+# ==========================
+# READY
+# ==========================
+
+func _ready() -> void:
+	update_health(5, 5)
+	#update_coins(0)
+	#update_keys(0)
+
+
+# ==========================
+# HEALTH
+# ==========================
+
+func update_health(
+	current_health: int,
+	max_health: int
+) -> void:
+	for index in range(hearts.size()):
+		var heart := hearts[index]
+
+		if index < current_health and index < max_health:
+			heart.texture = full_heart_texture
+		else:
+			heart.texture = empty_heart_texture
+
+
+# ==========================
+# COINS
+# ==========================
+
+#func update_coins(amount: int) -> void:
+	#coin_count.text = str(amount)
+
+
+# ==========================
+# KEYS
+# ==========================
+
+#func update_keys(amount: int) -> void:
+	#key_count.text = str(amount)
+"
+
+[node name="UI" type="CanvasLayer" unique_id=1291318432]
+process_mode = 3
+script = SubResource("GDScript_etlur")
+
+[node name="PauseButton" type="TextureButton" parent="." unique_id=1315799918]
+anchors_preset = -1
+anchor_left = 0.91700006
+anchor_right = 1.0
+anchor_bottom = 0.11100001
+offset_left = 0.23999023
+offset_right = -86.0
+offset_bottom = -86.560005
+grow_horizontal = 0
+scale = Vector2(5.3406405, 5.3406405)
+texture_normal = ExtResource("1_etlur")
+texture_pressed = ExtResource("2_7rqds")
+texture_hover = ExtResource("3_nvb2n")
+
+[node name="PauseMenu" type="Control" parent="." unique_id=604590245]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="PauseMenu" unique_id=666800357]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 256.0
+offset_top = 128.0
+offset_right = -256.0
+offset_bottom = -141.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu" unique_id=2017574747]
+layout_mode = 0
+offset_left = 384.0
+offset_top = 192.0
+offset_right = 404.0
+offset_bottom = 260.0
+scale = Vector2(8.493071, 8.493071)
+
+[node name="ResumeButton" type="TextureButton" parent="PauseMenu/VBoxContainer" unique_id=58682381]
+layout_mode = 2
+tooltip_text = "Why u pause"
+texture_normal = ExtResource("4_os5c7")
+texture_pressed = ExtResource("5_b2p7n")
+texture_hover = ExtResource("6_vkygq")
+
+[node name="Label" type="Label" parent="PauseMenu/VBoxContainer/ResumeButton" unique_id=1745612411]
+texture_filter = 1
+layout_mode = 0
+offset_left = 23.666353
+offset_top = 2.4726048
+offset_right = 70.66635
+offset_bottom = 15.472605
+scale = Vector2(0.82875335, 1.409741)
+text = "Resume"
+label_settings = SubResource("LabelSettings_gs482")
+language = "en"
+
+[node name="MainMenuButton" type="TextureButton" parent="PauseMenu/VBoxContainer" unique_id=669910358]
+layout_mode = 2
+texture_normal = ExtResource("7_sosvr")
+texture_pressed = ExtResource("8_ndy3v")
+texture_hover = ExtResource("9_x2s2p")
+
+[node name="Label" type="Label" parent="PauseMenu/VBoxContainer/MainMenuButton" unique_id=1902940004]
+texture_filter = 1
+layout_mode = 0
+offset_left = 23.666353
+offset_top = 2.4726048
+offset_right = 61.03141
+offset_bottom = 15.472605
+scale = Vector2(1.1193942, 1.4211568)
+text = "Menu"
+label_settings = SubResource("LabelSettings_gs482")
+language = "en"
+
+[node name="RestartButton" type="TextureButton" parent="PauseMenu/VBoxContainer" unique_id=1540457555]
+layout_mode = 2
+texture_normal = ExtResource("10_v8jk5")
+texture_pressed = ExtResource("11_cka8k")
+texture_hover = ExtResource("12_53buu")
+
+[node name="Label" type="Label" parent="PauseMenu/VBoxContainer/RestartButton" unique_id=1451822863]
+texture_filter = 1
+layout_mode = 0
+offset_left = 23.666353
+offset_top = 2.4726048
+offset_right = 70.66635
+offset_bottom = 15.472605
+scale = Vector2(0.82875335, 1.409741)
+text = "Restart"
+label_settings = SubResource("LabelSettings_gs482")
+language = "en"
+
+[node name="HUD" type="Control" parent="." unique_id=184406077]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = SubResource("GDScript_7rqds")
+full_heart_texture = ExtResource("15_nvb2n")
+empty_heart_texture = ExtResource("16_os5c7")
+
+[node name="Potrait" type="TextureRect" parent="HUD" unique_id=1691810341]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(1.6236584, 1.6236584)
+texture = ExtResource("17_nvb2n")
+
+[node name="CoinIcon" type="TextureRect" parent="HUD" unique_id=1383374454]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CoinCount" type="Label" parent="HUD" unique_id=1943120358]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="KeyIcon" type="TextureRect" parent="HUD" unique_id=578731686]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="KeyCount" type="Label" parent="HUD" unique_id=1472890619]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Hearts" type="HBoxContainer" parent="HUD" unique_id=357001916]
+layout_mode = 0
+offset_left = 104.0
+offset_right = 440.0
+offset_bottom = 70.0
+
+[node name="Heart1" type="TextureRect" parent="HUD/Hearts" unique_id=95887062]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Heart2" type="TextureRect" parent="HUD/Hearts" unique_id=1072121366]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Heart3" type="TextureRect" parent="HUD/Hearts" unique_id=766040229]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Heart4" type="TextureRect" parent="HUD/Hearts" unique_id=1427707010]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Heart5" type="TextureRect" parent="HUD/Hearts" unique_id=138233953]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[connection signal="pressed" from="PauseMenu/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="PauseMenu/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="PauseMenu/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]

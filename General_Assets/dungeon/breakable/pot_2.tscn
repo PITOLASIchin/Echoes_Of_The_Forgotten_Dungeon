@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://36ix6vclfg3"]
+
+[ext_resource type="Texture2D" uid="uid://cp7mk4ocrlgri" path="res://dungeon/breakable/dungeon_pot_02.png" id="1_p466t"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h5wgi"]
+atlas = ExtResource("1_p466t")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iobgv"]
+atlas = ExtResource("1_p466t")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yflyj"]
+atlas = ExtResource("1_p466t")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u4aui"]
+atlas = ExtResource("1_p466t")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yvo8j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h5wgi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iobgv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yflyj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u4aui")
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bhd53"]
+radius = 7.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q54ko"]
+radius = 8.062258
+
+[node name="pot2" type="StaticBody2D" unique_id=1308442943]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1223937526]
+sprite_frames = SubResource("SpriteFrames_yvo8j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=621373259]
+visible = false
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_bhd53")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=782977719]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2126322094]
+visible = false
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_q54ko")

@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://rp0wu107fmtq"]
+
+[ext_resource type="Script" uid="uid://cl1md1y1rvhdf" path="res://_Lim_Kai_Yang/Level_04/hud/shop_popup.gd" id="1_4e37u"]
+[ext_resource type="Texture2D" uid="uid://53d1ye55qhcs" path="res://General_Assets/dungeon_elements/Dungeon Gathering Free Version/Potion 1.png" id="2_tysnl"]
+
+[node name="ShopPopup" type="Control" unique_id=610720723]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4e37u")
+
+[node name="Panel" type="Panel" parent="." unique_id=81518118]
+layout_mode = 0
+offset_left = 424.0
+offset_top = 201.0
+offset_right = 859.0
+offset_bottom = 469.0
+
+[node name="ItemIcon" type="TextureRect" parent="Panel" unique_id=541161017]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+texture = ExtResource("2_tysnl")
+
+[node name="ItemName" type="Label" parent="Panel" unique_id=232418869]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 15.0
+offset_right = 140.0
+offset_bottom = 28.0
+
+[node name="ItemCost" type="Label" parent="Panel" unique_id=967743304]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 55.0
+offset_right = 140.0
+offset_bottom = 68.0
+
+[node name="HintLabel" type="Label" parent="Panel" unique_id=57504377]
+layout_mode = 0
+offset_left = 132.0
+offset_top = 115.0
+offset_right = 172.0
+offset_bottom = 128.0

@@ -1,0 +1,202 @@
+[gd_scene format=3 uid="uid://tckssgwlq7ih"]
+
+[ext_resource type="PackedScene" uid="uid://rp0wu107fmtq" path="res://_Lim_Kai_Yang/Level_04/hud/ShopPopup.tscn" id="1_84mac"]
+[ext_resource type="Script" uid="uid://d0uaf88fwnc73" path="res://_Lim_Kai_Yang/Level_04/hud/hud.gd" id="2_q6p0n"]
+[ext_resource type="Texture2D" uid="uid://x3jwivxgs245" path="res://General_Assets/Assests_png/Original/Hearts_Red_1.png" id="3_s5bls"]
+[ext_resource type="Texture2D" uid="uid://de0vun4s57bun" path="res://General_Assets/Assests_png/Original/Hearts_Red_5.png" id="4_glymp"]
+[ext_resource type="Texture2D" uid="uid://bfgnuxkn8pn3m" path="res://_Lim_Kai_Yang/Level_04/assets/Tiny Swords (Free Pack)/UI Elements/UI Elements/Icons/Icon_03.png" id="4_gmurl"]
+[ext_resource type="Texture2D" uid="uid://53d1ye55qhcs" path="res://General_Assets/dungeon_elements/Dungeon Gathering Free Version/Potion 1.png" id="5_td580"]
+[ext_resource type="Texture2D" uid="uid://dxrnsshm4tfsi" path="res://UI_Buttons/Icon/Pause/B_Button13.png" id="7_41wwj"]
+[ext_resource type="Texture2D" uid="uid://c3w0kpxeltj78" path="res://UI_Buttons/Icon/Pause/B_Button15.png" id="8_vsv5b"]
+[ext_resource type="Texture2D" uid="uid://4oputsx1xvep" path="res://UI_Buttons/Icon/Pause/B_Button14.png" id="9_r8w4q"]
+[ext_resource type="Texture2D" uid="uid://d2vo5x8245q33" path="res://UI_Buttons/Icon/Back/B_Button55.png" id="10_ns2ys"]
+[ext_resource type="Texture2D" uid="uid://cch0ewiaoogi8" path="res://UI_Buttons/Icon/Back/B_Button57.png" id="11_vlidk"]
+[ext_resource type="Texture2D" uid="uid://ftf8rgthmwg1" path="res://UI_Buttons/Icon/Back/B_Button56.png" id="12_k7vgx"]
+[ext_resource type="Texture2D" uid="uid://bwipxtf0s5re" path="res://UI_Buttons/Icon/Home/B_Button16.png" id="13_md6nx"]
+[ext_resource type="Texture2D" uid="uid://4jhp8rmjl4e" path="res://UI_Buttons/Icon/Home/B_Button18.png" id="14_wbl0w"]
+[ext_resource type="Texture2D" uid="uid://drdj4jm61b70e" path="res://UI_Buttons/Icon/Home/B_Button17.png" id="15_n8rgv"]
+[ext_resource type="Texture2D" uid="uid://dy6mj8hxaq8sx" path="res://UI_Buttons/Icon/Restart/B_Button70.png" id="16_gw34m"]
+[ext_resource type="Texture2D" uid="uid://3ad8dw3l5r8a" path="res://UI_Buttons/Icon/Restart/B_Button72.png" id="17_40b2x"]
+[ext_resource type="Texture2D" uid="uid://dcuind3p7oh61" path="res://UI_Buttons/Icon/Restart/B_Button71.png" id="18_po68e"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ci8lj"]
+
+[node name="Hud" type="CanvasLayer" unique_id=148244219]
+
+[node name="ShopPopup" parent="." unique_id=610720723 instance=ExtResource("1_84mac")]
+
+[node name="hud" type="Control" parent="." unique_id=1333634629]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_q6p0n")
+full_heart_texture = ExtResource("3_s5bls")
+empty_heart_texture = ExtResource("4_glymp")
+potion_icon_texture = ExtResource("5_td580")
+
+[node name="Hearts" type="HBoxContainer" parent="hud" unique_id=1408367260]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 12.0
+offset_right = 470.0
+offset_bottom = 82.0
+
+[node name="Heart1" type="TextureRect" parent="hud/Hearts" unique_id=97620273]
+layout_mode = 2
+texture = ExtResource("3_s5bls")
+expand_mode = 2
+
+[node name="Heart2" type="TextureRect" parent="hud/Hearts" unique_id=1726722070]
+layout_mode = 2
+texture = ExtResource("3_s5bls")
+expand_mode = 2
+
+[node name="Heart3" type="TextureRect" parent="hud/Hearts" unique_id=374019455]
+layout_mode = 2
+texture = ExtResource("3_s5bls")
+expand_mode = 2
+
+[node name="Heart4" type="TextureRect" parent="hud/Hearts" unique_id=680071913]
+layout_mode = 2
+texture = ExtResource("3_s5bls")
+expand_mode = 2
+
+[node name="Heart5" type="TextureRect" parent="hud/Hearts" unique_id=1023199735]
+layout_mode = 2
+texture = ExtResource("3_s5bls")
+expand_mode = 2
+
+[node name="CoinIcon" type="TextureRect" parent="hud" unique_id=1838916514]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 96.0
+offset_right = 168.0
+offset_bottom = 160.0
+texture = ExtResource("4_gmurl")
+
+[node name="CoinCount" type="Label" parent="hud" unique_id=737180635]
+layout_mode = 0
+offset_left = 180.0
+offset_top = 96.0
+offset_right = 244.0
+offset_bottom = 160.0
+vertical_alignment = 1
+
+[node name="PotionDisplay" type="HBoxContainer" parent="hud" unique_id=340763428]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 880.0
+offset_right = 179.0
+offset_bottom = 950.0
+pivot_offset = Vector2(104, 500)
+
+[node name="PotionIcon" type="TextureRect" parent="hud/PotionDisplay" unique_id=1179554678]
+layout_mode = 2
+texture = ExtResource("5_td580")
+expand_mode = 2
+
+[node name="PotionCount" type="Label" parent="hud/PotionDisplay" unique_id=849264160]
+layout_mode = 2
+
+[node name="PauseButton" type="TextureButton" parent="hud" unique_id=496871306]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.91700006
+anchor_right = 1.0
+anchor_bottom = 0.11100001
+offset_left = 1137.32
+offset_right = 1154.0
+offset_bottom = 15.559999
+grow_horizontal = 0
+scale = Vector2(5.3406405, 5.3406405)
+texture_normal = ExtResource("7_41wwj")
+texture_pressed = ExtResource("8_vsv5b")
+texture_hover = ExtResource("9_r8w4q")
+
+[node name="PauseMenu" type="Control" parent="hud" unique_id=1931891502]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="hud/PauseMenu" unique_id=869736308]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 256.0
+offset_top = 128.0
+offset_right = -256.0
+offset_bottom = -141.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="hud/PauseMenu" unique_id=8053347]
+layout_mode = 0
+offset_left = 384.0
+offset_top = 192.0
+offset_right = 404.0
+offset_bottom = 260.0
+scale = Vector2(8.493071, 8.493071)
+
+[node name="ResumeButton" type="TextureButton" parent="hud/PauseMenu/VBoxContainer" unique_id=307966800]
+layout_mode = 2
+tooltip_text = "Why u pause"
+texture_normal = ExtResource("10_ns2ys")
+texture_pressed = ExtResource("11_vlidk")
+texture_hover = ExtResource("12_k7vgx")
+
+[node name="Label" type="Label" parent="hud/PauseMenu/VBoxContainer/ResumeButton" unique_id=1445896404]
+texture_filter = 1
+layout_mode = 0
+offset_left = 21.90021
+offset_top = -0.8242005
+offset_right = 70.77313
+offset_bottom = 14.175799
+scale = Vector2(0.82875335, 1.409741)
+text = "Resume"
+label_settings = SubResource("LabelSettings_ci8lj")
+language = "en"
+
+[node name="MainMenuButton" type="TextureButton" parent="hud/PauseMenu/VBoxContainer" unique_id=314859242]
+layout_mode = 2
+texture_normal = ExtResource("13_md6nx")
+texture_pressed = ExtResource("14_wbl0w")
+texture_hover = ExtResource("15_n8rgv")
+
+[node name="Label" type="Label" parent="hud/PauseMenu/VBoxContainer/MainMenuButton" unique_id=1126566171]
+texture_filter = 1
+layout_mode = 0
+offset_left = 21.782465
+offset_top = -1.27559
+offset_right = 53.782463
+offset_bottom = 13.724411
+scale = Vector2(1.1193942, 1.4211568)
+text = "Menu"
+label_settings = SubResource("LabelSettings_ci8lj")
+language = "en"
+
+[node name="RestartButton" type="TextureButton" parent="hud/PauseMenu/VBoxContainer" unique_id=547025661]
+layout_mode = 2
+texture_normal = ExtResource("16_gw34m")
+texture_pressed = ExtResource("17_40b2x")
+texture_hover = ExtResource("18_po68e")
+
+[node name="Label" type="Label" parent="hud/PauseMenu/VBoxContainer/RestartButton" unique_id=1443384829]
+texture_filter = 1
+layout_mode = 0
+offset_left = 22.488924
+offset_top = -1.1382637
+offset_right = 76.48892
+offset_bottom = 13.861736
+scale = Vector2(0.82875335, 1.409741)
+text = "Restart"
+label_settings = SubResource("LabelSettings_ci8lj")
+language = "en"
+
+[connection signal="pressed" from="hud/PauseMenu/VBoxContainer/ResumeButton" to="hud" method="_on_resume_button_pressed"]
+[connection signal="pressed" from="hud/PauseMenu/VBoxContainer/MainMenuButton" to="hud" method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="hud/PauseMenu/VBoxContainer/RestartButton" to="hud" method="_on_restart_button_pressed"]

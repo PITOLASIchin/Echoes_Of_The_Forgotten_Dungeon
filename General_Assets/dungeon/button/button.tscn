@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://1ye22sdundce"]
+
+[ext_resource type="Texture2D" uid="uid://ctp1gfmkp0yjg" path="res://General_Assets/dungeon/button/dungeon_button.png" id="1_8mc3x"]
+[ext_resource type="Script" uid="uid://gp5sr5ge038w" path="res://General_Assets/dungeon/button/button.gd" id="1_gd2i4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gd2i4"]
+atlas = ExtResource("1_8mc3x")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0gfcm"]
+atlas = ExtResource("1_8mc3x")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_quc28"]
+atlas = ExtResource("1_8mc3x")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3lytp"]
+atlas = ExtResource("1_8mc3x")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f2vbu"]
+atlas = ExtResource("1_8mc3x")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kv1y0"]
+atlas = ExtResource("1_8mc3x")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hqmbr"]
+atlas = ExtResource("1_8mc3x")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5uu1w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gd2i4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0gfcm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_quc28")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3lytp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f2vbu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kv1y0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hqmbr")
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xaxud"]
+size = Vector2(11.5, 11.5)
+
+[node name="button" type="StaticBody2D" unique_id=228097432]
+script = ExtResource("1_gd2i4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2101697794]
+sprite_frames = SubResource("SpriteFrames_5uu1w")
+frame = 6
+frame_progress = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=962771077]
+visible = false
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_xaxud")

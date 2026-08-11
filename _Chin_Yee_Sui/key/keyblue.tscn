@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://b3iy5rpga84nj"]
+
+[ext_resource type="Texture2D" uid="uid://du8u6ons2t2k" path="res://_Chin_Yee_Sui/key/Key_Blue.png" id="1_q1yaf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j8fle"]
+radius = 8.0
+
+[node name="PickupArea" type="Area2D" unique_id=1350445867]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1281590859]
+texture = ExtResource("1_q1yaf")
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=369918366]
+shape = SubResource("CircleShape2D_j8fle")

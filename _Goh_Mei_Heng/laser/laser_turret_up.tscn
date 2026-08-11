@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://b3ci7jy6gstg5"]
+
+[ext_resource type="Script" uid="uid://w2owejdgocdo" path="res://_Goh_Mei_Heng/laser/laser_turret.gd" id="1_y4seg"]
+[ext_resource type="PackedScene" uid="uid://dy3730bmvrcll" path="res://_Goh_Mei_Heng/laser/laserStraight.tscn" id="2_u51b1"]
+[ext_resource type="PackedScene" uid="uid://cgbrrsjo8817t" path="res://_Goh_Mei_Heng/laser/laserCorner.tscn" id="3_wm3pc"]
+[ext_resource type="Texture2D" uid="uid://cku0viuql38al" path="res://_Goh_Mei_Heng/laser/Generated_image_1__4_-removebg-preview.png" id="4_wm3pc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wk1jr"]
+size = Vector2(14, 16)
+
+[node name="laser_turret_up" type="StaticBody2D" unique_id=1404324859]
+collision_layer = 5
+script = ExtResource("1_y4seg")
+straight_laser_scene = ExtResource("2_u51b1")
+corner_laser_scene = ExtResource("3_wm3pc")
+starting_direction = 3
+ray_collision_mask = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=642808918]
+position = Vector2(1.1920929e-07, -2.3841858e-07)
+scale = Vector2(0.24673507, 0.24673507)
+texture = ExtResource("4_wm3pc")
+region_enabled = true
+region_rect = Rect2(40, 43.534573, 67.85297, 98.37196)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1114484913]
+visible = false
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_wk1jr")
+
+[node name="FirePoint" type="Marker2D" parent="." unique_id=1450719555]
+position = Vector2(0, -6)
+
+[node name="LaserContainer" type="Node2D" parent="." unique_id=432814183]
+position = Vector2(0, -6)

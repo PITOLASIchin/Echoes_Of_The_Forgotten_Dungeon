@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://co6lsi7is61pi"]
+
+[ext_resource type="Script" uid="uid://5k41cnvtsrd3" path="res://Damage_Area/take_damage.gd" id="1_ijfmi"]
+
+[node name="take_damage" type="Area2D" unique_id=1699602000]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("1_ijfmi")

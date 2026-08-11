@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://btjdetllqpu6"]
+
+[ext_resource type="Script" uid="uid://bsq7i6kacbp8n" path="res://_Lim_Kai_Yang/Level_04/objects/room_exit.gd" id="1_h66xm"]
+[ext_resource type="Texture2D" uid="uid://jyc5qmt0smea" path="res://_Lim_Kai_Yang/Level_04/assets/Tiny Swords (Free Pack)/Buildings/Black Buildings/Tower.png" id="2_kgrie"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ky3dc"]
+size = Vector2(133, 180)
+
+[node name="RoomExit" type="Area2D" unique_id=624007568]
+script = ExtResource("1_h66xm")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1364358618]
+texture = ExtResource("2_kgrie")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=285883083]
+position = Vector2(2.5, 15)
+shape = SubResource("RectangleShape2D_ky3dc")

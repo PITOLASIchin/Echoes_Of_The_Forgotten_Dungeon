@@ -1,0 +1,217 @@
+[gd_scene format=3 uid="uid://bneeg4wrormdg"]
+
+[ext_resource type="Texture2D" uid="uid://dxrnsshm4tfsi" path="res://UI_Buttons/Icon/Pause/B_Button13.png" id="1_27fn8"]
+[ext_resource type="Script" uid="uid://dnm2skolb6dn7" path="res://General_Assets/Assests_png/UI/ui.gd" id="1_nltto"]
+[ext_resource type="Texture2D" uid="uid://c3w0kpxeltj78" path="res://UI_Buttons/Icon/Pause/B_Button15.png" id="2_nltto"]
+[ext_resource type="Texture2D" uid="uid://4oputsx1xvep" path="res://UI_Buttons/Icon/Pause/B_Button14.png" id="3_ibotj"]
+[ext_resource type="Texture2D" uid="uid://d2vo5x8245q33" path="res://UI_Buttons/Icon/Back/B_Button55.png" id="5_ok7cu"]
+[ext_resource type="Texture2D" uid="uid://cch0ewiaoogi8" path="res://UI_Buttons/Icon/Back/B_Button57.png" id="6_gs482"]
+[ext_resource type="Texture2D" uid="uid://bwipxtf0s5re" path="res://UI_Buttons/Icon/Home/B_Button16.png" id="6_irxef"]
+[ext_resource type="Texture2D" uid="uid://ftf8rgthmwg1" path="res://UI_Buttons/Icon/Back/B_Button56.png" id="7_cxd00"]
+[ext_resource type="Texture2D" uid="uid://dy6mj8hxaq8sx" path="res://UI_Buttons/Icon/Restart/B_Button70.png" id="7_e2l4f"]
+[ext_resource type="Texture2D" uid="uid://3ad8dw3l5r8a" path="res://UI_Buttons/Icon/Restart/B_Button72.png" id="8_n5rqp"]
+[ext_resource type="Texture2D" uid="uid://4jhp8rmjl4e" path="res://UI_Buttons/Icon/Home/B_Button18.png" id="9_etlur"]
+[ext_resource type="Texture2D" uid="uid://dcuind3p7oh61" path="res://UI_Buttons/Icon/Restart/B_Button71.png" id="9_gs482"]
+[ext_resource type="Texture2D" uid="uid://drdj4jm61b70e" path="res://UI_Buttons/Icon/Home/B_Button17.png" id="10_7rqds"]
+[ext_resource type="Script" uid="uid://cfdpkd2xfhvjk" path="res://General_Assets/Assests_png/UI/hud.gd" id="14_etlur"]
+[ext_resource type="Texture2D" uid="uid://x3jwivxgs245" path="res://General_Assets/Assests_png/Original/Hearts_Red_1.png" id="15_8gukh"]
+[ext_resource type="Texture2D" uid="uid://cyorkdvtntxl8" path="res://General_Assets/Assests_png/Original/Hearts_Blue_5.png" id="16_os5c7"]
+[ext_resource type="Texture2D" uid="uid://c8metolnpcr31" path="res://_Cheok_Kai_Ren/character/character_portrait.png" id="17_nvb2n"]
+[ext_resource type="Texture2D" uid="uid://djvmwj8qj4rx2" path="res://General_Assets/Assests_png/UI/360_F_594558332_lTJ09Sq3pdL78A1RYDYNTLjvxFzUw6uo-removebg-preview.png" id="18_0tr35"]
+[ext_resource type="Texture2D" uid="uid://bd1f8qjsl53v2" path="res://General_Assets/Assests_png/Separated_Assets/Yellow/Traps_and_Props/Key_Yellow.png" id="18_8gkfd"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_gs482"]
+
+[node name="UI" type="CanvasLayer" unique_id=1291318432]
+process_mode = 3
+script = ExtResource("1_nltto")
+
+[node name="PauseButton" type="TextureButton" parent="." unique_id=1315799918]
+anchors_preset = -1
+anchor_left = 0.91700006
+anchor_right = 1.0
+anchor_bottom = 0.11100001
+offset_left = 0.23999023
+offset_right = -86.0
+offset_bottom = -86.560005
+grow_horizontal = 0
+scale = Vector2(5.3406405, 5.3406405)
+texture_normal = ExtResource("1_27fn8")
+texture_pressed = ExtResource("2_nltto")
+texture_hover = ExtResource("3_ibotj")
+
+[node name="PauseMenu" type="Control" parent="." unique_id=604590245]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="PauseMenu" unique_id=666800357]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 256.0
+offset_top = 128.0
+offset_right = -256.0
+offset_bottom = -141.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu" unique_id=2017574747]
+layout_mode = 0
+offset_left = 384.0
+offset_top = 192.0
+offset_right = 404.0
+offset_bottom = 260.0
+scale = Vector2(8.493071, 8.493071)
+
+[node name="ResumeButton" type="TextureButton" parent="PauseMenu/VBoxContainer" unique_id=58682381]
+layout_mode = 2
+tooltip_text = "Why u pause"
+texture_normal = ExtResource("5_ok7cu")
+texture_pressed = ExtResource("6_gs482")
+texture_hover = ExtResource("7_cxd00")
+
+[node name="Label" type="Label" parent="PauseMenu/VBoxContainer/ResumeButton" unique_id=1745612411]
+texture_filter = 1
+layout_mode = 0
+offset_left = 21.90021
+offset_top = -0.8242005
+offset_right = 70.77313
+offset_bottom = 14.175799
+scale = Vector2(0.82875335, 1.409741)
+text = "Resume"
+label_settings = SubResource("LabelSettings_gs482")
+language = "en"
+
+[node name="MainMenuButton" type="TextureButton" parent="PauseMenu/VBoxContainer" unique_id=669910358]
+layout_mode = 2
+texture_normal = ExtResource("6_irxef")
+texture_pressed = ExtResource("9_etlur")
+texture_hover = ExtResource("10_7rqds")
+
+[node name="Label" type="Label" parent="PauseMenu/VBoxContainer/MainMenuButton" unique_id=1902940004]
+texture_filter = 1
+layout_mode = 0
+offset_left = 21.782465
+offset_top = -1.27559
+offset_right = 53.782463
+offset_bottom = 13.724411
+scale = Vector2(1.1193942, 1.4211568)
+text = "Menu"
+label_settings = SubResource("LabelSettings_gs482")
+language = "en"
+
+[node name="RestartButton" type="TextureButton" parent="PauseMenu/VBoxContainer" unique_id=1540457555]
+layout_mode = 2
+texture_normal = ExtResource("7_e2l4f")
+texture_pressed = ExtResource("8_n5rqp")
+texture_hover = ExtResource("9_gs482")
+
+[node name="Label" type="Label" parent="PauseMenu/VBoxContainer/RestartButton" unique_id=1451822863]
+texture_filter = 1
+layout_mode = 0
+offset_left = 22.488924
+offset_top = -1.1382637
+offset_right = 76.48892
+offset_bottom = 13.861736
+scale = Vector2(0.82875335, 1.409741)
+text = "Restart"
+label_settings = SubResource("LabelSettings_gs482")
+language = "en"
+
+[node name="HUD" type="Control" parent="." unique_id=184406077]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("14_etlur")
+full_heart_texture = ExtResource("15_8gukh")
+empty_heart_texture = ExtResource("16_os5c7")
+
+[node name="Potrait" type="TextureRect" parent="HUD" unique_id=1691810341]
+layout_mode = 0
+offset_right = 86.84092
+offset_bottom = 84.99324
+scale = Vector2(1.6236584, 1.6236584)
+texture = ExtResource("17_nvb2n")
+
+[node name="CoinIcon" type="TextureRect" parent="HUD" unique_id=1383374454]
+layout_mode = 0
+offset_left = 167.0
+offset_top = 81.0
+offset_right = 212.0
+offset_bottom = 132.42857
+texture = ExtResource("18_0tr35")
+expand_mode = 1
+
+[node name="CoinCount" type="Label" parent="HUD" unique_id=1943120358]
+layout_mode = 0
+offset_left = 225.0
+offset_top = 94.0
+offset_right = 265.0
+offset_bottom = 117.0
+
+[node name="KeyIcon" type="TextureRect" parent="HUD" unique_id=578731686]
+layout_mode = 0
+offset_left = 166.0
+offset_top = 132.0
+offset_right = 213.0
+offset_bottom = 183.94736
+texture = ExtResource("18_8gkfd")
+
+[node name="KeyCount" type="Label" parent="HUD" unique_id=1472890619]
+layout_mode = 0
+offset_left = 227.0
+offset_top = 148.0
+offset_right = 267.0
+offset_bottom = 171.0
+
+[node name="Hearts" type="HBoxContainer" parent="HUD" unique_id=357001916]
+layout_mode = 0
+offset_left = 161.0
+offset_top = 12.0
+offset_right = 497.0
+offset_bottom = 82.0
+
+[node name="Heart1" type="TextureRect" parent="HUD/Hearts" unique_id=95887062]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("15_8gukh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Heart2" type="TextureRect" parent="HUD/Hearts" unique_id=1072121366]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("15_8gukh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Heart3" type="TextureRect" parent="HUD/Hearts" unique_id=766040229]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("15_8gukh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Heart4" type="TextureRect" parent="HUD/Hearts" unique_id=1427707010]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("15_8gukh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Heart5" type="TextureRect" parent="HUD/Hearts" unique_id=138233953]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("15_8gukh")
+expand_mode = 1
+stretch_mode = 5
+
+[connection signal="pressed" from="PauseMenu/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="PauseMenu/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="PauseMenu/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]

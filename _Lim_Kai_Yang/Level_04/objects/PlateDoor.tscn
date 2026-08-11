@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bxu8bbboex3a7"]
+
+[ext_resource type="Script" uid="uid://bd11mesble8ua" path="res://_Lim_Kai_Yang/Level_04/objects/plate_door.gd" id="1_udhgu"]
+[ext_resource type="Texture2D" uid="uid://0to6awamanqy" path="res://_Lim_Kai_Yang/Level_04/assets/Tiny Swords (Free Pack)/Terrain/Decorations/Rocks/Rock2.png" id="2_gk2qe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rckka"]
+size = Vector2(64, 64)
+
+[node name="PlateDoor" type="StaticBody2D" unique_id=290187304]
+collision_mask = 0
+script = ExtResource("1_udhgu")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1574694379]
+position = Vector2(180, 145)
+texture = ExtResource("2_gk2qe")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2018050016]
+position = Vector2(176, 146)
+shape = SubResource("RectangleShape2D_rckka")

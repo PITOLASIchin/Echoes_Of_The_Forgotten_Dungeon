@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ddrhg10vj4spd"
+path="res://.godot/imported/Dark Boss.mp3-95613d5ca3e5dfc54a508afc8abd8ef3.mp3str"
+
+[deps]
+
+source_file="res://_Goh_Mei_Heng/Dark Boss.mp3"
+dest_files=["res://.godot/imported/Dark Boss.mp3-95613d5ca3e5dfc54a508afc8abd8ef3.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://be5a5ajj8vty"]
+
+[ext_resource type="Script" uid="uid://befrb3lkqwave" path="res://_Lim_Kai_Yang/Level_04/objects/pressure_plate.gd" id="1_2gqp7"]
+[ext_resource type="Texture2D" uid="uid://drjbghr5itii4" path="res://_Lim_Kai_Yang/Level_04/assets/Tiny Swords (Free Pack)/UI Elements/UI Elements/Buttons/SmallRedSquareButton_Regular.png" id="2_cet8o"]
+[ext_resource type="Texture2D" uid="uid://cqu161hxb503b" path="res://_Lim_Kai_Yang/Level_04/assets/Tiny Swords (Free Pack)/UI Elements/UI Elements/Buttons/TinySquareRedButton.png" id="3_mlenk"]
+[ext_resource type="Texture2D" uid="uid://iwcbtktu716d" path="res://_Lim_Kai_Yang/Level_04/assets/Tiny Swords (Free Pack)/UI Elements/UI Elements/Buttons/SmallRedSquareButton_Pressed.png" id="4_46heq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ol1vm"]
+size = Vector2(40, 40)
+
+[node name="PressurePlate" type="Area2D" unique_id=557394425]
+collision_layer = 0
+script = ExtResource("1_2gqp7")
+regular_texture = ExtResource("2_cet8o")
+pressed_texture = ExtResource("3_mlenk")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=694739211]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_46heq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=667890550]
+position = Vector2(-1, 4.5)
+shape = SubResource("RectangleShape2D_ol1vm")

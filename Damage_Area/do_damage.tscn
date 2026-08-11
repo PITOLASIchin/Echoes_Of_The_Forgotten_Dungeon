@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dajk030sfow7a"]
+
+[ext_resource type="Script" uid="uid://dwnh3aasu8u6b" path="res://Damage_Area/do_damage.gd" id="1_q5qck"]
+
+[node name="do_damage" type="Area2D" unique_id=273551396]
+collision_layer = 4
+collision_mask = 8
+monitoring = false
+script = ExtResource("1_q5qck")
