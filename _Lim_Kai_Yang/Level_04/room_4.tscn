@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://btjdetllqpu6" path="res://_Lim_Kai_Yang/Level_04/objects/RoomExit.tscn" id="9_wf5xj"]
 [ext_resource type="PackedScene" uid="uid://tckssgwlq7ih" path="res://_Lim_Kai_Yang/Level_04/hud/hud.tscn" id="10_5xlsd"]
 [ext_resource type="PackedScene" uid="uid://g5cju4e7gxw4" path="res://_Lim_Kai_Yang/Level_04/objects/merchant.tscn" id="11_twnyb"]
-[ext_resource type="PackedScene" uid="uid://de2ha30sh5ow5" path="res://General_Assets/dungeon/chest/big_chest.tscn" id="12_twnyb"]
+[ext_resource type="PackedScene" uid="uid://de2ha30sh5ow5" path="res://Dungeon_Elements/chest/big_chest.tscn" id="12_twnyb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sodji"]
 texture = ExtResource("1_r0y7c")

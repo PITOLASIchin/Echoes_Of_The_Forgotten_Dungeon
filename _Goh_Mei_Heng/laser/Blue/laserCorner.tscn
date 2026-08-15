@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cgbrrsjo8817t"]
+
+[ext_resource type="Script" uid="uid://br56d5qw46ou5" path="res://_Goh_Mei_Heng/laser/laserStraight.gd" id="1_k0i7q"]
+[ext_resource type="Texture2D" uid="uid://c4aihlyb2a85a" path="res://_Goh_Mei_Heng/laser/Blue/LaserCorner_Blue.png" id="2_k0i7q"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_1sf8m"]
+b = Vector2(0, 8.554806)
+
+[node name="laserCorner" type="Area2D" unique_id=1136112690]
+z_index = 1
+y_sort_enabled = true
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_k0i7q")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=925741499]
+texture = ExtResource("2_k0i7q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2044713394]
+position = Vector2(0, -2)
+scale = Vector2(1.2840707, 1.1689336)
+shape = SubResource("SegmentShape2D_1sf8m")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=1003403853]
+position = Vector2(-1.9999999, -1.1920929e-07)
+rotation = -1.5804361
+scale = Vector2(1.2840707, 1.1689336)
+shape = SubResource("SegmentShape2D_1sf8m")

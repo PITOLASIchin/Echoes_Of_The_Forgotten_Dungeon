@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://rp0wu107fmtq"]
 
 [ext_resource type="Script" uid="uid://cl1md1y1rvhdf" path="res://_Lim_Kai_Yang/Level_04/hud/shop_popup.gd" id="1_4e37u"]
-[ext_resource type="Texture2D" uid="uid://53d1ye55qhcs" path="res://General_Assets/dungeon_elements/Dungeon Gathering Free Version/Potion 1.png" id="2_tysnl"]
+[ext_resource type="Texture2D" uid="uid://53d1ye55qhcs" path="res://General_Assets/dungeon_assests/Dungeon Gathering Free Version/Potion 1.png" id="2_tysnl"]
 
 [node name="ShopPopup" type="Control" unique_id=610720723]
 layout_mode = 3

@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://dogk28ajtlprq"]
+
+[ext_resource type="Texture2D" uid="uid://d34oknbsx5r3u" path="res://General_Assets/dungeon_assests/objects_animated/dungeon_barrel.png" id="1_33ix8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wrsc3"]
+atlas = ExtResource("1_33ix8")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wecka"]
+atlas = ExtResource("1_33ix8")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v34w2"]
+atlas = ExtResource("1_33ix8")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ysjtw"]
+atlas = ExtResource("1_33ix8")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yvo8j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wrsc3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wecka")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v34w2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ysjtw")
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pf2xf"]
+size = Vector2(12, 15)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mes7f"]
+size = Vector2(13, 16.5)
+
+[node name="barrel" type="StaticBody2D" unique_id=1308442943]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1223937526]
+sprite_frames = SubResource("SpriteFrames_yvo8j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=621373259]
+visible = false
+shape = SubResource("RectangleShape2D_pf2xf")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=782977719]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2126322094]
+visible = false
+position = Vector2(0, -0.25)
+shape = SubResource("RectangleShape2D_mes7f")

@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://b23gysg74vt3u"]
+
+[ext_resource type="Texture2D" uid="uid://c13ylgtygxrxu" path="res://General_Assets/dungeon_assests/objects_static/dungeon_tombstone.png" id="1_lde27"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jem3m"]
+size = Vector2(15, 12.25)
+
+[node name="tombstone" type="StaticBody2D" unique_id=535771948]
+collision_layer = 3
+collision_mask = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=927105686]
+position = Vector2(0, -6)
+texture = ExtResource("1_lde27")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=788905244]
+position = Vector2(0, 4.125)
+shape = SubResource("RectangleShape2D_jem3m")

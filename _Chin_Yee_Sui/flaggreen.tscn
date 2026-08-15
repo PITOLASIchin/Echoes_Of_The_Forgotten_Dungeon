@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cw6yvxii48he"]
 
-[ext_resource type="Texture2D" uid="uid://jvy5bthrtcpt" path="res://General_Assets/dungeon_elements/objects_animated/dungeon_banner_blue.png" id="1_kfto2"]
-[ext_resource type="Texture2D" uid="uid://csvpbk64cbbnm" path="res://General_Assets/dungeon_elements/objects_animated/dungeon_banner_green.png" id="2_rerpd"]
+[ext_resource type="Texture2D" uid="uid://jvy5bthrtcpt" path="res://General_Assets/dungeon_assests/objects_animated/dungeon_banner_blue.png" id="1_kfto2"]
+[ext_resource type="Texture2D" uid="uid://csvpbk64cbbnm" path="res://General_Assets/dungeon_assests/objects_animated/dungeon_banner_green.png" id="2_rerpd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8bt55"]
 atlas = ExtResource("1_kfto2")

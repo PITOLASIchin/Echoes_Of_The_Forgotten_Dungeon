@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ee4yakytsltj"]
 
-[ext_resource type="Texture2D" uid="uid://b3k7xgwrjmmdg" path="res://_Chin_Yee_Sui/enemies/slime/dungeon_slime.png" id="1_bwbrm"]
+[ext_resource type="Texture2D" uid="uid://b3k7xgwrjmmdg" path="res://General_Assets/dungeon_assests/monsters/dungeon_slime.png" id="1_bwbrm"]
 [ext_resource type="Script" uid="uid://0gk72evfj3c1" path="res://_Chin_Yee_Sui/enemies/slime/slime.gd" id="1_ms0tw"]
 [ext_resource type="PackedScene" uid="uid://dajk030sfow7a" path="res://Damage_Area/do_damage.tscn" id="3_6326o"]
 [ext_resource type="PackedScene" uid="uid://co6lsi7is61pi" path="res://Damage_Area/take_damage.tscn" id="4_57eei"]

@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://5cijfhn5te0g"]
+
+[ext_resource type="AudioStream" uid="uid://ddrhg10vj4spd" path="res://_Goh_Mei_Heng/Sound_effects/Dark Boss.mp3" id="1_e4egu"]
+
+[node name="sound" type="AudioStreamPlayer2D" unique_id=329150606]
+stream = ExtResource("1_e4egu")
+autoplay = true
+parameters/looping = true

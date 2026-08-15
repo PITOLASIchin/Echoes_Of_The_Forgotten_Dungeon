@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://op8678o1ucxt"]
+
+[ext_resource type="Texture2D" uid="uid://dskxha1y43s7q" path="res://General_Assets/dungeon_assests/objects_static/dungeon_pillar_broken.png" id="1_6ht82"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lnq4t"]
+size = Vector2(13.5, 12)
+
+[node name="pillar_broken" type="StaticBody2D" unique_id=562593631]
+collision_layer = 3
+collision_mask = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1193376980]
+texture = ExtResource("1_6ht82")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=173581784]
+position = Vector2(0, 9)
+shape = SubResource("RectangleShape2D_lnq4t")
