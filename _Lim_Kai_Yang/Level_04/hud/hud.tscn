@@ -6,18 +6,18 @@
 [ext_resource type="Texture2D" uid="uid://de0vun4s57bun" path="res://General_Assets/Assests_png/Original/Hearts_Red_5.png" id="4_glymp"]
 [ext_resource type="Texture2D" uid="uid://bfgnuxkn8pn3m" path="res://_Lim_Kai_Yang/Level_04/assets/Tiny Swords (Free Pack)/UI Elements/UI Elements/Icons/Icon_03.png" id="4_gmurl"]
 [ext_resource type="Texture2D" uid="uid://53d1ye55qhcs" path="res://General_Assets/dungeon_elements/Dungeon Gathering Free Version/Potion 1.png" id="5_td580"]
-[ext_resource type="Texture2D" uid="uid://dxrnsshm4tfsi" path="res://UI_Buttons/Icon/Pause/B_Button13.png" id="7_41wwj"]
-[ext_resource type="Texture2D" uid="uid://c3w0kpxeltj78" path="res://UI_Buttons/Icon/Pause/B_Button15.png" id="8_vsv5b"]
-[ext_resource type="Texture2D" uid="uid://4oputsx1xvep" path="res://UI_Buttons/Icon/Pause/B_Button14.png" id="9_r8w4q"]
-[ext_resource type="Texture2D" uid="uid://d2vo5x8245q33" path="res://UI_Buttons/Icon/Back/B_Button55.png" id="10_ns2ys"]
-[ext_resource type="Texture2D" uid="uid://cch0ewiaoogi8" path="res://UI_Buttons/Icon/Back/B_Button57.png" id="11_vlidk"]
-[ext_resource type="Texture2D" uid="uid://ftf8rgthmwg1" path="res://UI_Buttons/Icon/Back/B_Button56.png" id="12_k7vgx"]
-[ext_resource type="Texture2D" uid="uid://bwipxtf0s5re" path="res://UI_Buttons/Icon/Home/B_Button16.png" id="13_md6nx"]
-[ext_resource type="Texture2D" uid="uid://4jhp8rmjl4e" path="res://UI_Buttons/Icon/Home/B_Button18.png" id="14_wbl0w"]
-[ext_resource type="Texture2D" uid="uid://drdj4jm61b70e" path="res://UI_Buttons/Icon/Home/B_Button17.png" id="15_n8rgv"]
-[ext_resource type="Texture2D" uid="uid://dy6mj8hxaq8sx" path="res://UI_Buttons/Icon/Restart/B_Button70.png" id="16_gw34m"]
-[ext_resource type="Texture2D" uid="uid://3ad8dw3l5r8a" path="res://UI_Buttons/Icon/Restart/B_Button72.png" id="17_40b2x"]
-[ext_resource type="Texture2D" uid="uid://dcuind3p7oh61" path="res://UI_Buttons/Icon/Restart/B_Button71.png" id="18_po68e"]
+[ext_resource type="Texture2D" uid="uid://dxrnsshm4tfsi" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Pause/B_Button13.png" id="7_41wwj"]
+[ext_resource type="Texture2D" uid="uid://c3w0kpxeltj78" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Pause/B_Button15.png" id="8_vsv5b"]
+[ext_resource type="Texture2D" uid="uid://4oputsx1xvep" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Pause/B_Button14.png" id="9_r8w4q"]
+[ext_resource type="Texture2D" uid="uid://d2vo5x8245q33" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Back/B_Button55.png" id="10_ns2ys"]
+[ext_resource type="Texture2D" uid="uid://cch0ewiaoogi8" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Back/B_Button57.png" id="11_vlidk"]
+[ext_resource type="Texture2D" uid="uid://ftf8rgthmwg1" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Back/B_Button56.png" id="12_k7vgx"]
+[ext_resource type="Texture2D" uid="uid://bwipxtf0s5re" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Home/B_Button16.png" id="13_md6nx"]
+[ext_resource type="Texture2D" uid="uid://4jhp8rmjl4e" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Home/B_Button18.png" id="14_wbl0w"]
+[ext_resource type="Texture2D" uid="uid://drdj4jm61b70e" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Home/B_Button17.png" id="15_n8rgv"]
+[ext_resource type="Texture2D" uid="uid://dy6mj8hxaq8sx" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Restart/B_Button70.png" id="16_gw34m"]
+[ext_resource type="Texture2D" uid="uid://3ad8dw3l5r8a" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Restart/B_Button72.png" id="17_40b2x"]
+[ext_resource type="Texture2D" uid="uid://dcuind3p7oh61" path="res://General_Assets/Assests_png/UI_Buttons/Icon/Restart/B_Button71.png" id="18_po68e"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ci8lj"]
 
@@ -87,7 +87,7 @@ vertical_alignment = 1
 layout_mode = 0
 offset_left = 104.0
 offset_top = 880.0
-offset_right = 179.0
+offset_right = 248.0
 offset_bottom = 950.0
 pivot_offset = Vector2(104, 500)
 
@@ -122,24 +122,28 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="Panel" parent="hud/PauseMenu" unique_id=869736308]
+[node name="Panel" type="Panel" parent="hud/PauseMenu" unique_id=922138243]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 256.0
-offset_top = 128.0
-offset_right = -256.0
-offset_bottom = -141.0
+offset_left = 345.0
+offset_top = 183.0
+offset_right = 950.0
+offset_bottom = 757.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="hud/PauseMenu" unique_id=8053347]
-layout_mode = 0
-offset_left = 384.0
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 364.0
 offset_top = 192.0
-offset_right = 404.0
+offset_right = 384.0
 offset_bottom = 260.0
+grow_horizontal = 2
 scale = Vector2(8.493071, 8.493071)
 
 [node name="ResumeButton" type="TextureButton" parent="hud/PauseMenu/VBoxContainer" unique_id=307966800]

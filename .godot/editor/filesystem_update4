@@ -1,13 +1,8 @@
-res://Chin Yee Sui/overallscene/room5.tscn
-res://_Chin Yee Sui/enemies/bat/bat.gd
-res://_Chin Yee Sui/enemies/bat/bat.tscn
-res://_Chin Yee Sui/Level_05/Level_05.tscn
-res://Levels/Level_1/level_1.tscn
-res://Goh_Mei_Heng/Level_02/level_1.tscn
-res://_Goh Mei Heng/Level_02/level_2.tscn
-res://_Chin Yee Sui/enemies/slime/slime.tscn
-res://_Chin_Yee_Sui/Level_05/Level_05.tscn
 res://_Goh_Mei_Heng/Level_02/level_2.tscn
-res://_Chin_Yee_Sui/enemies/slime/slime.tscn
+res://_Chin_Yee_Sui/Level_05/Level_05.tscn
 res://_Lim_Kai_Yang/Level_04/hud/hud.tscn
 res://ui.tscn
+res://General_Assets/dungeon/pillar/tombstone.tscn
+res://General_Assets/dungeon/pillar/statue.tscn
+res://General_Assets/dungeon/pillar/pillar2.tscn
+res://General_Assets/dungeon/pillar/pillar.tscn

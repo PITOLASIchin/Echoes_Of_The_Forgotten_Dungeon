@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://f12bbdiuo3ob"]
 
-[ext_resource type="Texture2D" uid="uid://bg8fp3jpgh364" path="res://dungeon/pillar/dungeon_pillar.png" id="1_3m7cn"]
+[ext_resource type="Texture2D" uid="uid://bg8fp3jpgh364" path="res://General_Assets/dungeon/pillar/dungeon_pillar.png" id="1_jwkhh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jem3m"]
 size = Vector2(14, 13)
@@ -10,7 +10,7 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=927105686]
-texture = ExtResource("1_3m7cn")
+texture = ExtResource("1_jwkhh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=788905244]
 position = Vector2(0, 8.5)
