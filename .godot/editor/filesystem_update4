@@ -1,8 +1,1 @@
-res://_Narvin/level_selector.tscn
-res://_Narvin/level_selector.gd
-res://_Narvin/controls.gd
-res://_Narvin/controls.tscn
-res://_Lim_Kai_Yang/Level_04/hud/hud.tscn
-res://_Lim_Kai_Yang/Level_04/hud/hud.gd
-res://_Goh_Mei_Heng/Level_02/level_2.tscn
-res://_Narvin/Level_01/level_1.tscn
+res://_Cheok_Kai_Ren/character/player.gd
