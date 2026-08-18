@@ -1,24 +1,22 @@
 [gd_scene format=3 uid="uid://bxwclqss0yxyq"]
 
-[ext_resource type="Texture2D" uid="uid://bjfsgbalaxe70" path="res://dungeon_elements/Dungeon Gathering Free Version/Set 1.0.png" id="1_xm362"]
-[ext_resource type="Texture2D" uid="uid://1qdbdp4fkyg6" path="res://dungeon_elements/dungeon_tileset.png" id="2_jbevl"]
-[ext_resource type="Texture2D" uid="uid://je3ckgp8e772" path="res://dungeon_elements/Dungeon Gathering Free Version/Set 4.5.png" id="3_352nr"]
-[ext_resource type="PackedScene" uid="uid://35o175ct7o6i" path="res://_Cheok Kai Ren/Traps/fire_turret.tscn" id="4_jbevl"]
-[ext_resource type="PackedScene" uid="uid://6i0m5actye4q" path="res://dungeon/spikes/spikes.tscn" id="5_352nr"]
-[ext_resource type="PackedScene" uid="uid://cq4g5tvjxwbvx" path="res://dungeon/gate/gate.tscn" id="6_347dd"]
-[ext_resource type="PackedScene" uid="uid://dklqoxwvxkevq" path="res://enemies/skull/skull.tscn" id="7_03fkr"]
-[ext_resource type="PackedScene" uid="uid://bameu058wrl87" path="res://_Cheok Kai Ren/character/player.tscn" id="7_bx6d0"]
-[ext_resource type="PackedScene" uid="uid://b5egts6thrie7" path="res://_Cheok Kai Ren/Laser/laser_turret.tscn" id="8_rt4tw"]
-[ext_resource type="PackedScene" uid="uid://w7bnhh7rea75" path="res://_Cheok Kai Ren/Laser/laser_beam.tscn" id="9_t2lo6"]
-[ext_resource type="PackedScene" uid="uid://de2ha30sh5ow5" path="res://dungeon/chest/big_chest.tscn" id="10_45bfu"]
-[ext_resource type="PackedScene" uid="uid://w1dg1y515cwf" path="res://dungeon/collectable/coin.tscn" id="11_68e3j"]
-[ext_resource type="PackedScene" uid="uid://bjyk03g2p0r6v" path="res://_Cheok Kai Ren/Lever/lever.tscn" id="12_bx6d0"]
-[ext_resource type="Script" uid="uid://cvgq042qvf3fk" path="res://_Cheok Kai Ren/Room3/laser_puzzle_manager.gd" id="13_68e3j"]
-
-[sub_resource type="TileSet" id="TileSet_347dd"]
+[ext_resource type="Texture2D" uid="uid://bjfsgbalaxe70" path="res://General_Assets/dungeon_assests/Dungeon Gathering Free Version/Set 1.0.png" id="1_lco74"]
+[ext_resource type="Texture2D" uid="uid://1qdbdp4fkyg6" path="res://General_Assets/dungeon_assests/dungeon_tileset.png" id="2_rn3dg"]
+[ext_resource type="Texture2D" uid="uid://je3ckgp8e772" path="res://General_Assets/dungeon_assests/Dungeon Gathering Free Version/Set 4.5.png" id="3_lfvn2"]
+[ext_resource type="PackedScene" uid="uid://35o175ct7o6i" path="res://_Cheok_Kai_Ren/Traps/fire_turret.tscn" id="4_tgi63"]
+[ext_resource type="PackedScene" uid="uid://6i0m5actye4q" path="res://Dungeon_Elements/spikes/spikes.tscn" id="5_5g1bh"]
+[ext_resource type="PackedScene" uid="uid://cq4g5tvjxwbvx" path="res://Dungeon_Elements/gate/gate.tscn" id="6_agg47"]
+[ext_resource type="PackedScene" uid="uid://bameu058wrl87" path="res://_Cheok_Kai_Ren/character/player.tscn" id="7_4fscl"]
+[ext_resource type="PackedScene" uid="uid://dklqoxwvxkevq" path="res://_Chin_Yee_Sui/enemies/skull/skull.tscn" id="8_6t0hd"]
+[ext_resource type="PackedScene" uid="uid://b5egts6thrie7" path="res://_Cheok_Kai_Ren/Laser/laser_turret.tscn" id="9_vjd5g"]
+[ext_resource type="PackedScene" uid="uid://w7bnhh7rea75" path="res://_Cheok_Kai_Ren/Laser/laser_beam.tscn" id="10_57iot"]
+[ext_resource type="PackedScene" uid="uid://de2ha30sh5ow5" path="res://Dungeon_Elements/chest/big_chest.tscn" id="11_iwawd"]
+[ext_resource type="PackedScene" uid="uid://w1dg1y515cwf" path="res://Dungeon_Elements/collectable/coin.tscn" id="12_5wul5"]
+[ext_resource type="PackedScene" uid="uid://t4j6o7j1vo4b" path="res://Dungeon_Elements/lever/lever.tscn" id="14_5s4c8"]
+[ext_resource type="Script" uid="uid://cvgq042qvf3fk" path="res://_Cheok_Kai_Ren/Level_03/laser_puzzle_manager.gd" id="15_32j48"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_03fkr"]
-texture = ExtResource("1_xm362")
+texture = ExtResource("1_lco74")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -69,7 +67,7 @@ texture = ExtResource("1_xm362")
 11:3/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rt4tw"]
-texture = ExtResource("2_jbevl")
+texture = ExtResource("2_rn3dg")
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:0/0 = 0
@@ -111,7 +109,7 @@ texture = ExtResource("2_jbevl")
 3:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t2lo6"]
-texture = ExtResource("3_352nr")
+texture = ExtResource("3_lfvn2")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -179,10 +177,6 @@ sources/2 = SubResource("TileSetAtlasSource_t2lo6")
 
 [node name="Room3" type="Node2D" unique_id=36572739]
 
-[node name="Floor" type="TileMapLayer" parent="." unique_id=1655255410]
-visible = false
-tile_set = SubResource("TileSet_347dd")
-
 [node name="TileMap" type="TileMap" parent="." unique_id=1099924902]
 tile_set = SubResource("TileSet_a05cn")
 format = 2
@@ -195,145 +189,145 @@ layer_3/tile_data = PackedInt32Array(262152, 65537, 0, 327688, 1, 0, 393224, 1, 
 
 [node name="Turrets" type="Node2D" parent="." unique_id=2107544050]
 
-[node name="FireTurret" parent="Turrets" unique_id=1911419921 instance=ExtResource("4_jbevl")]
+[node name="FireTurret" parent="Turrets" unique_id=1911419921 instance=ExtResource("4_tgi63")]
 position = Vector2(408, 220.00002)
 turret_direction = 3
 
-[node name="FireTurret2" parent="Turrets" unique_id=666738565 instance=ExtResource("4_jbevl")]
+[node name="FireTurret2" parent="Turrets" unique_id=666738565 instance=ExtResource("4_tgi63")]
 position = Vector2(472, 220)
 turret_direction = 3
 
-[node name="FireTurret3" parent="Turrets" unique_id=465223445 instance=ExtResource("4_jbevl")]
+[node name="FireTurret3" parent="Turrets" unique_id=465223445 instance=ExtResource("4_tgi63")]
 position = Vector2(536, 220)
 turret_direction = 3
 
-[node name="FireTurret6" parent="Turrets" unique_id=1207757564 instance=ExtResource("4_jbevl")]
+[node name="FireTurret6" parent="Turrets" unique_id=1207757564 instance=ExtResource("4_tgi63")]
 position = Vector2(445, 84)
 turret_direction = 1
 
-[node name="FireTurret4" parent="Turrets" unique_id=1624092515 instance=ExtResource("4_jbevl")]
+[node name="FireTurret4" parent="Turrets" unique_id=1624092515 instance=ExtResource("4_tgi63")]
 position = Vector2(519, 84)
 turret_direction = 1
 
-[node name="FireTurret5" parent="Turrets" unique_id=1995220868 instance=ExtResource("4_jbevl")]
+[node name="FireTurret5" parent="Turrets" unique_id=1995220868 instance=ExtResource("4_tgi63")]
 position = Vector2(148, 394)
 
-[node name="FireTurret7" parent="Turrets" unique_id=1849709602 instance=ExtResource("4_jbevl")]
+[node name="FireTurret7" parent="Turrets" unique_id=1849709602 instance=ExtResource("4_tgi63")]
 position = Vector2(148, 408)
 start_delay = 0.75
 
 [node name="Spike" type="Node2D" parent="." unique_id=1863558548]
 position = Vector2(419, 168)
 
-[node name="spikes" parent="Spike" unique_id=371013121 instance=ExtResource("5_352nr")]
+[node name="spikes" parent="Spike" unique_id=371013121 instance=ExtResource("5_5g1bh")]
 position = Vector2(-13, 131)
 
-[node name="spikes2" parent="Spike" unique_id=657572041 instance=ExtResource("5_352nr")]
+[node name="spikes2" parent="Spike" unique_id=657572041 instance=ExtResource("5_5g1bh")]
 position = Vector2(-164, -76)
 
-[node name="spikes4" parent="Spike" unique_id=586332386 instance=ExtResource("5_352nr")]
+[node name="spikes4" parent="Spike" unique_id=586332386 instance=ExtResource("5_5g1bh")]
 
-[node name="spikes7" parent="Spike" unique_id=1340851657 instance=ExtResource("5_352nr")]
+[node name="spikes7" parent="Spike" unique_id=1340851657 instance=ExtResource("5_5g1bh")]
 position = Vector2(270, -72)
 
-[node name="spikes8" parent="Spike" unique_id=1653792246 instance=ExtResource("5_352nr")]
+[node name="spikes8" parent="Spike" unique_id=1653792246 instance=ExtResource("5_5g1bh")]
 position = Vector2(97, 182)
 
-[node name="spikes9" parent="Spike" unique_id=1668879217 instance=ExtResource("5_352nr")]
+[node name="spikes9" parent="Spike" unique_id=1668879217 instance=ExtResource("5_5g1bh")]
 position = Vector2(56, 112)
 
-[node name="spikes10" parent="Spike" unique_id=1533214025 instance=ExtResource("5_352nr")]
+[node name="spikes10" parent="Spike" unique_id=1533214025 instance=ExtResource("5_5g1bh")]
 position = Vector2(-61, 184)
 
-[node name="spikes11" parent="Spike" unique_id=1033953502 instance=ExtResource("5_352nr")]
+[node name="spikes11" parent="Spike" unique_id=1033953502 instance=ExtResource("5_5g1bh")]
 position = Vector2(-128, 166)
 
-[node name="spikes12" parent="Spike" unique_id=540339822 instance=ExtResource("5_352nr")]
+[node name="spikes12" parent="Spike" unique_id=540339822 instance=ExtResource("5_5g1bh")]
 position = Vector2(-167, 189)
 
-[node name="spikes13" parent="Spike" unique_id=205809872 instance=ExtResource("5_352nr")]
+[node name="spikes13" parent="Spike" unique_id=205809872 instance=ExtResource("5_5g1bh")]
 position = Vector2(-105, 129)
 
-[node name="spikes14" parent="Spike" unique_id=1943329227 instance=ExtResource("5_352nr")]
+[node name="spikes14" parent="Spike" unique_id=1943329227 instance=ExtResource("5_5g1bh")]
 position = Vector2(212, 94)
 
 [node name="Gate" type="Node2D" parent="." unique_id=1268210111]
 
-[node name="gate3" parent="Gate" unique_id=580253196 instance=ExtResource("6_347dd")]
+[node name="gate3" parent="Gate" unique_id=580253196 instance=ExtResource("6_agg47")]
 position = Vector2(783, 304)
 
-[node name="Player" parent="Gate" unique_id=409912757 instance=ExtResource("7_bx6d0")]
+[node name="Player" parent="Gate" unique_id=409912757 instance=ExtResource("7_4fscl")]
 position = Vector2(771, 177)
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1932412641]
 
-[node name="skull2" parent="Enemies" unique_id=569447969 instance=ExtResource("7_03fkr")]
+[node name="skull2" parent="Enemies" unique_id=569447969 instance=ExtResource("8_6t0hd")]
 position = Vector2(484, 160)
 
-[node name="skull" parent="Enemies" unique_id=1596988816 instance=ExtResource("7_03fkr")]
+[node name="skull" parent="Enemies" unique_id=1596988816 instance=ExtResource("8_6t0hd")]
 position = Vector2(445, 165)
 
-[node name="skull3" parent="Enemies" unique_id=835539936 instance=ExtResource("7_03fkr")]
+[node name="skull3" parent="Enemies" unique_id=835539936 instance=ExtResource("8_6t0hd")]
 position = Vector2(530, 145)
 
 [node name="Lasers" type="Node2D" parent="." unique_id=625878536]
 
 [node name="laserNo5" type="Node2D" parent="Lasers" unique_id=1215015599]
 
-[node name="LaserTurret" parent="Lasers/laserNo5" unique_id=284411667 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret" parent="Lasers/laserNo5" unique_id=284411667 instance=ExtResource("9_vjd5g")]
 position = Vector2(503.00003, 364)
 
-[node name="LaserBeam" parent="Lasers/laserNo5" unique_id=1607551002 instance=ExtResource("9_t2lo6")]
+[node name="LaserBeam" parent="Lasers/laserNo5" unique_id=1607551002 instance=ExtResource("10_57iot")]
 position = Vector2(503, 359)
 beam_length = 200.0
 beam_width = 17.0
 hitbox_length = 192.0
 
-[node name="LaserTurret2" parent="Lasers/laserNo5" unique_id=767153189 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret2" parent="Lasers/laserNo5" unique_id=767153189 instance=ExtResource("9_vjd5g")]
 position = Vector2(503, 243.00002)
 rotation = 3.1415927
 laser_direction = 2
 
 [node name="laserNo7" type="Node2D" parent="Lasers" unique_id=501988241]
 
-[node name="LaserTurret" parent="Lasers/laserNo7" unique_id=2002215749 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret" parent="Lasers/laserNo7" unique_id=2002215749 instance=ExtResource("9_vjd5g")]
 position = Vector2(670, 300)
 
-[node name="LaserBeam" parent="Lasers/laserNo7" unique_id=850693535 instance=ExtResource("9_t2lo6")]
+[node name="LaserBeam" parent="Lasers/laserNo7" unique_id=850693535 instance=ExtResource("10_57iot")]
 position = Vector2(670, 302)
 beam_length = 256.0
 beam_width = 17.0
 hitbox_length = 248.0
 
-[node name="LaserTurret2" parent="Lasers/laserNo7" unique_id=772074926 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret2" parent="Lasers/laserNo7" unique_id=772074926 instance=ExtResource("9_vjd5g")]
 position = Vector2(670, 149.00002)
 rotation = 3.1415927
 laser_direction = 2
 
 [node name="laserNo6" type="Node2D" parent="Lasers" unique_id=1149833945]
 
-[node name="LaserTurret" parent="Lasers/laserNo6" unique_id=1228708682 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret" parent="Lasers/laserNo6" unique_id=1228708682 instance=ExtResource("9_vjd5g")]
 position = Vector2(611, 300)
 
-[node name="LaserBeam" parent="Lasers/laserNo6" unique_id=1169613565 instance=ExtResource("9_t2lo6")]
+[node name="LaserBeam" parent="Lasers/laserNo6" unique_id=1169613565 instance=ExtResource("10_57iot")]
 position = Vector2(611, 299)
 beam_length = 152.0
 beam_width = 17.0
 hitbox_length = 152.0
 
-[node name="LaserTurret2" parent="Lasers/laserNo6" unique_id=2080144886 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret2" parent="Lasers/laserNo6" unique_id=2080144886 instance=ExtResource("9_vjd5g")]
 position = Vector2(611, 211.00002)
 rotation = 3.1415927
 laser_direction = 2
 
 [node name="laserNo8" type="Node2D" parent="Lasers" unique_id=979810060]
 
-[node name="LaserTurret" parent="Lasers/laserNo8" unique_id=479846580 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret" parent="Lasers/laserNo8" unique_id=479846580 instance=ExtResource("9_vjd5g")]
 position = Vector2(716, 246.00002)
 rotation = -1.5707964
 laser_direction = 3
 
-[node name="LaserBeam" parent="Lasers/laserNo8" unique_id=1939244997 instance=ExtResource("9_t2lo6")]
+[node name="LaserBeam" parent="Lasers/laserNo8" unique_id=1939244997 instance=ExtResource("10_57iot")]
 position = Vector2(713, 246.00002)
 rotation = -1.5707964
 laser_direction = 3
@@ -341,7 +335,7 @@ beam_length = 224.0
 beam_width = 17.0
 hitbox_length = 224.0
 
-[node name="LaserTurret2" parent="Lasers/laserNo8" unique_id=440616674 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret2" parent="Lasers/laserNo8" unique_id=440616674 instance=ExtResource("9_vjd5g")]
 position = Vector2(579, 246.00002)
 rotation = 1.5707964
 laser_direction = 1
@@ -349,17 +343,17 @@ laser_direction = 1
 [node name="laserNo4" type="Node2D" parent="Lasers" unique_id=1333833850]
 scale = Vector2(1.0120105, 1.0021604)
 
-[node name="LaserTurret" parent="Lasers/laserNo4" unique_id=1261092009 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret" parent="Lasers/laserNo4" unique_id=1261092009 instance=ExtResource("9_vjd5g")]
 position = Vector2(432.80185, 363.21527)
 scale = Vector2(0.59287924, 0.59870654)
 
-[node name="LaserTurret2" parent="Lasers/laserNo4" unique_id=1106259370 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret2" parent="Lasers/laserNo4" unique_id=1106259370 instance=ExtResource("9_vjd5g")]
 z_index = 5
 position = Vector2(432.80185, 244.47183)
 rotation = 3.1415927
 laser_direction = 2
 
-[node name="LaserBeam" parent="Lasers/laserNo4" unique_id=2049119943 instance=ExtResource("9_t2lo6")]
+[node name="LaserBeam" parent="Lasers/laserNo4" unique_id=2049119943 instance=ExtResource("10_57iot")]
 position = Vector2(432.80185, 361.2196)
 beam_length = 200.0
 beam_width = 17.0
@@ -368,17 +362,17 @@ hitbox_length = 192.0
 [node name="laserNo3" type="Node2D" parent="Lasers" unique_id=895808477]
 scale = Vector2(1.0241652, 1.0043255)
 
-[node name="LaserTurret" parent="Lasers/laserNo3" unique_id=1742118099 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret" parent="Lasers/laserNo3" unique_id=1742118099 instance=ExtResource("9_vjd5g")]
 position = Vector2(376.8923, 362.43228)
 scale = Vector2(0.59287924, 0.59870654)
 
-[node name="LaserTurret2" parent="Lasers/laserNo3" unique_id=2128272861 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret2" parent="Lasers/laserNo3" unique_id=2128272861 instance=ExtResource("9_vjd5g")]
 z_index = 5
 position = Vector2(376.8924, 242.94911)
 rotation = 3.1415927
 laser_direction = 2
 
-[node name="LaserBeam" parent="Lasers/laserNo3" unique_id=1110808884 instance=ExtResource("9_t2lo6")]
+[node name="LaserBeam" parent="Lasers/laserNo3" unique_id=1110808884 instance=ExtResource("10_57iot")]
 position = Vector2(376.8924, 362.43228)
 beam_length = 200.0
 beam_width = 17.0
@@ -387,17 +381,17 @@ hitbox_length = 192.0
 [node name="laserNo1" type="Node2D" parent="Lasers" unique_id=1469188997]
 scale = Vector2(1.0120105, 1.0021604)
 
-[node name="LaserTurret" parent="Lasers/laserNo1" unique_id=1457121000 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret" parent="Lasers/laserNo1" unique_id=1457121000 instance=ExtResource("9_vjd5g")]
 position = Vector2(263.83127, 363.2153)
 scale = Vector2(0.59287924, 0.59870654)
 
-[node name="LaserTurret2" parent="Lasers/laserNo1" unique_id=1992807164 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret2" parent="Lasers/laserNo1" unique_id=1992807164 instance=ExtResource("9_vjd5g")]
 z_index = 5
 position = Vector2(263.83127, 243.47404)
 rotation = 3.1415927
 laser_direction = 2
 
-[node name="LaserBeam" parent="Lasers/laserNo1" unique_id=2087379907 instance=ExtResource("9_t2lo6")]
+[node name="LaserBeam" parent="Lasers/laserNo1" unique_id=2087379907 instance=ExtResource("10_57iot")]
 position = Vector2(263.83127, 363.21533)
 beam_length = 200.0
 beam_width = 17.0
@@ -406,17 +400,17 @@ hitbox_length = 192.0
 [node name="laserNo2" type="Node2D" parent="Lasers" unique_id=1319073024]
 scale = Vector2(1.0120105, 1.0021604)
 
-[node name="LaserTurret" parent="Lasers/laserNo2" unique_id=1817118133 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret" parent="Lasers/laserNo2" unique_id=1817118133 instance=ExtResource("9_vjd5g")]
 position = Vector2(332.0124, 363.21527)
 scale = Vector2(0.59287924, 0.59870654)
 
-[node name="LaserTurret2" parent="Lasers/laserNo2" unique_id=996714005 instance=ExtResource("8_rt4tw")]
+[node name="LaserTurret2" parent="Lasers/laserNo2" unique_id=996714005 instance=ExtResource("9_vjd5g")]
 z_index = 5
 position = Vector2(332.0124, 243.474)
 rotation = 3.1415927
 laser_direction = 2
 
-[node name="LaserBeam" parent="Lasers/laserNo2" unique_id=1968722985 instance=ExtResource("9_t2lo6")]
+[node name="LaserBeam" parent="Lasers/laserNo2" unique_id=1968722985 instance=ExtResource("10_57iot")]
 position = Vector2(332.0124, 361.2196)
 beam_length = 200.0
 beam_width = 17.0
@@ -424,63 +418,63 @@ hitbox_length = 192.0
 
 [node name="ChestRoom" type="Node2D" parent="." unique_id=1696843967]
 
-[node name="BigChest" parent="ChestRoom" unique_id=128118316 instance=ExtResource("10_45bfu")]
+[node name="BigChest" parent="ChestRoom" unique_id=128118316 instance=ExtResource("11_iwawd")]
 position = Vector2(304, 149)
 
-[node name="coin1" parent="ChestRoom" unique_id=790741249 instance=ExtResource("11_68e3j")]
+[node name="coin1" parent="ChestRoom" unique_id=790741249 instance=ExtResource("12_5wul5")]
 position = Vector2(272, 188)
 
-[node name="coin2" parent="ChestRoom" unique_id=22156525 instance=ExtResource("11_68e3j")]
+[node name="coin2" parent="ChestRoom" unique_id=22156525 instance=ExtResource("12_5wul5")]
 position = Vector2(304, 188)
 
-[node name="coin3" parent="ChestRoom" unique_id=553258006 instance=ExtResource("11_68e3j")]
+[node name="coin3" parent="ChestRoom" unique_id=553258006 instance=ExtResource("12_5wul5")]
 position = Vector2(341, 189)
 
-[node name="coin4" parent="ChestRoom" unique_id=1286396930 instance=ExtResource("11_68e3j")]
+[node name="coin4" parent="ChestRoom" unique_id=1286396930 instance=ExtResource("12_5wul5")]
 position = Vector2(272, 173)
 
-[node name="coin5" parent="ChestRoom" unique_id=1155931192 instance=ExtResource("11_68e3j")]
+[node name="coin5" parent="ChestRoom" unique_id=1155931192 instance=ExtResource("12_5wul5")]
 position = Vector2(305, 172)
 
-[node name="coin6" parent="ChestRoom" unique_id=1026252268 instance=ExtResource("11_68e3j")]
+[node name="coin6" parent="ChestRoom" unique_id=1026252268 instance=ExtResource("12_5wul5")]
 position = Vector2(341, 172)
 
-[node name="coin7" parent="ChestRoom" unique_id=1411460708 instance=ExtResource("11_68e3j")]
+[node name="coin7" parent="ChestRoom" unique_id=1411460708 instance=ExtResource("12_5wul5")]
 position = Vector2(272, 205)
 
-[node name="coin8" parent="ChestRoom" unique_id=1203005006 instance=ExtResource("11_68e3j")]
+[node name="coin8" parent="ChestRoom" unique_id=1203005006 instance=ExtResource("12_5wul5")]
 position = Vector2(304, 204)
 
-[node name="coin10" parent="ChestRoom" unique_id=497466432 instance=ExtResource("11_68e3j")]
+[node name="coin10" parent="ChestRoom" unique_id=497466432 instance=ExtResource("12_5wul5")]
 position = Vector2(595, 235)
 
-[node name="coin9" parent="ChestRoom" unique_id=1129758219 instance=ExtResource("11_68e3j")]
+[node name="coin9" parent="ChestRoom" unique_id=1129758219 instance=ExtResource("12_5wul5")]
 position = Vector2(342, 204)
 
 [node name="LaserLevers" type="Node2D" parent="." unique_id=901645446]
 
-[node name="Lever" parent="LaserLevers" unique_id=1987453390 instance=ExtResource("12_bx6d0")]
-position = Vector2(550, 264)
-lever_id = 1
-
-[node name="Lever2" parent="LaserLevers" unique_id=1621124882 instance=ExtResource("12_bx6d0")]
-position = Vector2(706, 167)
+[node name="lever" parent="LaserLevers" unique_id=1848266411 instance=ExtResource("14_5s4c8")]
+position = Vector2(704, 168)
 lever_id = 4
 
-[node name="Lever3" parent="LaserLevers" unique_id=1992777512 instance=ExtResource("12_bx6d0")]
-position = Vector2(702, 287)
+[node name="lever2" parent="LaserLevers" unique_id=497628192 instance=ExtResource("14_5s4c8")]
+position = Vector2(696, 288)
 lever_id = 2
 
-[node name="Lever4" parent="LaserLevers" unique_id=1894124714 instance=ExtResource("12_bx6d0")]
-position = Vector2(399, 357)
-lever_id = 3
+[node name="lever3" parent="LaserLevers" unique_id=303618296 instance=ExtResource("14_5s4c8")]
+position = Vector2(536, 264)
+lever_id = 1
 
-[node name="Lever5" parent="LaserLevers" unique_id=1128415286 instance=ExtResource("12_bx6d0")]
-position = Vector2(275, 153)
+[node name="lever4" parent="LaserLevers" unique_id=2003904403 instance=ExtResource("14_5s4c8")]
+position = Vector2(272, 152)
 lever_id = 5
 
-[node name="LaserPuzzleManager" type="Node" parent="." unique_id=254911808 node_paths=PackedStringArray("laser_levers", "laser1", "laser2", "laser3", "laser4", "laser5", "laser6", "laser7", "laser8", "final_gate")]
-script = ExtResource("13_68e3j")
+[node name="lever5" parent="LaserLevers" unique_id=22181350 instance=ExtResource("14_5s4c8")]
+position = Vector2(408, 360)
+lever_id = 3
+
+[node name="LaserPuzzleManager" type="Node" parent="." unique_id=254911808 node_paths=PackedStringArray("laser_levers", "laser1", "laser2", "laser3", "laser4", "laser5", "laser6", "laser7", "laser8")]
+script = ExtResource("15_32j48")
 laser_levers = NodePath("../LaserLevers")
 laser1 = NodePath("../Lasers/laserNo1")
 laser2 = NodePath("../Lasers/laserNo2")
@@ -490,4 +484,3 @@ laser5 = NodePath("../Lasers/laserNo5")
 laser6 = NodePath("../Lasers/laserNo6")
 laser7 = NodePath("../Lasers/laserNo7")
 laser8 = NodePath("../Lasers/laserNo8")
-final_gate = NodePath("")

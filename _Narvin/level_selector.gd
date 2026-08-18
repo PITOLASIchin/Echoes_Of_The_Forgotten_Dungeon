@@ -25,7 +25,7 @@ func _on_floor2_pressed() -> void:
 	get_tree().change_scene_to_file("res://_Goh_Mei_Heng/Level_02/level_2.tscn")
 	
 func _on_floor3_pressed() -> void:
-	get_tree().change_scene_to_file("res://scene/game.tscn")
+	get_tree().change_scene_to_file("res://_Cheok_Kai_Ren/Level_03/Level_03.tscn")
 	
 func _on_floor4_pressed() -> void:
 	get_tree().change_scene_to_file("res://_Lim_Kai_Yang/Level_04/room_4.tscn")

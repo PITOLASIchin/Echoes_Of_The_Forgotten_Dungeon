@@ -38,8 +38,8 @@ script/source = "extends Node2D
 # NODE REFERENCES
 # ==========================
 
-#@onready var player: CharacterBody2D = $knight1
-@onready var hud: CanvasLayer = $Hud
+@onready var player = $Player
+@onready var hud = $Hud/hud
 
 
 # ==========================
@@ -47,47 +47,53 @@ script/source = "extends Node2D
 # ==========================
 
 func _ready() -> void:
-	return
-	#if not player.health_changed.is_connected(
-		#hud.update_health
-	#):
-		#player.health_changed.connect(
-			#hud.update_health
-		#)
+	# HEALTH
+	if player.has_signal(\"health_changed\"):
+		if not player.health_changed.is_connected(
+			hud.update_health
+		):
+			player.health_changed.connect(
+				hud.update_health
+			)
 
-	#if not player.coins_changed.is_connected(
-		#hud.update_coins
-	#):
-		#player.coins_changed.connect(
-			#hud.update_coins
-		#)
+	# COINS
+	if player.has_signal(\"coins_changed\"):
+		if not player.coins_changed.is_connected(
+			hud.update_coins
+		):
+			player.coins_changed.connect(
+				hud.update_coins
+			)
 
-	#if not player.keys_changed.is_connected(
-		#hud.update_keys
-	#):
-		#player.keys_changed.connect(
-			#hud.update_keys
-		#)
-
-	#hud.update_health(
-		#player.health,
-		#player.max_health
-	#)
-
-	#hud.update_coins(player.coins)
-	#hud.update_keys(player.keys)
+	# POTIONS
+	if player.has_signal(\"potions_changed\"):
+		if not player.potions_changed.is_connected(
+			hud.update_potions
+		):
+			player.potions_changed.connect(
+				hud.update_potions
+			)
 
 
-func _on_knight_1_health_changed(current_health: int, max_health: int) -> void:
-	pass # Replace with function body.
+	# ==========================
+	# INITIAL HUD VALUES
+	# ==========================
 
+	if \"current_health\" in player:
+		hud.update_health(
+			player.current_health,
+			player.max_health
+		)
 
-func _on_knight_1_keys_changed(amount: int) -> void:
-	pass # Replace with function body.
+	if \"coins\" in player:
+		hud.update_coins(
+			player.coins
+		)
 
-
-func _on_knight_1_coins_changed(amount: int) -> void:
-	pass # Replace with function body.
+	if \"potions\" in player:
+		hud.update_potions(
+			player.potions
+		)
 "
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_81276"]
@@ -601,17 +607,16 @@ position = Vector2(616, 632)
 [node name="spikes14" parent="Traps" unique_id=1707119910 instance=ExtResource("24_m1p2e")]
 position = Vector2(648, 616)
 
-[node name="Player" parent="." unique_id=409912757 instance=ExtResource("25_m2rvv")]
-z_index = 1
-y_sort_enabled = true
-position = Vector2(246, 209)
-
 [node name="rimuru" parent="." unique_id=1265494123 instance=ExtResource("26_o56ha")]
 z_index = 1
 position = Vector2(343, 271)
 
+[node name="Player" parent="." unique_id=409912757 instance=ExtResource("25_m2rvv")]
+z_index = 1
+position = Vector2(240, 216)
+
 [node name="sound" parent="." unique_id=329150606 instance=ExtResource("27_cwke6")]
-position = Vector2(256, 201)
+position = Vector2(192, 160)
 
 [connection signal="toggled" from="Puzzle/lever3" to="Puzzle/laser_turret_left2" method="set_active"]
 [connection signal="crystal_activated" from="Puzzle/crystal" to="Environment/gate" method="set_activated"]

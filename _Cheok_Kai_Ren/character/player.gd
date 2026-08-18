@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 signal health_changed(current_health: int, max_health: int)
 signal stamina_changed(current_stamina: float, max_stamina: float)
+signal coins_changed(amount: int)
+signal potions_changed(amount: int)
 signal player_died
 
 @export var movement_speed: float = 180.0
@@ -34,6 +36,8 @@ var spawn_position: Vector2
 
 var current_health: int
 var current_stamina: float
+var coins: int = 0
+var potions: int = 0
 
 var can_take_damage: bool = true
 var is_attacking: bool = false
@@ -73,6 +77,9 @@ func _ready() -> void:
 		max_stamina
 	)
 
+	coins_changed.emit(
+		coins
+	)
 
 func _physics_process(delta: float) -> void:
 	update_knockback(delta)
@@ -257,6 +264,24 @@ func update_stamina(
 			max_stamina
 		)
 
+func add_coins(amount: int) -> void:
+	coins += amount
+	coins_changed.emit(coins)
+
+
+func add_potions(amount: int) -> void:
+	potions += amount
+	potions_changed.emit(potions)
+
+
+func use_potion() -> bool:
+	if potions <= 0:
+		return false
+
+	potions -= 1
+	potions_changed.emit(potions)
+
+	return true
 
 func start_attack() -> void:
 	if is_attacking:

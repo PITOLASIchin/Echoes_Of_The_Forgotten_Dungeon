@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://t4j6o7j1vo4b"]
 
-[ext_resource type="Texture2D" uid="uid://d2qtqryyjwftb" path="res://Dungeon_Elements/lever/dungeon_lever.png" id="1_3q165"]
+[ext_resource type="Texture2D" uid="uid://d2qtqryyjwftb" path="res://General_Assets/dungeon_assests/objects_animated/dungeon_lever.png" id="1_3q165"]
 [ext_resource type="Script" uid="uid://6laedmvahq1m" path="res://Dungeon_Elements/lever/lever.gd" id="1_ek1xs"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xryf4"]
@@ -113,3 +113,13 @@ visible = false
 position = Vector2(4.172325e-07, 3)
 scale = Vector2(0.83832103, 0.6994013)
 shape = SubResource("RectangleShape2D_g8fig")
+
+[node name="InteractionPrompt" type="Label" parent="." unique_id=823287239]
+offset_left = -18.0
+offset_top = -22.0
+offset_right = 20.0
+offset_bottom = -8.0
+theme_override_font_sizes/font_size = 10
+text = "Press E"
+horizontal_alignment = 1
+vertical_alignment = 1

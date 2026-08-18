@@ -1,12 +1,16 @@
 [gd_scene format=3 uid="uid://bameu058wrl87"]
 
-[ext_resource type="Script" uid="uid://rn0vk0y7pvh6" path="res://_Cheok Kai Ren/character/player.gd" id="1_a3d8c"]
-[ext_resource type="Texture2D" uid="uid://cy8021rt4nwqe" path="res://_Cheok Kai Ren/character/Swordsman_lvl2_attack_without_shadow.png" id="2_0u5uq"]
-[ext_resource type="Texture2D" uid="uid://dr6l5up55al8g" path="res://_Cheok Kai Ren/character/Swordsman_lvl2_Death_without_shadow.png" id="3_jlvik"]
-[ext_resource type="Texture2D" uid="uid://ctspeh2c3fgex" path="res://_Cheok Kai Ren/character/Swordsman_lvl2_Hurt_without_shadow.png" id="4_gk6dx"]
-[ext_resource type="Texture2D" uid="uid://b8actk6jk2hea" path="res://_Cheok Kai Ren/character/Swordsman_lvl2_Idle_without_shadow.png" id="5_jhyir"]
-[ext_resource type="Texture2D" uid="uid://dc8uas360ih6u" path="res://_Cheok Kai Ren/character/Swordsman_lvl2_Run_without_shadow.png" id="6_74mp2"]
-[ext_resource type="Texture2D" uid="uid://djjpbfpu4de67" path="res://_Cheok Kai Ren/character/Swordsman_lvl2_Walk_without_shadow.png" id="7_oikmp"]
+[ext_resource type="Script" uid="uid://rn0vk0y7pvh6" path="res://_Cheok_Kai_Ren/character/player.gd" id="1_a3d8c"]
+[ext_resource type="Texture2D" uid="uid://cy8021rt4nwqe" path="res://_Cheok_Kai_Ren/character/Swordsman_lvl2_attack_without_shadow.png" id="2_0u5uq"]
+[ext_resource type="PackedScene" uid="uid://co6lsi7is61pi" path="res://Damage_Area/take_damage.tscn" id="2_68a1e"]
+[ext_resource type="Texture2D" uid="uid://dr6l5up55al8g" path="res://_Cheok_Kai_Ren/character/Swordsman_lvl2_Death_without_shadow.png" id="3_jlvik"]
+[ext_resource type="Texture2D" uid="uid://ctspeh2c3fgex" path="res://_Cheok_Kai_Ren/character/Swordsman_lvl2_Hurt_without_shadow.png" id="4_gk6dx"]
+[ext_resource type="Texture2D" uid="uid://b8actk6jk2hea" path="res://_Cheok_Kai_Ren/character/Swordsman_lvl2_Idle_without_shadow.png" id="5_jhyir"]
+[ext_resource type="Texture2D" uid="uid://dc8uas360ih6u" path="res://_Cheok_Kai_Ren/character/Swordsman_lvl2_Run_without_shadow.png" id="6_74mp2"]
+[ext_resource type="Texture2D" uid="uid://djjpbfpu4de67" path="res://_Cheok_Kai_Ren/character/Swordsman_lvl2_Walk_without_shadow.png" id="7_oikmp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fmdh3"]
+radius = 11.785112
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a3d8c"]
 radius = 9.0
@@ -1369,19 +1373,30 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dd0ac"]
 size = Vector2(28, 22)
 
-[node name="Player" type="CharacterBody2D" unique_id=409912757 groups=["player"]]
+[node name="Player" type="CharacterBody2D" unique_id=409912757 groups=["Player", "player"]]
 z_index = 11
+y_sort_enabled = true
 scale = Vector2(0.6, 0.6)
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_a3d8c")
+
+[node name="take_damage" parent="." unique_id=1699602000 instance=ExtResource("2_68a1e")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="take_damage" unique_id=331891989]
+position = Vector2(0, 9.999998)
+shape = SubResource("CircleShape2D_fmdh3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=676224074]
 position = Vector2(0, 11)
 shape = SubResource("CircleShape2D_a3d8c")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1292914854]
-zoom = Vector2(2.5, 2.5)
+zoom = Vector2(6, 6)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=320196287]
+position = Vector2(9.536743e-07, 9.536743e-07)
+scale = Vector2(1.5403645, 1.5403645)
 sprite_frames = SubResource("SpriteFrames_hlqkp")
 animation = &"walk_up"
 
