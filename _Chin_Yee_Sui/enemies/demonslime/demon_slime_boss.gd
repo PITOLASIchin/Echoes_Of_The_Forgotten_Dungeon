@@ -1,4 +1,4 @@
-class_name DemonSlime
+class_name DemonSlimeBoss
 extends CharacterBody2D
 
 
@@ -43,9 +43,8 @@ enum State {
 
 @export var attack_cooldown: float = 1.5
 
-# For Demon Slime "cleave" animation.
-# Adjust these after testing with Visible Collision Shapes.
 @export var attack_hit_start_frame: int = 9
+
 @export var attack_hit_end_frame: int = 11
 
 @export var attack_hitbox_distance: float = 45.0
@@ -65,7 +64,7 @@ enum State {
 
 @export_category("Sprite")
 
-# Demon Slime's original sprite faces LEFT.
+# Demon Slime original sprite faces LEFT.
 @export var sprite_faces_left: bool = true
 
 
@@ -75,21 +74,26 @@ enum State {
 
 @export_category("Gate")
 
-# Drag the gate that should open after this enemy dies.
+# Drag the gate that should open when the boss dies
+# into this field in the Inspector.
 @export var gate_to_open: Node
 
 
 # =========================================================
-# NODES
+# NODE REFERENCES
 # =========================================================
 
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var animated_sprite: AnimatedSprite2D = \
+	$AnimatedSprite2D
 
-@onready var body_collision: CollisionShape2D = $CollisionShape2D
+@onready var body_collision: CollisionShape2D = \
+	$CollisionShape2D
 
-@onready var do_damage: DoDamage = $do_damage
+@onready var do_damage: DoDamage = \
+	$do_damage
 
-@onready var take_damage_area: TakeDamage = $take_damage
+@onready var take_damage_area: TakeDamage = \
+	$take_damage
 
 @onready var take_damage_collision: CollisionShape2D = \
 	$take_damage/CollisionShape2D
@@ -205,10 +209,7 @@ func _process_chase() -> void:
 
 	_update_facing(direction)
 
-	# -----------------------------------------------------
-	# ATTACK PLAYER
-	# -----------------------------------------------------
-
+	# Attack when player is close enough
 	if (
 		distance_to_player <= attack_range
 		and
@@ -217,10 +218,7 @@ func _process_chase() -> void:
 		_enter_attack_state()
 		return
 
-	# -----------------------------------------------------
-	# WAIT FOR ATTACK COOLDOWN
-	# -----------------------------------------------------
-
+	# Wait if player is close but attack is on cooldown
 	if distance_to_player <= attack_range:
 		velocity = Vector2.ZERO
 
@@ -228,10 +226,7 @@ func _process_chase() -> void:
 
 		return
 
-	# -----------------------------------------------------
-	# CHASE PLAYER
-	# -----------------------------------------------------
-
+	# Chase player
 	velocity = direction * move_speed
 
 	_play_animation(&"walk")
@@ -254,7 +249,7 @@ func _process_attack() -> void:
 		target.global_position
 	)
 
-	# Player moved too far away during the attack.
+	# Cancel attack if player gets too far away
 	if distance_to_player > attack_cancel_distance:
 		_deactivate_attack_hitbox()
 
@@ -279,7 +274,7 @@ func _find_target() -> void:
 
 
 # =========================================================
-# FACING
+# UPDATE FACING
 # =========================================================
 
 func _update_facing(direction: Vector2) -> void:
@@ -293,8 +288,7 @@ func _update_facing(direction: Vector2) -> void:
 	else:
 		animated_sprite.flip_h = direction.x < 0.0
 
-	# Move attack hitbox to the same side
-	# the enemy is currently facing.
+	# Move attack hitbox to side boss is facing
 	do_damage.position = Vector2(
 		facing_sign * attack_hitbox_distance,
 		attack_hitbox_original_y
@@ -350,6 +344,7 @@ func _enter_attack_state() -> void:
 
 	_deactivate_attack_hitbox()
 
+	# Face the player before attacking
 	if is_instance_valid(target):
 		_update_facing(
 			global_position.direction_to(
@@ -357,6 +352,7 @@ func _enter_attack_state() -> void:
 			)
 		)
 
+	# Demon slime attack animation
 	if not _play_animation(
 		&"cleave",
 		true
@@ -464,12 +460,7 @@ func _on_animation_frame_changed() -> void:
 # =========================================================
 
 func _on_animation_finished() -> void:
-
 	match current_state:
-
-		# -------------------------------------------------
-		# ATTACK FINISHED
-		# -------------------------------------------------
 
 		State.ATTACK:
 
@@ -483,27 +474,17 @@ func _on_animation_finished() -> void:
 			_enter_chase_state()
 
 
-		# -------------------------------------------------
-		# HURT FINISHED
-		# -------------------------------------------------
-
 		State.HURT:
 
 			if animated_sprite.animation == &"take_hit":
 				_enter_chase_state()
 
 
-		# -------------------------------------------------
-		# DEATH FINISHED
-		# -------------------------------------------------
-
 		State.DEAD:
 
 			if animated_sprite.animation == &"death":
 
-				_open_gate()
-
-				queue_free()
+				_finish_death()
 
 
 # =========================================================
@@ -518,9 +499,8 @@ func _activate_attack_hitbox() -> void:
 
 	do_damage.activate()
 
-	# Important:
-	# Damage player even if they were already standing
-	# inside the Area2D when the sword became active.
+	# Damage player even if already overlapping
+	# when the attack becomes active
 	do_damage.damage_current_overlaps()
 
 
@@ -561,7 +541,7 @@ func take_damage(
 	)
 
 	print(
-		"Demon Slime HP: ",
+		"Demon Slime Boss HP: ",
 		current_health,
 		"/",
 		maximum_health
@@ -600,19 +580,17 @@ func heal(amount: int) -> void:
 # =========================================================
 
 func _start_death() -> void:
-	died.emit()
-
 	velocity = Vector2.ZERO
 
 	_deactivate_attack_hitbox()
 
-	# Stop physical collision.
+	# Disable normal body collision
 	body_collision.set_deferred(
 		"disabled",
 		true
 	)
 
-	# Stop player attacking the dead enemy.
+	# Disable TakeDamage collision
 	take_damage_collision.set_deferred(
 		"disabled",
 		true
@@ -628,15 +606,25 @@ func _start_death() -> void:
 		false
 	)
 
-	# Play the entire death animation BEFORE
-	# opening the gate.
+	# Start death animation
 	if not _play_animation(
 		&"death",
 		true
 	):
-		_open_gate()
+		_finish_death()
 
-		queue_free()
+
+# =========================================================
+# FINISH DEATH
+# =========================================================
+
+func _finish_death() -> void:
+	# Open gate after death animation has completed
+	_open_gate()
+
+	died.emit()
+
+	queue_free()
 
 
 # =========================================================
@@ -645,12 +633,18 @@ func _start_death() -> void:
 
 func _open_gate() -> void:
 	if not is_instance_valid(gate_to_open):
+		push_warning(
+			"No gate assigned to Demon Slime Boss."
+		)
+
 		return
 
 	if gate_to_open.has_method("open_gate"):
+
 		gate_to_open.open_gate()
 
 	else:
+
 		push_warning(
-			"Demon Slime gate does not have open_gate() function."
+			"Assigned gate does not have open_gate()."
 		)
