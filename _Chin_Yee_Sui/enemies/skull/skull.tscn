@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dklqoxwvxkevq"]
 
 [ext_resource type="Script" uid="uid://bm46jj18fwvpa" path="res://_Chin_Yee_Sui/enemies/skull/skull.gd" id="1_75act"]
-[ext_resource type="Texture2D" uid="uid://sfya227kqxds" path="res://General_Assets/dungeon_assests/monsters/dungeon_flying_skull.png" id="1_gj8q5"]
+[ext_resource type="Texture2D" uid="uid://sfya227kqxds" path="res://_Chin_Yee_Sui/enemies/skull/dungeon_flying_skull.png" id="1_gj8q5"]
 [ext_resource type="PackedScene" uid="uid://dajk030sfow7a" path="res://Damage_Area/do_damage.tscn" id="2_75act"]
 [ext_resource type="PackedScene" uid="uid://co6lsi7is61pi" path="res://Damage_Area/take_damage.tscn" id="3_22mie"]
 
@@ -247,3 +247,5 @@ shape = SubResource("CircleShape2D_kbg74")
 visible = false
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_1fa41")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

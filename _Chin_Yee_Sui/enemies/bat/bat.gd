@@ -21,7 +21,7 @@ enum FacingDirection {
 
 
 @export_category("Health")
-@export var maximum_health: int = 3
+@export var maximum_health: int = 50
 
 @export_category("Movement")
 @export var move_speed: float = 70.0
@@ -373,7 +373,8 @@ func _deactivate_attack_hitbox() -> void:
 	do_damage.deactivate()
 
 
-func take_damage(amount: int) -> void:
+func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
+	print(name, " took ", amount, " damage. HP left: ", current_health)
 	if current_state == State.DEAD:
 		return
 

@@ -336,7 +336,7 @@ func _deactivate_attack_hitbox() -> void:
 	do_damage.deactivate()
 
 
-func take_damage(amount: int) -> void:
+func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
 	if current_state == State.DEAD:
 		return
 

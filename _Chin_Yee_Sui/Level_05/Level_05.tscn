@@ -8,8 +8,12 @@
 [ext_resource type="PackedScene" uid="uid://cw6yvxii48he" path="res://_Chin_Yee_Sui/flaggreen.tscn" id="7_cxm5s"]
 [ext_resource type="PackedScene" uid="uid://b54udk7sct3rn" path="res://_Chin_Yee_Sui/enemies/bloodyhell/bloodyhell.tscn" id="9_nk2rv"]
 [ext_resource type="PackedScene" uid="uid://vit1pvfq2lmo" path="res://_Chin_Yee_Sui/enemies/golem/golem.tscn" id="10_g6w18"]
+[ext_resource type="PackedScene" uid="uid://bameu058wrl87" path="res://_Cheok_Kai_Ren/character/player.tscn" id="11_afd0h"]
 [ext_resource type="PackedScene" uid="uid://5cijfhn5te0g" path="res://_Goh_Mei_Heng/Sound_effects/sound.tscn" id="11_t35w4"]
 [ext_resource type="PackedScene" uid="uid://bs35unuflnmt" path="res://_Chin_Yee_Sui/enemies/bat/bat.tscn" id="12_avcca"]
+[ext_resource type="PackedScene" uid="uid://co6lsi7is61pi" path="res://Damage_Area/take_damage.tscn" id="12_oq3tx"]
+[ext_resource type="PackedScene" uid="uid://bneeg4wrormdg" path="res://General_Assets/Assests_png/UI/ui.tscn" id="13_28m6o"]
+[ext_resource type="PackedScene" uid="uid://dklqoxwvxkevq" path="res://_Chin_Yee_Sui/enemies/skull/skull.tscn" id="14_oq3tx"]
 
 [sub_resource type="GDScript" id="GDScript_5wvkk"]
 script/source = "extends Node2D
@@ -50,7 +54,7 @@ func _ready() -> void:
 		#)
 
 	hud.update_health(
-		player.health,
+		player.current_health,
 		player.max_health
 	)
 
@@ -230,6 +234,8 @@ sources/0 = SubResource("TileSetAtlasSource_81276")
 sources/1 = SubResource("TileSetAtlasSource_ve786")
 sources/2 = SubResource("TileSetAtlasSource_0lu6w")
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_hu8yc"]
+
 [node name="Node2D" type="Node2D" unique_id=2122755877]
 y_sort_enabled = true
 script = SubResource("GDScript_5wvkk")
@@ -274,8 +280,28 @@ position = Vector2(182, 108)
 [node name="golem" parent="." unique_id=1022944187 instance=ExtResource("10_g6w18")]
 position = Vector2(335, 157)
 
-[node name="sound" parent="." unique_id=329150606 instance=ExtResource("11_t35w4")]
-
 [node name="vampire" parent="." unique_id=567820905 instance=ExtResource("12_avcca")]
 position = Vector2(258, 173)
 scale = Vector2(1.3344383, 1.3344383)
+
+[node name="knight1" parent="." unique_id=409912757 groups=["Player"] instance=ExtResource("11_afd0h")]
+position = Vector2(175, 155)
+
+[node name="take_damage" parent="knight1" unique_id=1699602000 instance=ExtResource("12_oq3tx")]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="knight1" unique_id=1212366968]
+shape = SubResource("CircleShape2D_hu8yc")
+
+[node name="UI" parent="." unique_id=1291318432 instance=ExtResource("13_28m6o")]
+visible = false
+
+[node name="sound" parent="." unique_id=329150606 instance=ExtResource("11_t35w4")]
+
+[node name="skull" parent="." unique_id=399656058 instance=ExtResource("14_oq3tx")]
+position = Vector2(164, 87)
+
+[node name="skull2" parent="." unique_id=2117761360 instance=ExtResource("14_oq3tx")]
+position = Vector2(213, 110)
+
+[node name="skull3" parent="." unique_id=142291388 instance=ExtResource("14_oq3tx")]
+position = Vector2(159, 209)

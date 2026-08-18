@@ -406,7 +406,7 @@ func return_to_ai_state() -> void:
 # RECEIVE DAMAGE
 # ==========================
 
-func take_damage(amount: int = 1) -> void:
+func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
 	if is_dead:
 		return
 
