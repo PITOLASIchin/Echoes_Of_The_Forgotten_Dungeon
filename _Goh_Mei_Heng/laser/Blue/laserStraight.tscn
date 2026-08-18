@@ -12,6 +12,7 @@ z_index = 1
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_t2bo8")
+laser_color = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=925741499]
 texture = ExtResource("2_pvq1t")

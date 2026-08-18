@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://clxmci338c4qg"]
+
+[ext_resource type="Texture2D" uid="uid://4c6cnerhpybx" path="res://_Narvin/main_menu_wallpaper.png" id="1_qo8cm"]
+[ext_resource type="Script" uid="uid://dw6u7ou5nw58d" path="res://_Narvin/controls.gd" id="1_xwvqn"]
+[ext_resource type="Texture2D" uid="uid://5xe7p564atys" path="res://_Narvin/controls_screen.png" id="2_xwvqn"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ff64o"]
+texture = ExtResource("1_qo8cm")
+modulate_color = Color(0.6452097, 0.6452098, 0.6452097, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3ep15"]
+texture = ExtResource("2_xwvqn")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kxvun"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+shadow_size = 5
+shadow_offset = Vector2(0, 3.41)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kq3yo"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+shadow_size = 5
+shadow_offset = Vector2(0, 3.41)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kxtwu"]
+bg_color = Color(0.7, 0.7, 0.7, 0.50980395)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+shadow_size = 5
+shadow_offset = Vector2(0, 3.41)
+
+[node name="Controls" type="Node2D" unique_id=355290671]
+script = ExtResource("1_xwvqn")
+
+[node name="Panel" type="Panel" parent="." unique_id=2117972815]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 3.0
+offset_right = 1280.0
+offset_bottom = 955.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ff64o")
+
+[node name="Panel2" type="Panel" parent="." unique_id=1070222908]
+offset_left = 271.0
+offset_top = 194.0
+offset_right = 983.0
+offset_bottom = 705.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_3ep15")
+
+[node name="Button7" type="Button" parent="." unique_id=869076985]
+offset_left = 477.0
+offset_top = 808.0
+offset_right = 825.0
+offset_bottom = 906.0
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.06666667, 0.40392157, 0.5254902, 1)
+theme_override_constants/h_separation = 40
+theme_override_font_sizes/font_size = 128
+theme_override_styles/normal = SubResource("StyleBoxFlat_kxvun")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_kq3yo")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kxtwu")
+text = "Return"
+
+[connection signal="pressed" from="Button7" to="." method="_on_return_pressed"]

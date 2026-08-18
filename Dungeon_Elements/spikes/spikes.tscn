@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://6i0m5actye4q"]
 
-[ext_resource type="Texture2D" uid="uid://bigf2vf4ndxlq" path="res://Dungeon_Elements/spikes/dungeon_spikes.png" id="1_iw677"]
+[ext_resource type="Texture2D" uid="uid://bigf2vf4ndxlq" path="res://General_Assets/dungeon_assests/objects_animated/dungeon_spikes.png" id="1_iw677"]
 [ext_resource type="Script" uid="uid://db6ua0sqmfy3m" path="res://Dungeon_Elements/spikes/spikes.gd" id="1_yli0v"]
 [ext_resource type="PackedScene" uid="uid://dajk030sfow7a" path="res://Damage_Area/do_damage.tscn" id="3_5kilc"]
 

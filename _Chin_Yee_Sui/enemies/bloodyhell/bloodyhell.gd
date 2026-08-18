@@ -28,6 +28,7 @@ enum State {
 @export var attack_hit_start_frame: int = 2
 @export var attack_hit_end_frame: int = 3
 @export var attack_hitbox_distance: float = 18.0
+@onready var attack_sound: AudioStreamPlayer2D = $AttackSound
 
 @export_category("Target")
 @export var player_group: StringName = &"Player"
@@ -230,14 +231,19 @@ func _enter_attack_state() -> void:
 
 	if use_first_attack:
 		active_attack_animation = &"atk1"
+		
 	else:
+		attack_sound.play()
 		active_attack_animation = &"atk2"
 
 	use_first_attack = not use_first_attack
+	
 
 	if not _play_animation(active_attack_animation, true):
 		cooldown_remaining = attack_cooldown
 		_enter_chase_state()
+		
+	
 
 
 func _enter_hurt_state() -> void:
@@ -327,6 +333,7 @@ func _activate_attack_hitbox() -> void:
 		return
 
 	attack_hitbox_active = true
+	
 	do_damage.activate()
 	do_damage.damage_current_overlaps()
 

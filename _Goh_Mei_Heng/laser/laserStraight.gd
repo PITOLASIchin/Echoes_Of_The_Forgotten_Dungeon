@@ -1,5 +1,17 @@
 extends Area2D
 
+enum LaserColor {
+	RED,
+	BLUE,
+	GREEN
+}
+
+# ==========================
+# SETTINGS
+# ==========================
+
+@export var laser_color: LaserColor = LaserColor.RED
+
 @export var damage: int = 1
 @export var laser_thickness: float = 1.0
 @export var tile_size: float = 8.0
@@ -17,6 +29,9 @@ func _ready() -> void:
 		body_entered.connect(
 			_on_body_entered
 		)
+
+func get_laser_color() -> int:
+	return laser_color
 
 func setup_straight(
 	piece_position: Vector2,

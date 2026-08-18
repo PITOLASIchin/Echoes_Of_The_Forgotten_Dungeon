@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://b1a5vygr5wg7s"]
+
+[ext_resource type="Script" uid="uid://drm5bm36bm3k3" path="res://_Goh_Mei_Heng/laser/crystal.gd" id="1_m4qtm"]
+[ext_resource type="Texture2D" uid="uid://osiawe2qxsjg" path="res://_Goh_Mei_Heng/laser/ChatGPT Image Aug 18, 2026, 11_29_39 AM.png" id="2_63tsf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v2a6t"]
+atlas = ExtResource("2_63tsf")
+region = Rect2(401, 627, 255, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pi62b"]
+atlas = ExtResource("2_63tsf")
+region = Rect2(112, 627, 255, 340)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pk7hb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v2a6t")
+}],
+"loop": true,
+"name": &"active",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pi62b")
+}],
+"loop": true,
+"name": &"inactive",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pk7hb"]
+size = Vector2(7.005399, 4.616858)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rvyb8"]
+size = Vector2(190.68188, 221.63638)
+
+[node name="crystal" type="StaticBody2D" unique_id=1512398574]
+collision_layer = 5
+collision_mask = 5
+script = ExtResource("1_m4qtm")
+crystal_color = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1321177841]
+scale = Vector2(0.09067561, 0.09067564)
+sprite_frames = SubResource("SpriteFrames_pk7hb")
+animation = &"active"
+autoplay = "inactive"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=596035141]
+shape = SubResource("RectangleShape2D_pk7hb")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=1711235169]
+position = Vector2(-4, 7)
+rotation = -1.573508
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_pk7hb")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="." unique_id=720857994]
+position = Vector2(4.6820817, 6.503574)
+rotation = -1.573508
+scale = Vector2(0.9999998, 0.9999998)
+shape = SubResource("RectangleShape2D_pk7hb")
+
+[node name="LaserDetector" type="Area2D" parent="." unique_id=1736658669]
+visible = false
+position = Vector2(12.999998, 0.99999976)
+scale = Vector2(0.11956521, 0.119565226)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LaserDetector" unique_id=546812952]
+position = Vector2(-100.36362, -8.363634)
+scale = Vector2(0.9999995, 0.9999997)
+shape = SubResource("RectangleShape2D_rvyb8")
+
+[node name="DeactivateTimer" type="Timer" parent="." unique_id=1331202569]
