@@ -1,17 +1,17 @@
-[gd_scene format=3 uid="uid://b3iy5rpga84nj"]
+[gd_scene format=3 uid="uid://u5i7fm5ra4yp"]
 
-[ext_resource type="Script" uid="uid://ujugkl1xgyat" path="res://_Chin_Yee_Sui/key/key_pickup.gd" id="1_au76f"]
-[ext_resource type="Texture2D" uid="uid://du8u6ons2t2k" path="res://_Chin_Yee_Sui/key/Key_Blue.png" id="1_q1yaf"]
+[ext_resource type="Script" uid="uid://ujugkl1xgyat" path="res://_Chin_Yee_Sui/key/key_pickup.gd" id="1_r41dx"]
+[ext_resource type="Texture2D" uid="uid://j8k3qenxqcsv" path="res://_Chin_Yee_Sui/key/Key_Green.png" id="2_ca565"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_j8fle"]
-radius = 12.0
+radius = 11.0
 
 [node name="PickupArea" type="Area2D" unique_id=1350445867]
 collision_layer = 0
-script = ExtResource("1_au76f")
+script = ExtResource("1_r41dx")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1281590859]
-texture = ExtResource("1_q1yaf")
+texture = ExtResource("2_ca565")
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=369918366]
