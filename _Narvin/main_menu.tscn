@@ -1,0 +1,125 @@
+[gd_scene format=3 uid="uid://ds4fgprmf1r0w"]
+
+[ext_resource type="Texture2D" uid="uid://4c6cnerhpybx" path="res://_Narvin/main_menu_wallpaper.png" id="1_06t4h"]
+[ext_resource type="Script" uid="uid://c2qy2yv7gbie5" path="res://_Narvin/main_menu.gd" id="1_7vrkn"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3ep15"]
+texture = ExtResource("1_06t4h")
+modulate_color = Color(0.6452097, 0.6452098, 0.6452097, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ep15"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+shadow_size = 5
+shadow_offset = Vector2(0, 3.41)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_06t4h"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+shadow_size = 5
+shadow_offset = Vector2(0, 3.41)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vrkn"]
+bg_color = Color(0.7, 0.7, 0.7, 0.50980395)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+shadow_size = 5
+shadow_offset = Vector2(0, 3.41)
+
+[node name="MainMenu" type="Control" unique_id=1193317553]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 398.0
+offset_top = 376.0
+offset_right = -279.0
+offset_bottom = -157.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+script = ExtResource("1_7vrkn")
+
+[node name="Panel" type="Panel" parent="." unique_id=844750417]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -399.0
+offset_top = -377.0
+offset_right = 281.0
+offset_bottom = 163.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3ep15")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=264256163]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.42800003
+anchor_top = 0.351
+anchor_right = 0.42800003
+anchor_bottom = 0.351
+offset_left = -336.084
+offset_top = -71.877
+offset_right = 315.916
+offset_bottom = 222.123
+theme_override_constants/separation = 19
+
+[node name="Button" type="Button" parent="VBoxContainer" unique_id=1717094392]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 0.58000004, 0.58000004, 1)
+theme_override_constants/h_separation = 16
+theme_override_font_sizes/font_size = 85
+theme_override_styles/normal = SubResource("StyleBoxFlat_3ep15")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_06t4h")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7vrkn")
+text = "Start Game"
+
+[node name="Button2" type="Button" parent="VBoxContainer" unique_id=931588778]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 0.58000004, 0.58000004, 1)
+theme_override_constants/h_separation = 16
+theme_override_font_sizes/font_size = 85
+theme_override_styles/normal = SubResource("StyleBoxFlat_3ep15")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_06t4h")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7vrkn")
+text = "Controls"
+
+[node name="Button3" type="Button" parent="VBoxContainer" unique_id=1963956640]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 0.58000004, 0.58000004, 1)
+theme_override_constants/h_separation = 16
+theme_override_font_sizes/font_size = 85
+theme_override_styles/normal = SubResource("StyleBoxFlat_3ep15")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_06t4h")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7vrkn")
+text = "Exit"
+
+[node name="Label" type="Label" parent="." unique_id=1182170604]
+modulate = Color(1, 0.95, 0.95, 1)
+layout_mode = 0
+offset_left = -241.0
+offset_top = -140.0
+offset_right = 797.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.72, 0.72, 0.72, 1)
+theme_override_font_sizes/font_size = 64
+text = "ECHOES OF THE FORGOTTEN DUNGEON
+"
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_controls_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_setting_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_exit_pressed"]

@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://djjpbfpu4de67" path="res://_Cheok_Kai_Ren/character/Swordsman_lvl2_Walk_without_shadow.png" id="7_oikmp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a3d8c"]
-radius = 9.0
+radius = 8.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_06tpx"]
 atlas = ExtResource("2_0u5uq")
@@ -1369,23 +1369,32 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dd0ac"]
 size = Vector2(28, 22)
 
-[node name="Player" type="CharacterBody2D" unique_id=409912757 groups=["player"]]
+[sub_resource type="AudioStream" id="AudioStream_vbnus"]
+
+[node name="Player" type="CharacterBody2D" unique_id=409912757 groups=["Player", "player"]]
 z_index = 11
+scale = Vector2(1, 1.0092282)
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_a3d8c")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=676224074]
-position = Vector2(0, 11)
+position = Vector2(0, 7)
 shape = SubResource("CircleShape2D_a3d8c")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1292914854]
-zoom = Vector2(2.5, 2.5)
+scale = Vector2(1.0020705, 1)
+zoom = Vector2(5, 5)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=320196287]
 sprite_frames = SubResource("SpriteFrames_hlqkp")
-animation = &"walk_up"
+animation = &"attack_left"
 
 [node name="AttackHitBox" type="Area2D" parent="." unique_id=1250569431 groups=["player"]]
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitBox" unique_id=1181459164]
 shape = SubResource("RectangleShape2D_dd0ac")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1329815085]
+stream = SubResource("AudioStream_vbnus")

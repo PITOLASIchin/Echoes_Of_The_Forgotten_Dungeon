@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dk0r834lyhswb" path="res://_Chin_Yee_Sui/enemies/bloodyhell/Blood Monster_A_Walk.png" id="6_3rfwl"]
 [ext_resource type="PackedScene" uid="uid://dajk030sfow7a" path="res://Damage_Area/do_damage.tscn" id="7_w1sjf"]
 [ext_resource type="PackedScene" uid="uid://co6lsi7is61pi" path="res://Damage_Area/take_damage.tscn" id="8_68ktb"]
+[ext_resource type="AudioStream" uid="uid://eb1snknvrmlr" path="res://_Chin_Yee_Sui/enemies/bloodyhell/freesound_community-monster-bite-44538.mp3" id="10_40bmh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_miwrs"]
 atlas = ExtResource("1_7dvsc")
@@ -351,3 +352,7 @@ visible = false
 position = Vector2(1.4999995, -1.1920929e-07)
 scale = Vector2(0.75137764, 0.75137764)
 shape = SubResource("RectangleShape2D_kjuvi")
+
+[node name="AttackSound" type="AudioStreamPlayer2D" parent="." unique_id=1302800952]
+stream = ExtResource("10_40bmh")
+volume_db = -10.0

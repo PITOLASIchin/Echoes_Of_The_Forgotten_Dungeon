@@ -37,11 +37,6 @@ region = Rect2(1344, 0, 192, 192)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_b2k5p"]
 animations = [{
-"frames": [],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_njogq")
@@ -69,7 +64,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5mohl"]
@@ -84,7 +79,8 @@ script = ExtResource("1_2qmtp")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=639164015]
 sprite_frames = SubResource("SpriteFrames_b2k5p")
 animation = &"idle"
-frame_progress = 0.29122514
+autoplay = "idle"
+frame_progress = 0.58810043
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1506748638]
 shape = SubResource("CircleShape2D_5mohl")

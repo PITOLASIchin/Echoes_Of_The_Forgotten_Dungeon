@@ -54,6 +54,7 @@ enum State {
 # =========================================================
 # TARGET
 # =========================================================
+@onready var attack_sound: AudioStreamPlayer2D = $AttackSound
 
 @export_category("Target")
 @export var player_group: StringName = &"Player"
@@ -357,13 +358,19 @@ func _enter_attack_state() -> void:
 			)
 		)
 
-	if not _play_animation(
-		&"cleave",
-		true
-	):
+	if use_first_attack:
+		active_attack_animation = &"atk1"
+	else:
+		active_attack_animation = &"atk2"
+
+	use_first_attack = not use_first_attack
+
+	if not _play_animation(active_attack_animation, true):
 		cooldown_remaining = attack_cooldown
 
 		_enter_chase_state()
+		
+	
 
 
 # =========================================================
@@ -515,7 +522,6 @@ func _activate_attack_hitbox() -> void:
 		return
 
 	attack_hitbox_active = true
-
 	do_damage.activate()
 
 	# Important:
