@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://ysmq8f2ff4ax"]
+
+[ext_resource type="Script" uid="uid://c4h1i1udibd6s" path="res://_Cheok Kai Ren/Traps/fireball.gd" id="1_6dhb2"]
+[ext_resource type="Texture2D" uid="uid://dxj1ex6hdkdvk" path="res://_Cheok Kai Ren/Traps/Fireball_strip3.png" id="2_fce7u"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lt5x6"]
+atlas = ExtResource("2_fce7u")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rx0mt"]
+atlas = ExtResource("2_fce7u")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xdqxt"]
+atlas = ExtResource("2_fce7u")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s1we0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lt5x6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rx0mt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xdqxt")
+}],
+"loop": true,
+"name": &"fly",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0uasn"]
+radius = 5.0
+
+[node name="fireball" type="Area2D" unique_id=2068924999]
+scale = Vector2(0.6, 0.6)
+script = ExtResource("1_6dhb2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=385180701]
+sprite_frames = SubResource("SpriteFrames_s1we0")
+animation = &"fly"
+autoplay = "fly"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1316217437]
+shape = SubResource("CircleShape2D_0uasn")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=2083515681]

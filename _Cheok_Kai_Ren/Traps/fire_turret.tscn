@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://35o175ct7o6i"]
+
+[ext_resource type="Script" uid="uid://bd6k8oq1smy5l" path="res://_Cheok Kai Ren/Traps/fire_turret.gd" id="1_6mi62"]
+[ext_resource type="PackedScene" uid="uid://ysmq8f2ff4ax" path="res://_Cheok Kai Ren/Traps/fireball.tscn" id="2_4es5y"]
+[ext_resource type="Texture2D" uid="uid://cbjkpb5nggat7" path="res://_Cheok Kai Ren/Traps/FireTurret_strip3.png" id="2_erwgn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4es5y"]
+atlas = ExtResource("2_erwgn")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2mf02"]
+atlas = ExtResource("2_erwgn")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dc5hq"]
+atlas = ExtResource("2_erwgn")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wu08x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4es5y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2mf02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dc5hq")
+}],
+"loop": false,
+"name": &"fire",
+"speed": 8.0
+}]
+
+[node name="FireTurret" type="Node2D" unique_id=1911419921]
+scale = Vector2(0.6, 0.6)
+script = ExtResource("1_6mi62")
+fireball_scene = ExtResource("2_4es5y")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=578964289]
+sprite_frames = SubResource("SpriteFrames_wu08x")
+animation = &"fire"
+
+[node name="Muzzle" type="Marker2D" parent="." unique_id=422630196]
+position = Vector2(0, -12)
+
+[node name="ShootTimer" type="Timer" parent="." unique_id=1607242386]
+wait_time = 1.5

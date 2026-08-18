@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://w7bnhh7rea75"]
+
+[ext_resource type="Texture2D" uid="uid://bsrdvu63coixa" path="res://_Cheok Kai Ren/Laser/LaserStraight_Red.png" id="1_28q0g"]
+[ext_resource type="Script" uid="uid://dk16veor30p6j" path="res://_Cheok Kai Ren/Laser/laser_beam.gd" id="1_ho5bp"]
+[ext_resource type="Texture2D" uid="uid://cj2qqfstrrb58" path="res://_Cheok Kai Ren/Laser/LaserStraight_Green.png" id="2_ho5bp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c2s60"]
+size = Vector2(17, 160)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wy43v"]
+atlas = ExtResource("1_28q0g")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7pfsr"]
+atlas = ExtResource("2_ho5bp")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bg60k"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wy43v")
+}],
+"loop": true,
+"name": &"active",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7pfsr")
+}],
+"loop": true,
+"name": &"off",
+"speed": 5.0
+}]
+
+[node name="LaserBeam" type="Area2D" unique_id=1607551002]
+scale = Vector2(0.6, 0.6)
+script = ExtResource("1_ho5bp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=361928997]
+shape = SubResource("RectangleShape2D_c2s60")
+
+[node name="BeamSprite" type="AnimatedSprite2D" parent="." unique_id=1846863246]
+sprite_frames = SubResource("SpriteFrames_bg60k")
+animation = &"active"

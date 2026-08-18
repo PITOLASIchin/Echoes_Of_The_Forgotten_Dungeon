@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://b5egts6thrie7"]
+
+[ext_resource type="Script" uid="uid://bgao6poologc3" path="res://_Cheok Kai Ren/Laser/laser_turret.gd" id="1_gqggo"]
+[ext_resource type="Texture2D" uid="uid://dsuhyojxlpnft" path="res://_Cheok Kai Ren/Laser/LaserTurret_Red.png" id="2_ulcyt"]
+[ext_resource type="Texture2D" uid="uid://4ciyikgstyud" path="res://_Cheok Kai Ren/Laser/LaserTurret_Green_strip2.png" id="4_dum53"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j5g8p"]
+size = Vector2(6, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b8fmt"]
+atlas = ExtResource("2_ulcyt")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hh8h0"]
+atlas = ExtResource("4_dum53")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gqggo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b8fmt")
+}],
+"loop": true,
+"name": &"active",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hh8h0")
+}],
+"loop": true,
+"name": &"off",
+"speed": 5.0
+}]
+
+[node name="LaserTurret" type="Area2D" unique_id=284411667]
+scale = Vector2(0.6, 0.6)
+collision_layer = 0
+script = ExtResource("1_gqggo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=432349750]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_j5g8p")
+
+[node name="TurretSprite" type="AnimatedSprite2D" parent="." unique_id=2103026235]
+sprite_frames = SubResource("SpriteFrames_gqggo")
+animation = &"active"
