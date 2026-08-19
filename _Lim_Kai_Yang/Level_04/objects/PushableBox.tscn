@@ -1,52 +1,80 @@
 [gd_scene format=3 uid="uid://bgpuqrnx7rtk0"]
 
 [ext_resource type="Script" uid="uid://dp16ri7u7uox1" path="res://_Lim_Kai_Yang/Level_04/objects/pushable_box.gd" id="1_2d160"]
-[ext_resource type="Texture2D" uid="uid://cum2oxys1dxp1" path="res://_Lim_Kai_Yang/Level_04/assets/Tiny Swords (Free Pack)/Terrain/Resources/Wood/Wood Resource/Wood Resource.png" id="2_2d160"]
+[ext_resource type="Texture2D" uid="uid://ca2k7qc7r4gjw" path="res://General_Assets/dungeon_assests/objects_animated/dungeon_crate.png" id="2_wv8cv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_auspk"]
+atlas = ExtResource("2_wv8cv")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dbtps"]
+atlas = ExtResource("2_wv8cv")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hymuy"]
+atlas = ExtResource("2_wv8cv")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ip8o4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_auspk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dbtps")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hymuy")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_facnt"]
-size = Vector2(47, 27)
+size = Vector2(20, 18)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2d160"]
-size = Vector2(48, 10)
+size = Vector2(45, 10)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ty85o"]
-size = Vector2(10, 23)
+size = Vector2(10, 19.5)
 
 [node name="PushableBox" type="CharacterBody2D" unique_id=2091125029]
 script = ExtResource("1_2d160")
 push_speed = 55.0
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1376826932]
-texture = ExtResource("2_2d160")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1646437624]
+sprite_frames = SubResource("SpriteFrames_ip8o4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1903066484]
-position = Vector2(0.5, -0.5)
 shape = SubResource("RectangleShape2D_facnt")
 
 [node name="PushZoneUp" type="Area2D" parent="." unique_id=1519933996]
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PushZoneUp" unique_id=1307285634]
-position = Vector2(0, -17.5)
+position = Vector2(-0.5, -15)
 shape = SubResource("RectangleShape2D_2d160")
 
 [node name="PushZoneLeft" type="Area2D" parent="." unique_id=1186745713]
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PushZoneLeft" unique_id=1137599019]
-position = Vector2(-28, 0.5)
+position = Vector2(-16, 1)
 shape = SubResource("RectangleShape2D_ty85o")
 
 [node name="PushZoneDown" type="Area2D" parent="." unique_id=612909357]
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PushZoneDown" unique_id=938965446]
-position = Vector2(2, 19)
+position = Vector2(1, 15)
 shape = SubResource("RectangleShape2D_2d160")
 
 [node name="PushZoneRight" type="Area2D" parent="." unique_id=945928347]
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PushZoneRight" unique_id=1150271291]
-position = Vector2(30, 1)
+position = Vector2(16, 0.25)
 shape = SubResource("RectangleShape2D_ty85o")

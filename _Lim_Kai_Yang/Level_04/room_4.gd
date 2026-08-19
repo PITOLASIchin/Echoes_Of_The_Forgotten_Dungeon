@@ -8,14 +8,11 @@ extends Node2D
 @onready var hud: Control = $Hud/hud
 @onready var room_exit: Area2D = $RoomExit
 @onready var merchant: StaticBody2D = $Merchant
+@onready var bridge: StaticBody2D = $Bridge
 
 var player: Node2D = null
 var game_over := false  # 现在只代表"通关了", 不再代表"死了"
 var potion_count := 0
-
-@onready var bridge: StaticBody2D = $Bridge
-
-
 
 func _reveal_bridge() -> void:
 	bridge.reveal()
