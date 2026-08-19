@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ysmq8f2ff4ax"]
 
-[ext_resource type="Script" uid="uid://c4h1i1udibd6s" path="res://_Cheok Kai Ren/Traps/fireball.gd" id="1_6dhb2"]
-[ext_resource type="Texture2D" uid="uid://dxj1ex6hdkdvk" path="res://_Cheok Kai Ren/Traps/Fireball_strip3.png" id="2_fce7u"]
+[ext_resource type="Script" uid="uid://c4h1i1udibd6s" path="res://_Cheok_Kai_Ren/Traps/fireball.gd" id="1_6dhb2"]
+[ext_resource type="Texture2D" uid="uid://dxj1ex6hdkdvk" path="res://_Cheok_Kai_Ren/Traps/Fireball_strip3.png" id="2_fce7u"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lt5x6"]
 atlas = ExtResource("2_fce7u")
@@ -36,6 +36,8 @@ animations = [{
 radius = 5.0
 
 [node name="fireball" type="Area2D" unique_id=2068924999]
+z_index = 1
+y_sort_enabled = true
 scale = Vector2(0.6, 0.6)
 script = ExtResource("1_6dhb2")
 

@@ -144,6 +144,13 @@ func shoot() -> void:
 		"fire"
 	)
 
+func set_activated(
+	crystal_active: bool
+) -> void:
+	if crystal_active:
+		deactivate()
+	else:
+		activate()
 
 func activate() -> void:
 	if Engine.is_editor_hint():

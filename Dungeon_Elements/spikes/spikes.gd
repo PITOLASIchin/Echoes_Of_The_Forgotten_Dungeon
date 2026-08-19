@@ -166,7 +166,7 @@ func set_activated(
 	# Ignore crystal when this spike
 	# is using automatic mode.
 	if automatic:
-		return
+		automatic = false
 
 	if crystal_active:
 		deactivate()
