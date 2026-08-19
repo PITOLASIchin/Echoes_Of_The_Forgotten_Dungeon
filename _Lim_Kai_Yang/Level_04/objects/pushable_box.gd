@@ -52,7 +52,7 @@ func _physics_process(_delta: float) -> void:
 	velocity = Vector2.ZERO
 
 	var move_input: Vector2 = Input.get_vector(
-		"move_left", "move_right", "move_up", "move_down"
+		"left", "right", "up", "down"
 	)
 
 	if move_input == Vector2.ZERO:

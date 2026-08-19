@@ -17,7 +17,7 @@ signal purchase_failed(item_name: String, reason: String)
 
 enum RewardType { KEY, HEAL, POTION, CUSTOM }
 
-@export var item_name: String = "回复药水"
+@export var item_name: String = "Health Potion"
 @export var item_cost: int = 5
 @export var reward_type: RewardType = RewardType.POTION
 @export var item_icon: Texture2D

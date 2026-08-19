@@ -81,6 +81,7 @@ offset_left = 180.0
 offset_top = 96.0
 offset_right = 244.0
 offset_bottom = 160.0
+theme_override_font_sizes/font_size = 50
 vertical_alignment = 1
 
 [node name="PotionDisplay" type="HBoxContainer" parent="hud" unique_id=340763428]
@@ -98,6 +99,7 @@ expand_mode = 2
 
 [node name="PotionCount" type="Label" parent="hud/PotionDisplay" unique_id=849264160]
 layout_mode = 2
+theme_override_font_sizes/font_size = 50
 
 [node name="PauseButton" type="TextureButton" parent="hud" unique_id=496871306]
 layout_mode = 1
