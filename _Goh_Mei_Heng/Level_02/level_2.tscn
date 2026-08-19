@@ -264,6 +264,7 @@ y_sort_enabled = true
 script = SubResource("GDScript_5wvkk")
 
 [node name="Hud" parent="." unique_id=148244219 instance=ExtResource("1_4brxf")]
+visible = false
 
 [node name="TileMap" type="TileMap" parent="." unique_id=271314680]
 y_sort_enabled = true

@@ -337,10 +337,10 @@ position = Vector2(591, 266)
 position = Vector2(230, 74)
 scale = Vector2(1.3344383, 1.3344383)
 
-[node name="knight1" parent="." unique_id=409912757 groups=["Player"] instance=ExtResource("11_afd0h")]
+[node name="knight1" parent="." unique_id=409912757 instance=ExtResource("11_afd0h")]
 position = Vector2(139, 103)
 
-[node name="take_damage" parent="knight1" unique_id=1699602000 instance=ExtResource("12_oq3tx")]
+[node name="take_damage2" parent="knight1" unique_id=1699602000 instance=ExtResource("12_oq3tx")]
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="knight1" unique_id=1212366968]
 shape = SubResource("CircleShape2D_hu8yc")

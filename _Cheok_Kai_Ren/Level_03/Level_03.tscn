@@ -221,35 +221,46 @@ position = Vector2(419, 168)
 
 [node name="spikes" parent="Spike" unique_id=371013121 instance=ExtResource("5_5g1bh")]
 position = Vector2(-13, 131)
+automatic = true
 
 [node name="spikes2" parent="Spike" unique_id=657572041 instance=ExtResource("5_5g1bh")]
 position = Vector2(-164, -76)
+automatic = true
 
 [node name="spikes4" parent="Spike" unique_id=586332386 instance=ExtResource("5_5g1bh")]
+automatic = true
 
 [node name="spikes7" parent="Spike" unique_id=1340851657 instance=ExtResource("5_5g1bh")]
 position = Vector2(270, -72)
+automatic = true
 
 [node name="spikes8" parent="Spike" unique_id=1653792246 instance=ExtResource("5_5g1bh")]
 position = Vector2(97, 182)
+automatic = true
 
 [node name="spikes9" parent="Spike" unique_id=1668879217 instance=ExtResource("5_5g1bh")]
 position = Vector2(56, 112)
+automatic = true
 
 [node name="spikes10" parent="Spike" unique_id=1533214025 instance=ExtResource("5_5g1bh")]
 position = Vector2(-61, 184)
+automatic = true
 
 [node name="spikes11" parent="Spike" unique_id=1033953502 instance=ExtResource("5_5g1bh")]
 position = Vector2(-128, 166)
+automatic = true
 
 [node name="spikes12" parent="Spike" unique_id=540339822 instance=ExtResource("5_5g1bh")]
 position = Vector2(-167, 189)
+automatic = true
 
 [node name="spikes13" parent="Spike" unique_id=205809872 instance=ExtResource("5_5g1bh")]
 position = Vector2(-105, 129)
+automatic = true
 
 [node name="spikes14" parent="Spike" unique_id=1943329227 instance=ExtResource("5_5g1bh")]
 position = Vector2(212, 94)
+automatic = true
 
 [node name="Gate" type="Node2D" parent="." unique_id=1268210111]
 
