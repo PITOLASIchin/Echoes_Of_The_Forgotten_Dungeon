@@ -1,232 +1,313 @@
 extends CharacterBody2D
 
 
-# ==========================
+const PLAYER_SCENE_PATH: String = \
+	"res://_Cheok_Kai_Ren/character/player.tscn"
+
+
+# =========================================================
 # MOVEMENT
-# ==========================
+# =========================================================
 
-@export var wander_speed: float = 20.0
+@export_category("Movement")
+
 @export var chase_speed: float = 30.0
-@export var attack_move_speed: float = 65.0
-@export var acceleration: float = 50.0
 
-@export var detection_radius: float = 80.0
+@export var attack_move_speed: float = 65.0
+
+@export var acceleration: float = 100.0
+
+
+# =========================================================
+# VISION
+# =========================================================
+
+@export_category("Vision")
+
+@export var detection_range: float = 150.0
+
+@export_flags_2d_physics var vision_collision_mask: int = \
+	0xFFFFFFFF
+
+
+# =========================================================
+# ATTACK
+# =========================================================
+
+@export_category("Attack")
+
+@export var attack_damage: int = 1
+
 @export var attack_radius: float = 24.0
 
-@export var wander_direction_interval: float = 2.0
+@export var attack_damage_range: float = 30.0
+
+@export var attack_cooldown: float = 1.2
 
 
-# ==========================
-# COMBAT
-# ==========================
+# =========================================================
+# HEALTH
+# =========================================================
+
+@export_category("Health")
 
 @export var max_health: int = 3
-@export var attack_cooldown: float = 1.2
-@export var damage_area_duration: float = 0.2
+
 @export var damage_invulnerability_time: float = 0.3
-@export var hit_animation_fallback_time: float = 0.5
 
 
-# ==========================
-# NODE REFERENCES
-# ==========================
+# =========================================================
+# NODES
+# =========================================================
 
-@onready var player: Node2D = get_tree().get_first_node_in_group("Player")
+@onready var animated_sprite: AnimatedSprite2D = \
+	$AnimatedSprite2D
 
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var body_collision: CollisionShape2D = $CollisionShape2D
+@onready var body_collision: CollisionShape2D = \
+	$CollisionShape2D
 
-@onready var do_damage: DoDamage = $do_damage
-@onready var take_damage_area: TakeDamage = $take_damage
+@onready var do_damage: DoDamage = \
+	$do_damage
 
-
-# ==========================
-# STATE
-# ==========================
-
-enum State {
-	WANDER,
-	CHASE,
-	ATTACK
-}
+@onready var take_damage_area: TakeDamage = \
+	$take_damage
 
 
-var state: State = State.WANDER
-
-
-# ==========================
+# =========================================================
 # VARIABLES
-# ==========================
+# =========================================================
 
-var health: int
+var player: Node2D = null
 
-var direction: Vector2 = Vector2.RIGHT
+var health: int = 0
+
 var attack_direction: Vector2 = Vector2.RIGHT
 
-var wander_direction_timer: float = 0.0
-
 var is_dead: bool = false
+
 var is_attacking: bool = false
-var is_attack_recovering: bool = false
+
 var is_taking_damage: bool = false
 
 var can_take_damage: bool = true
+
 var can_attack: bool = true
 
-var rng := RandomNumberGenerator.new()
+var attack_damage_applied: bool = false
 
 
-# ==========================
+# =========================================================
 # READY
-# ==========================
+# =========================================================
 
 func _ready() -> void:
 	health = max_health
 
 	add_to_group("Enemy")
 
-	rng.randomize()
-	choose_random_direction()
-
 	do_damage.deactivate()
 
-	animated_sprite.play("idle")
+	if not animated_sprite.animation_finished.is_connected(
+		_on_animated_sprite_2d_animation_finished
+	):
+		animated_sprite.animation_finished.connect(
+			_on_animated_sprite_2d_animation_finished
+		)
+
+	_find_real_player()
+
+	animated_sprite.play(&"idle")
 
 
-# ==========================
+# =========================================================
 # PHYSICS
-# ==========================
+# =========================================================
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
 
-	if is_taking_damage:
-		stop_movement(delta)
+	if not is_instance_valid(player):
+		_find_real_player()
+
+	if not is_instance_valid(player):
+		_stop(delta)
 		return
 
-	if is_attack_recovering:
-		velocity = Vector2.ZERO
-		move_and_slide()
+	if is_taking_damage:
+		_stop(delta)
 		return
 
 	if is_attacking:
-		handle_attack_movement(delta)
+		_process_attack_movement(delta)
 		return
 
-	update_state()
+	if not _can_detect_player():
+		_stop(delta)
+		_play_idle()
+		return
 
-	var target_velocity := get_target_velocity()
+	var distance := global_position.distance_to(
+		player.global_position
+	)
+
+	if (
+		distance <= attack_radius
+		and
+		can_attack
+	):
+		_start_attack()
+		return
+
+	_chase_player(delta)
+
+
+# =========================================================
+# FIND PLAYER
+# =========================================================
+
+func _find_real_player() -> void:
+	player = null
+
+	var scene := get_tree().current_scene
+
+	if scene == null:
+		return
+
+	player = _search_player(scene)
+
+
+func _search_player(
+	node: Node
+) -> Node2D:
+
+	if (
+		node is Node2D
+		and
+		node.scene_file_path == PLAYER_SCENE_PATH
+	):
+		return node as Node2D
+
+	for child in node.get_children():
+
+		var found := _search_player(child)
+
+		if found != null:
+			return found
+
+	return null
+
+
+# =========================================================
+# VISION
+# =========================================================
+
+func _can_detect_player() -> bool:
+	if not is_instance_valid(player):
+		return false
+
+	if global_position.distance_to(
+		player.global_position
+	) > detection_range:
+		return false
+
+	return _has_line_of_sight_to_player()
+
+
+func _has_line_of_sight_to_player() -> bool:
+	if not is_instance_valid(player):
+		return false
+
+	var query := \
+		PhysicsRayQueryParameters2D.create(
+			global_position,
+			player.global_position,
+			vision_collision_mask,
+			_get_vision_excludes()
+		)
+
+	query.collide_with_bodies = true
+	query.collide_with_areas = false
+
+	var hit := \
+		get_world_2d().direct_space_state.intersect_ray(
+			query
+		)
+
+	if hit.is_empty():
+		return false
+
+	var collider = hit.get("collider")
+
+	if collider == player:
+		return true
+
+	if collider is Node:
+
+		if player.is_ancestor_of(
+			collider as Node
+		):
+			return true
+
+	return false
+
+
+func _get_vision_excludes() -> Array[RID]:
+	var result: Array[RID] = [
+		get_rid()
+	]
+
+	for enemy in get_tree().get_nodes_in_group(
+		"Enemy"
+	):
+
+		if enemy == self:
+			continue
+
+		if enemy is CollisionObject2D:
+
+			result.append(
+				(enemy as CollisionObject2D).get_rid()
+			)
+
+	return result
+
+
+# =========================================================
+# CHASE
+# =========================================================
+
+func _chase_player(delta: float) -> void:
+	var direction := \
+		global_position.direction_to(
+			player.global_position
+		)
+
+	if direction.length_squared() <= 0.001:
+		velocity = Vector2.ZERO
+		return
+
+	_update_sprite_direction(direction)
 
 	velocity = velocity.move_toward(
-		target_velocity,
+		direction * chase_speed,
 		acceleration * delta
 	)
 
 	move_and_slide()
 
-	handle_wall_collision()
-	update_sprite_direction()
-	update_animation()
+	_play_idle()
 
 
-# ==========================
-# AI
-# ==========================
-
-func update_state() -> void:
-	if not is_instance_valid(player):
-		state = State.WANDER
-		return
-
-	var distance_to_player := global_position.distance_to(
-		player.global_position
-	)
-
-	if distance_to_player <= attack_radius and can_attack:
-		start_attack()
-
-	elif distance_to_player <= detection_radius:
-		state = State.CHASE
-
-	else:
-		state = State.WANDER
-
-
-func get_target_velocity() -> Vector2:
-	match state:
-		State.CHASE:
-			if is_instance_valid(player):
-				direction = global_position.direction_to(
-					player.global_position
-				)
-
-			return direction * chase_speed
-
-		State.WANDER:
-			update_wander_direction()
-			return direction * wander_speed
-
-		State.ATTACK:
-			return Vector2.ZERO
-
-	return Vector2.ZERO
-
-
-# ==========================
-# WANDERING
-# ==========================
-
-func update_wander_direction() -> void:
-	wander_direction_timer -= get_physics_process_delta_time()
-
-	if wander_direction_timer <= 0.0:
-		choose_random_direction()
-
-		wander_direction_timer = rng.randf_range(
-			wander_direction_interval * 0.5,
-			wander_direction_interval * 1.5
-		)
-
-
-func choose_random_direction() -> void:
-	var new_direction := Vector2(
-		rng.randf_range(-1.0, 1.0),
-		rng.randf_range(-1.0, 1.0)
-	)
-
-	if new_direction.length_squared() < 0.01:
-		new_direction = Vector2.RIGHT
-
-	direction = new_direction.normalized()
-
-
-func handle_wall_collision() -> void:
-	if not is_on_wall():
-		return
-
-	var collision := get_last_slide_collision()
-
-	if collision == null:
-		return
-
-	direction = direction.bounce(
-		collision.get_normal()
-	).normalized()
-
-	if direction.length_squared() < 0.01:
-		choose_random_direction()
-
-
-# ==========================
+# =========================================================
 # ATTACK
-# ==========================
+# =========================================================
 
-func start_attack() -> void:
+func _start_attack() -> void:
 	if is_dead:
 		return
 
-	if is_attacking or is_attack_recovering:
+	if is_attacking:
 		return
 
 	if not can_attack:
@@ -235,28 +316,41 @@ func start_attack() -> void:
 	if not is_instance_valid(player):
 		return
 
-	state = State.ATTACK
+	if not _has_line_of_sight_to_player():
+		return
 
 	is_attacking = true
+
 	can_attack = false
 
-	attack_direction = global_position.direction_to(
-		player.global_position
-	)
+	attack_damage_applied = false
+
+	attack_direction = \
+		global_position.direction_to(
+			player.global_position
+		)
 
 	if attack_direction.length_squared() < 0.01:
 		attack_direction = Vector2.RIGHT
 
-	direction = attack_direction
-
-	update_sprite_direction()
+	_update_sprite_direction(
+		attack_direction
+	)
 
 	do_damage.deactivate()
 
-	animated_sprite.play("attack")
+	animated_sprite.play(&"attack")
+
+	animated_sprite.set_frame_and_progress(
+		0,
+		0.0
+	)
 
 
-func handle_attack_movement(delta: float) -> void:
+func _process_attack_movement(
+	delta: float
+) -> void:
+
 	velocity = velocity.move_toward(
 		attack_direction * attack_move_speed,
 		acceleration * delta
@@ -267,44 +361,60 @@ func handle_attack_movement(delta: float) -> void:
 	if is_on_wall():
 		velocity = Vector2.ZERO
 
-	update_sprite_direction()
+	_update_sprite_direction(
+		attack_direction
+	)
 
 
-func perform_attack_damage() -> void:
-	if is_dead:
+# =========================================================
+# PLAYER ONLY DAMAGE
+# =========================================================
+
+func _damage_real_player() -> void:
+	if attack_damage_applied:
 		return
 
-	do_damage.activate()
-
-	# Wait until monitoring becomes active.
-	await get_tree().physics_frame
-
-	if is_dead or is_taking_damage:
-		do_damage.deactivate()
+	if not is_instance_valid(player):
 		return
 
-	# Deals damage even when the player was already overlapping.
-	do_damage.damage_current_overlaps()
+	if not _has_line_of_sight_to_player():
+		return
 
+	if global_position.distance_to(
+		player.global_position
+	) > attack_damage_range:
+		return
+
+	if player.has_method("take_damage"):
+
+		attack_damage_applied = true
+
+		player.call(
+			"take_damage",
+			attack_damage,
+			global_position,
+			0.0
+		)
+
+
+# =========================================================
+# COOLDOWN
+# =========================================================
+
+func _restart_attack_cooldown() -> void:
 	await get_tree().create_timer(
-		damage_area_duration
+		attack_cooldown
 	).timeout
-
-	do_damage.deactivate()
-
-
-func restart_attack_cooldown() -> void:
-	await get_tree().create_timer(attack_cooldown).timeout
 
 	if not is_dead:
 		can_attack = true
 
 
-# ==========================
-# MOVEMENT HELPERS
-# ==========================
+# =========================================================
+# MOVEMENT
+# =========================================================
 
-func stop_movement(delta: float) -> void:
+func _stop(delta: float) -> void:
 	velocity = velocity.move_toward(
 		Vector2.ZERO,
 		acceleration * delta
@@ -313,133 +423,127 @@ func stop_movement(delta: float) -> void:
 	move_and_slide()
 
 
-# ==========================
-# ANIMATION
-# ==========================
+func _update_sprite_direction(
+	direction: Vector2
+) -> void:
 
-func update_animation() -> void:
+	if absf(direction.x) < 0.01:
+		return
+
+	animated_sprite.flip_h = \
+		direction.x < 0.0
+
+
+func _play_idle() -> void:
 	if is_dead:
 		return
 
 	if is_attacking:
 		return
 
-	if is_attack_recovering:
-		return
-
 	if is_taking_damage:
 		return
 
-	# The slime has no separate movement animation.
-	if animated_sprite.animation != "idle":
-		animated_sprite.play("idle")
+	if animated_sprite.animation != &"idle":
+
+		animated_sprite.play(&"idle")
 
 
-func update_sprite_direction() -> void:
-	if direction.x == 0:
-		return
-
-	animated_sprite.flip_h = direction.x < 0
-
-	# Flip only the attack area.
-	do_damage.scale.x = (
-		-1.0 if animated_sprite.flip_h else 1.0
-	)
-
+# =========================================================
+# ANIMATION FINISHED
+# =========================================================
 
 func _on_animated_sprite_2d_animation_finished() -> void:
-	var finished_animation := animated_sprite.animation
+	var finished := animated_sprite.animation
 
-	match finished_animation:
-		"attack":
-			velocity = Vector2.ZERO
-			is_attacking = false
-			is_attack_recovering = true
+	match finished:
 
-			await perform_attack_damage()
+		&"attack":
 
 			if is_dead:
 				return
 
-			if is_taking_damage:
-				is_attack_recovering = false
-				return
-
-			is_attack_recovering = false
-
-			return_to_ai_state()
-			restart_attack_cooldown()
-
-		"hit":
-			is_taking_damage = false
 			velocity = Vector2.ZERO
 
-			if not is_dead:
-				return_to_ai_state()
+			_damage_real_player()
 
-		"die":
+			is_attacking = false
+
+			animated_sprite.play(&"idle")
+
+			_restart_attack_cooldown()
+
+
+		&"hit":
+
+			if is_dead:
+				return
+
+			is_taking_damage = false
+
+			velocity = Vector2.ZERO
+
+			animated_sprite.play(&"idle")
+
+
+		&"die":
+
 			queue_free()
 
 
-func return_to_ai_state() -> void:
-	if is_dead:
-		return
+# =========================================================
+# TAKE DAMAGE
+# =========================================================
 
-	if not is_instance_valid(player):
-		state = State.WANDER
-		animated_sprite.play("idle")
-		return
+func take_damage(
+	amount: int,
+	source_position: Vector2 = Vector2.ZERO,
+	knockback_force: float = 0.0
+) -> void:
 
-	var distance_to_player := global_position.distance_to(
-		player.global_position
-	)
-
-	if distance_to_player <= detection_radius:
-		state = State.CHASE
-	else:
-		state = State.WANDER
-
-	animated_sprite.play("idle")
-
-
-# ==========================
-# RECEIVE DAMAGE
-# ==========================
-
-func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
 	if is_dead:
 		return
 
 	if not can_take_damage:
 		return
 
-	health -= amount
-
-	print("Slime HP: ", health)
-
-	if health <= 0:
-		die()
+	if amount <= 0:
 		return
 
-	var attack_was_interrupted := is_attacking or is_attack_recovering
+	health -= amount
+
+	print(
+		"Slime HP: ",
+		health,
+		"/",
+		max_health
+	)
+
+	if health <= 0:
+		_die()
+		return
 
 	can_take_damage = false
+
 	is_taking_damage = true
+
 	is_attacking = false
-	is_attack_recovering = false
 
 	velocity = Vector2.ZERO
 
 	do_damage.deactivate()
 
-	if attack_was_interrupted:
-		can_attack = false
-		restart_attack_cooldown()
+	animated_sprite.play(&"hit")
 
-	animated_sprite.play("hit")
+	animated_sprite.set_frame_and_progress(
+		0,
+		0.0
+	)
 
-	finish_hit_after_fallback()
+	_reset_damage_invulnerability()
 
+
+func _reset_damage_invulnerability() -> void:
 	await get_tree().create_timer(
 		damage_invulnerability_time
 	).timeout
@@ -448,43 +552,46 @@ func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO, knockback
 		can_take_damage = true
 
 
-func finish_hit_after_fallback() -> void:
-	await get_tree().create_timer(
-		hit_animation_fallback_time
-	).timeout
-
-	if is_dead:
-		return
-
-	if is_taking_damage:
-		is_taking_damage = false
-		velocity = Vector2.ZERO
-		return_to_ai_state()
-
-
-# ==========================
+# =========================================================
 # DEATH
-# ==========================
+# =========================================================
 
-func die() -> void:
+func _die() -> void:
 	if is_dead:
 		return
 
 	is_dead = true
+
 	is_attacking = false
-	is_attack_recovering = false
+
 	is_taking_damage = false
 
-	can_take_damage = false
 	can_attack = false
+
+	can_take_damage = false
 
 	velocity = Vector2.ZERO
 
 	do_damage.deactivate()
 
-	body_collision.set_deferred("disabled", true)
+	body_collision.set_deferred(
+		"disabled",
+		true
+	)
 
-	take_damage_area.set_deferred("monitoring", false)
-	take_damage_area.set_deferred("monitorable", false)
+	take_damage_area.set_deferred(
+		"monitoring",
+		false
+	)
 
-	animated_sprite.play("die")
+	take_damage_area.set_deferred(
+		"monitorable",
+		false
+	)
+
+	animated_sprite.play(&"die")
+
+	animated_sprite.set_frame_and_progress(
+		0,
+		0.0
+	)

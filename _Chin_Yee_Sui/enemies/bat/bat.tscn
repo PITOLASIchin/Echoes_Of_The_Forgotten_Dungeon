@@ -376,7 +376,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dgdrs")
 }],
-"loop": false,
+"loop": true,
 "name": &"walkback",
 "speed": 10.0
 }, {
@@ -393,7 +393,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_k8rs6")
 }],
-"loop": false,
+"loop": true,
 "name": &"walkfront",
 "speed": 10.0
 }, {
@@ -410,7 +410,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7i7ud")
 }],
-"loop": false,
+"loop": true,
 "name": &"walkside",
 "speed": 10.0
 }]
@@ -429,7 +429,7 @@ script = ExtResource("1_cl02q")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=681053624]
 sprite_frames = SubResource("SpriteFrames_wjv38")
-animation = &"atkback"
+animation = &"walkside"
 autoplay = "idlefront"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=3660326]

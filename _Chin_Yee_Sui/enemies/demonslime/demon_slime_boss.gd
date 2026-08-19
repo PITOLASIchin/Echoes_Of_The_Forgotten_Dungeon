@@ -6,7 +6,12 @@ signal health_changed(current_health: int, maximum_health: int)
 signal died
 
 
+const PLAYER_SCENE_PATH: String = \
+	"res://_Cheok_Kai_Ren/character/player.tscn"
+
+
 enum State {
+	IDLE,
 	CHASE,
 	ATTACK,
 	HURT,
@@ -19,6 +24,7 @@ enum State {
 # =========================================================
 
 @export_category("Health")
+
 @export var maximum_health: int = 20
 
 
@@ -27,7 +33,20 @@ enum State {
 # =========================================================
 
 @export_category("Movement")
+
 @export var move_speed: float = 45.0
+
+
+# =========================================================
+# VISION
+# =========================================================
+
+@export_category("Vision")
+
+@export var detection_range: float = 300.0
+
+@export_flags_2d_physics var vision_collision_mask: int = \
+	0xFFFFFFFF
 
 
 # =========================================================
@@ -35,6 +54,7 @@ enum State {
 # =========================================================
 
 @export_category("Attack")
+
 @export var attack_damage: int = 1
 
 @export var attack_range: float = 65.0
@@ -47,16 +67,6 @@ enum State {
 
 @export var attack_hit_end_frame: int = 11
 
-@export var attack_hitbox_distance: float = 45.0
-
-
-# =========================================================
-# TARGET
-# =========================================================
-
-@export_category("Target")
-@export var player_group: StringName = &"Player"
-
 
 # =========================================================
 # SPRITE
@@ -64,7 +74,6 @@ enum State {
 
 @export_category("Sprite")
 
-# Demon Slime original sprite faces LEFT.
 @export var sprite_faces_left: bool = true
 
 
@@ -74,13 +83,11 @@ enum State {
 
 @export_category("Gate")
 
-# Drag the gate that should open when the boss dies
-# into this field in the Inspector.
 @export var gate_to_open: Node
 
 
 # =========================================================
-# NODE REFERENCES
+# NODES
 # =========================================================
 
 @onready var animated_sprite: AnimatedSprite2D = \
@@ -103,19 +110,15 @@ enum State {
 # VARIABLES
 # =========================================================
 
-var current_health: int
+var current_health: int = 0
 
-var current_state: State = State.CHASE
+var current_state: State = State.IDLE
 
 var target: Node2D = null
 
 var cooldown_remaining: float = 0.0
 
-var attack_hitbox_active: bool = false
-
-var facing_sign: float = 1.0
-
-var attack_hitbox_original_y: float = 0.0
+var attack_damage_applied: bool = false
 
 
 # =========================================================
@@ -125,10 +128,8 @@ var attack_hitbox_original_y: float = 0.0
 func _ready() -> void:
 	current_health = maximum_health
 
-	attack_hitbox_original_y = do_damage.position.y
+	add_to_group("Enemy")
 
-	do_damage.damage = attack_damage
-	do_damage.repeat_damage = false
 	do_damage.deactivate()
 
 	if not animated_sprite.frame_changed.is_connected(
@@ -145,9 +146,9 @@ func _ready() -> void:
 			_on_animation_finished
 		)
 
-	_find_target()
+	_find_real_player()
 
-	_enter_chase_state()
+	_enter_idle()
 
 	health_changed.emit(
 		current_health,
@@ -169,29 +170,158 @@ func _physics_process(delta: float) -> void:
 	)
 
 	if not is_instance_valid(target):
-		_find_target()
+		_find_real_player()
 
 	if not is_instance_valid(target):
-		velocity = Vector2.ZERO
 
-		if current_state == State.CHASE:
-			_play_animation(&"idle")
+		if current_state not in [
+			State.ATTACK,
+			State.HURT
+		]:
+			_enter_idle()
 
 		return
 
-	match current_state:
+	if current_state == State.ATTACK:
+		_process_attack()
+		return
 
-		State.CHASE:
-			_process_chase()
+	if current_state == State.HURT:
+		return
 
-		State.ATTACK:
-			_process_attack()
+	if not _can_detect_player():
+		_enter_idle()
+		return
 
-		State.HURT:
-			velocity = Vector2.ZERO
+	_process_chase()
 
-		State.DEAD:
-			velocity = Vector2.ZERO
+
+# =========================================================
+# REAL PLAYER
+# =========================================================
+
+func _find_real_player() -> void:
+	target = null
+
+	var scene := get_tree().current_scene
+
+	if scene == null:
+		return
+
+	target = _search_player(scene)
+
+
+func _search_player(
+	node: Node
+) -> Node2D:
+
+	if (
+		node is Node2D
+		and
+		node.scene_file_path == PLAYER_SCENE_PATH
+	):
+		return node as Node2D
+
+	for child in node.get_children():
+
+		var found := _search_player(child)
+
+		if found != null:
+			return found
+
+	return null
+
+
+# =========================================================
+# VISION
+# =========================================================
+
+func _can_detect_player() -> bool:
+	if not is_instance_valid(target):
+		return false
+
+	if global_position.distance_to(
+		target.global_position
+	) > detection_range:
+		return false
+
+	return _has_line_of_sight_to_player()
+
+
+func _has_line_of_sight_to_player() -> bool:
+	if not is_instance_valid(target):
+		return false
+
+	var query := \
+		PhysicsRayQueryParameters2D.create(
+			global_position,
+			target.global_position,
+			vision_collision_mask,
+			_get_vision_excludes()
+		)
+
+	query.collide_with_bodies = true
+	query.collide_with_areas = false
+
+	var hit := \
+		get_world_2d().direct_space_state.intersect_ray(
+			query
+		)
+
+	if hit.is_empty():
+		return false
+
+	var collider = hit.get("collider")
+
+	if collider == target:
+		return true
+
+	if collider is Node:
+
+		if target.is_ancestor_of(
+			collider as Node
+		):
+			return true
+
+	return false
+
+
+func _get_vision_excludes() -> Array[RID]:
+	var result: Array[RID] = [
+		get_rid()
+	]
+
+	for enemy in get_tree().get_nodes_in_group(
+		"Enemy"
+	):
+
+		if enemy == self:
+			continue
+
+		if enemy is CollisionObject2D:
+
+			result.append(
+				(enemy as CollisionObject2D).get_rid()
+			)
+
+	return result
+
+
+# =========================================================
+# IDLE
+# =========================================================
+
+func _enter_idle() -> void:
+	if current_state == State.DEAD:
+		return
+
+	current_state = State.IDLE
+
+	velocity = Vector2.ZERO
+
+	do_damage.deactivate()
+
+	_play_animation(&"idle")
 
 
 # =========================================================
@@ -199,34 +329,34 @@ func _physics_process(delta: float) -> void:
 # =========================================================
 
 func _process_chase() -> void:
+	current_state = State.CHASE
+
 	var direction := global_position.direction_to(
 		target.global_position
 	)
 
-	var distance_to_player := global_position.distance_to(
+	var distance := global_position.distance_to(
 		target.global_position
 	)
 
 	_update_facing(direction)
 
-	# Attack when player is close enough
 	if (
-		distance_to_player <= attack_range
+		distance <= attack_range
 		and
 		cooldown_remaining <= 0.0
 	):
-		_enter_attack_state()
+		_enter_attack()
 		return
 
-	# Wait if player is close but attack is on cooldown
-	if distance_to_player <= attack_range:
+	if distance <= attack_range:
+
 		velocity = Vector2.ZERO
 
 		_play_animation(&"idle")
 
 		return
 
-	# Chase player
 	velocity = direction * move_speed
 
 	_play_animation(&"walk")
@@ -235,169 +365,87 @@ func _process_chase() -> void:
 
 
 # =========================================================
-# ATTACK PROCESS
+# ATTACK
 # =========================================================
 
-func _process_attack() -> void:
-	velocity = Vector2.ZERO
-
-	if not is_instance_valid(target):
-		_enter_chase_state()
-		return
-
-	var distance_to_player := global_position.distance_to(
-		target.global_position
-	)
-
-	# Cancel attack if player gets too far away
-	if distance_to_player > attack_cancel_distance:
-		_deactivate_attack_hitbox()
-
-		cooldown_remaining = attack_cooldown
-
-		_enter_chase_state()
-
-
-# =========================================================
-# FIND PLAYER
-# =========================================================
-
-func _find_target() -> void:
-	var found_target := get_tree().get_first_node_in_group(
-		player_group
-	)
-
-	if found_target is Node2D:
-		target = found_target as Node2D
-	else:
-		target = null
-
-
-# =========================================================
-# UPDATE FACING
-# =========================================================
-
-func _update_facing(direction: Vector2) -> void:
-	if absf(direction.x) < 0.01:
-		return
-
-	facing_sign = signf(direction.x)
-
-	if sprite_faces_left:
-		animated_sprite.flip_h = direction.x > 0.0
-	else:
-		animated_sprite.flip_h = direction.x < 0.0
-
-	# Move attack hitbox to side boss is facing
-	do_damage.position = Vector2(
-		facing_sign * attack_hitbox_distance,
-		attack_hitbox_original_y
-	)
-
-
-# =========================================================
-# CHASE STATE
-# =========================================================
-
-func _enter_chase_state() -> void:
+func _enter_attack() -> void:
 	if current_state == State.DEAD:
 		return
 
-	current_state = State.CHASE
-
-	velocity = Vector2.ZERO
-
-	_deactivate_attack_hitbox()
-
 	if not is_instance_valid(target):
-		_play_animation(&"idle")
 		return
 
-	var direction := global_position.direction_to(
-		target.global_position
-	)
-
-	_update_facing(direction)
-
-	if global_position.distance_to(
-		target.global_position
-	) > attack_range:
-
-		_play_animation(&"walk")
-
-	else:
-
-		_play_animation(&"idle")
-
-
-# =========================================================
-# ATTACK STATE
-# =========================================================
-
-func _enter_attack_state() -> void:
-	if current_state == State.DEAD:
+	if not _has_line_of_sight_to_player():
 		return
 
 	current_state = State.ATTACK
 
 	velocity = Vector2.ZERO
 
-	_deactivate_attack_hitbox()
+	do_damage.deactivate()
 
-	# Face the player before attacking
-	if is_instance_valid(target):
-		_update_facing(
-			global_position.direction_to(
-				target.global_position
-			)
+	attack_damage_applied = false
+
+	_update_facing(
+		global_position.direction_to(
+			target.global_position
 		)
+	)
 
-	# Demon slime attack animation
 	if not _play_animation(
 		&"cleave",
 		true
 	):
+
 		cooldown_remaining = attack_cooldown
 
-		_enter_chase_state()
+		_enter_idle()
 
 
-# =========================================================
-# HURT STATE
-# =========================================================
-
-func _enter_hurt_state() -> void:
-	if current_state == State.DEAD:
-		return
-
-	current_state = State.HURT
-
+func _process_attack() -> void:
 	velocity = Vector2.ZERO
 
-	_deactivate_attack_hitbox()
-
-	if not _play_animation(
-		&"take_hit",
-		true
-	):
-		_enter_chase_state()
-
-
-# =========================================================
-# DEAD STATE
-# =========================================================
-
-func _enter_dead_state() -> void:
-	if current_state == State.DEAD:
+	if not is_instance_valid(target):
+		_enter_idle()
 		return
 
-	current_state = State.DEAD
+	if (
+		global_position.distance_to(
+			target.global_position
+		) > attack_cancel_distance
+		or
+		not _has_line_of_sight_to_player()
+	):
 
-	_start_death()
+		cooldown_remaining = attack_cooldown
+
+		_enter_idle()
 
 
 # =========================================================
-# PLAY ANIMATION
+# FACING
+# =========================================================
+
+func _update_facing(
+	direction: Vector2
+) -> void:
+
+	if absf(direction.x) < 0.01:
+		return
+
+	if sprite_faces_left:
+
+		animated_sprite.flip_h = \
+			direction.x > 0.0
+
+	else:
+
+		animated_sprite.flip_h = \
+			direction.x < 0.0
+
+
+# =========================================================
+# ANIMATION
 # =========================================================
 
 func _play_animation(
@@ -408,14 +456,19 @@ func _play_animation(
 	if not animated_sprite.sprite_frames.has_animation(
 		animation_name
 	):
+
 		push_warning(
-			"Missing animation: %s" % animation_name
+			"Missing Demon Slime animation: %s"
+			% animation_name
 		)
 
 		return false
 
 	if restart:
-		animated_sprite.play(animation_name)
+
+		animated_sprite.play(
+			animation_name
+		)
 
 		animated_sprite.set_frame_and_progress(
 			0,
@@ -425,13 +478,16 @@ func _play_animation(
 		return true
 
 	if animated_sprite.animation != animation_name:
-		animated_sprite.play(animation_name)
+
+		animated_sprite.play(
+			animation_name
+		)
 
 	return true
 
 
 # =========================================================
-# ANIMATION FRAME CHANGED
+# ATTACK FRAME
 # =========================================================
 
 func _on_animation_frame_changed() -> void:
@@ -441,18 +497,62 @@ func _on_animation_frame_changed() -> void:
 	if animated_sprite.animation != &"cleave":
 		return
 
-	var current_frame := animated_sprite.frame
+	var frame := animated_sprite.frame
 
-	var should_activate := (
-		current_frame >= attack_hit_start_frame
+	if (
+		frame >= attack_hit_start_frame
 		and
-		current_frame <= attack_hit_end_frame
-	)
+		frame <= attack_hit_end_frame
+	):
+		_damage_real_player()
 
-	if should_activate:
-		_activate_attack_hitbox()
-	else:
-		_deactivate_attack_hitbox()
+
+func _damage_real_player() -> void:
+	if attack_damage_applied:
+		return
+
+	if not is_instance_valid(target):
+		return
+
+	if not _has_line_of_sight_to_player():
+		return
+
+	if global_position.distance_to(
+		target.global_position
+	) > attack_range:
+		return
+
+	if target.has_method("take_damage"):
+
+		attack_damage_applied = true
+
+		target.call(
+			"take_damage",
+			attack_damage,
+			global_position,
+			0.0
+		)
+
+
+# =========================================================
+# HURT
+# =========================================================
+
+func _enter_hurt() -> void:
+	if current_state == State.DEAD:
+		return
+
+	current_state = State.HURT
+
+	velocity = Vector2.ZERO
+
+	do_damage.deactivate()
+
+	if not _play_animation(
+		&"take_hit",
+		true
+	):
+		_enter_idle()
 
 
 # =========================================================
@@ -467,17 +567,23 @@ func _on_animation_finished() -> void:
 			if animated_sprite.animation != &"cleave":
 				return
 
-			_deactivate_attack_hitbox()
+			cooldown_remaining = \
+				attack_cooldown
 
-			cooldown_remaining = attack_cooldown
-
-			_enter_chase_state()
+			if _can_detect_player():
+				current_state = State.CHASE
+			else:
+				_enter_idle()
 
 
 		State.HURT:
 
 			if animated_sprite.animation == &"take_hit":
-				_enter_chase_state()
+
+				if _can_detect_player():
+					current_state = State.CHASE
+				else:
+					_enter_idle()
 
 
 		State.DEAD:
@@ -485,33 +591,6 @@ func _on_animation_finished() -> void:
 			if animated_sprite.animation == &"death":
 
 				_finish_death()
-
-
-# =========================================================
-# ACTIVATE ATTACK HITBOX
-# =========================================================
-
-func _activate_attack_hitbox() -> void:
-	if attack_hitbox_active:
-		return
-
-	attack_hitbox_active = true
-
-	do_damage.activate()
-
-	# Damage player even if already overlapping
-	# when the attack becomes active
-	do_damage.damage_current_overlaps()
-
-
-# =========================================================
-# DEACTIVATE ATTACK HITBOX
-# =========================================================
-
-func _deactivate_attack_hitbox() -> void:
-	attack_hitbox_active = false
-
-	do_damage.deactivate()
 
 
 # =========================================================
@@ -540,65 +619,37 @@ func take_damage(
 		maximum_health
 	)
 
-	print(
-		"Demon Slime Boss HP: ",
-		current_health,
-		"/",
-		maximum_health
-	)
-
 	if current_health <= 0:
-		_enter_dead_state()
+
+		_enter_dead()
+
 	else:
-		_enter_hurt_state()
+
+		_enter_hurt()
 
 
 # =========================================================
-# HEAL
+# DEATH
 # =========================================================
 
-func heal(amount: int) -> void:
+func _enter_dead() -> void:
 	if current_state == State.DEAD:
 		return
 
-	if amount <= 0:
-		return
+	current_state = State.DEAD
 
-	current_health = mini(
-		current_health + amount,
-		maximum_health
-	)
-
-	health_changed.emit(
-		current_health,
-		maximum_health
-	)
-
-
-# =========================================================
-# START DEATH
-# =========================================================
-
-func _start_death() -> void:
 	velocity = Vector2.ZERO
 
-	_deactivate_attack_hitbox()
+	do_damage.deactivate()
 
-	# Disable normal body collision
 	body_collision.set_deferred(
 		"disabled",
 		true
 	)
 
-	# Disable TakeDamage collision
 	take_damage_collision.set_deferred(
 		"disabled",
 		true
-	)
-
-	take_damage_area.set_deferred(
-		"monitorable",
-		false
 	)
 
 	take_damage_area.set_deferred(
@@ -606,7 +657,11 @@ func _start_death() -> void:
 		false
 	)
 
-	# Start death animation
+	take_damage_area.set_deferred(
+		"monitorable",
+		false
+	)
+
 	if not _play_animation(
 		&"death",
 		true
@@ -614,12 +669,7 @@ func _start_death() -> void:
 		_finish_death()
 
 
-# =========================================================
-# FINISH DEATH
-# =========================================================
-
 func _finish_death() -> void:
-	# Open gate after death animation has completed
 	_open_gate()
 
 	died.emit()
@@ -632,19 +682,13 @@ func _finish_death() -> void:
 # =========================================================
 
 func _open_gate() -> void:
-	if not is_instance_valid(gate_to_open):
-		push_warning(
-			"No gate assigned to Demon Slime Boss."
-		)
-
+	if not is_instance_valid(
+		gate_to_open
+	):
 		return
 
-	if gate_to_open.has_method("open_gate"):
+	if gate_to_open.has_method(
+		"open_gate"
+	):
 
 		gate_to_open.open_gate()
-
-	else:
-
-		push_warning(
-			"Assigned gate does not have open_gate()."
-		)

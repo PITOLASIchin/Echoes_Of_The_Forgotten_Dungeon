@@ -6,7 +6,12 @@ signal health_changed(current_health: int, maximum_health: int)
 signal died
 
 
+const PLAYER_SCENE_PATH: String = \
+	"res://_Cheok_Kai_Ren/character/player.tscn"
+
+
 enum State {
+	IDLE,
 	CHASE,
 	ATTACK,
 	HURT,
@@ -14,53 +19,117 @@ enum State {
 }
 
 
+# =========================================================
+# HEALTH
+# =========================================================
+
 @export_category("Health")
-@export var maximum_health: int = 5
+
+@export var maximum_health: int = 15
+
+
+# =========================================================
+# MOVEMENT
+# =========================================================
 
 @export_category("Movement")
+
 @export var move_speed: float = 55.0
 
-@export_category("Attack")
-@export var attack_damage: int = 1
-@export var attack_range: float = 35.0
-@export var attack_cancel_distance: float = 55.0
-@export var attack_cooldown: float = 1.2
-@export var attack_hit_start_frame: int = 2
-@export var attack_hit_end_frame: int = 3
-@export var attack_hitbox_distance: float = 18.0
 
-@export_category("Target")
-@export var player_group: StringName = &"Player"
+# =========================================================
+# VISION
+# =========================================================
+
+@export_category("Vision")
+
+@export var detection_range: float = 200.0
+
+@export_flags_2d_physics var vision_collision_mask: int = \
+	0xFFFFFFFF
+
+
+# =========================================================
+# ATTACK
+# =========================================================
+
+@export_category("Attack")
+
+@export var attack_damage: int = 0.2
+
+@export var attack_range: float = 35.0
+
+@export var attack_cancel_distance: float = 55.0
+
+@export var attack_cooldown: float = 1.2
+
+@export var attack_hit_start_frame: int = 2
+
+@export var attack_hit_end_frame: int = 3
+
+
+# =========================================================
+# SPRITE
+# =========================================================
 
 @export_category("Sprite")
+
 @export var sprite_faces_left: bool = false
 
 
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var body_collision: CollisionShape2D = $CollisionShape2D
-@onready var do_damage: DoDamage = $do_damage
-@onready var take_damage_area: TakeDamage = $take_damage
-@onready var take_damage_collision: CollisionShape2D = $take_damage/CollisionShape2D
+# =========================================================
+# NODES
+# =========================================================
+
+@onready var animated_sprite: AnimatedSprite2D = \
+	$AnimatedSprite2D
+
+@onready var body_collision: CollisionShape2D = \
+	$CollisionShape2D
+
+@onready var do_damage: DoDamage = \
+	$do_damage
+
+@onready var take_damage_area: TakeDamage = \
+	$take_damage
+
+@onready var take_damage_collision: CollisionShape2D = \
+	$take_damage/CollisionShape2D
+
+@onready var attack_sound: AudioStreamPlayer2D = \
+	$AttackSound
 
 
-var current_health: int
-var current_state: State = State.CHASE
+# =========================================================
+# VARIABLES
+# =========================================================
+
+var current_health: int = 0
+
+var current_state: State = State.IDLE
+
 var target: Node2D = null
 
 var cooldown_remaining: float = 0.0
-var attack_hitbox_active: bool = false
-var active_attack_animation: StringName = &"atk1"
-var use_first_attack: bool = true
-var facing_sign: float = 1.0
-var attack_hitbox_original_y: float = 0.0
 
+var active_attack_animation: StringName = \
+	&"atk1"
+
+var use_first_attack: bool = true
+
+var attack_damage_applied: bool = false
+
+
+# =========================================================
+# READY
+# =========================================================
 
 func _ready() -> void:
 	current_health = maximum_health
-	attack_hitbox_original_y = do_damage.position.y
 
-	do_damage.damage = attack_damage
-	do_damage.repeat_damage = false
+	add_to_group("Enemy")
+
+	# Never use generic Area damage against enemies.
 	do_damage.deactivate()
 
 	if not animated_sprite.frame_changed.is_connected(
@@ -77,266 +146,499 @@ func _ready() -> void:
 			_on_animation_finished
 		)
 
-	_find_target()
-	_enter_chase_state()
+	_find_real_player()
 
-	health_changed.emit(current_health, maximum_health)
+	_enter_idle_state()
 
+	health_changed.emit(
+		current_health,
+		maximum_health
+	)
+
+
+# =========================================================
+# PHYSICS
+# =========================================================
 
 func _physics_process(delta: float) -> void:
 	if current_state == State.DEAD:
 		return
 
-	cooldown_remaining = maxf(cooldown_remaining - delta, 0.0)
+	cooldown_remaining = maxf(
+		cooldown_remaining - delta,
+		0.0
+	)
 
 	if not is_instance_valid(target):
-		_find_target()
+		_find_real_player()
 
 	if not is_instance_valid(target):
-		velocity = Vector2.ZERO
 
-		if current_state == State.CHASE:
-			_play_animation(&"idle")
+		if current_state not in [
+			State.HURT,
+			State.ATTACK
+		]:
+			_enter_idle_state()
 
 		return
 
-	match current_state:
-		State.CHASE:
-			_process_chase()
+	if current_state == State.HURT:
+		return
 
-		State.ATTACK:
-			_process_attack()
+	if current_state == State.ATTACK:
 
-		State.HURT:
-			velocity = Vector2.ZERO
+		_process_attack()
 
-		State.DEAD:
-			velocity = Vector2.ZERO
+		return
 
+	if not _can_detect_player():
+
+		_enter_idle_state()
+
+		return
+
+	_process_chase()
+
+
+# =========================================================
+# FIND PLAYER
+# =========================================================
+
+func _find_real_player() -> void:
+	target = null
+
+	var scene := get_tree().current_scene
+
+	if scene == null:
+		return
+
+	target = _search_player(scene)
+
+
+func _search_player(
+	node: Node
+) -> Node2D:
+
+	if (
+		node is Node2D
+		and
+		node.scene_file_path == PLAYER_SCENE_PATH
+	):
+		return node as Node2D
+
+	for child in node.get_children():
+
+		var found := _search_player(child)
+
+		if found != null:
+			return found
+
+	return null
+
+
+# =========================================================
+# VISION
+# =========================================================
+
+func _can_detect_player() -> bool:
+	if not is_instance_valid(target):
+		return false
+
+	if global_position.distance_to(
+		target.global_position
+	) > detection_range:
+		return false
+
+	return _has_line_of_sight_to_player()
+
+
+func _has_line_of_sight_to_player() -> bool:
+	if not is_instance_valid(target):
+		return false
+
+	var query := \
+		PhysicsRayQueryParameters2D.create(
+			global_position,
+			target.global_position,
+			vision_collision_mask,
+			_get_vision_excludes()
+		)
+
+	query.collide_with_bodies = true
+	query.collide_with_areas = false
+
+	var result := \
+		get_world_2d().direct_space_state.intersect_ray(
+			query
+		)
+
+	if result.is_empty():
+		return false
+
+	var collider = result.get("collider")
+
+	if collider == target:
+		return true
+
+	if collider is Node:
+
+		if target.is_ancestor_of(
+			collider as Node
+		):
+			return true
+
+	return false
+
+
+func _get_vision_excludes() -> Array[RID]:
+	var result: Array[RID] = [
+		get_rid()
+	]
+
+	for enemy in get_tree().get_nodes_in_group(
+		"Enemy"
+	):
+
+		if enemy == self:
+			continue
+
+		if enemy is CollisionObject2D:
+
+			result.append(
+				(enemy as CollisionObject2D).get_rid()
+			)
+
+	return result
+
+
+# =========================================================
+# CHASE
+# =========================================================
 
 func _process_chase() -> void:
-	var direction := global_position.direction_to(
-		target.global_position
-	)
+	if not is_instance_valid(target):
+		return
 
-	var distance_to_player := global_position.distance_to(
-		target.global_position
-	)
+	current_state = State.CHASE
+
+	var direction := \
+		global_position.direction_to(
+			target.global_position
+		)
+
+	var distance := \
+		global_position.distance_to(
+			target.global_position
+		)
 
 	_update_facing(direction)
 
 	if (
-		distance_to_player <= attack_range
-		and cooldown_remaining <= 0.0
+		distance <= attack_range
+		and
+		cooldown_remaining <= 0.0
 	):
 		_enter_attack_state()
 		return
 
-	if distance_to_player <= attack_range:
+	if distance <= attack_range:
+
 		velocity = Vector2.ZERO
+
 		_play_animation(&"idle")
+
 		return
 
 	velocity = direction * move_speed
+
 	_play_animation(&"walk")
+
 	move_and_slide()
 
+
+# =========================================================
+# ATTACK
+# =========================================================
 
 func _process_attack() -> void:
 	velocity = Vector2.ZERO
 
 	if not is_instance_valid(target):
-		_enter_chase_state()
+		_enter_idle_state()
 		return
 
-	var distance_to_player := global_position.distance_to(
+	var distance := global_position.distance_to(
 		target.global_position
 	)
 
-	if distance_to_player > attack_cancel_distance:
-		_deactivate_attack_hitbox()
+	if (
+		distance > attack_cancel_distance
+		or
+		not _has_line_of_sight_to_player()
+	):
+
 		cooldown_remaining = attack_cooldown
-		_enter_chase_state()
+
+		_enter_idle_state()
 
 
-func _find_target() -> void:
-	var found_target := get_tree().get_first_node_in_group(
-		player_group
-	)
+# =========================================================
+# FACING
+# =========================================================
 
-	if found_target is Node2D:
-		target = found_target as Node2D
-	else:
-		target = null
+func _update_facing(
+	direction: Vector2
+) -> void:
 
-
-func _update_facing(direction: Vector2) -> void:
 	if absf(direction.x) < 0.01:
 		return
 
-	facing_sign = signf(direction.x)
-
 	if sprite_faces_left:
-		animated_sprite.flip_h = direction.x > 0.0
+
+		animated_sprite.flip_h = \
+			direction.x > 0.0
+
 	else:
-		animated_sprite.flip_h = direction.x < 0.0
 
-	do_damage.position = Vector2(
-		facing_sign * attack_hitbox_distance,
-		attack_hitbox_original_y
-	)
+		animated_sprite.flip_h = \
+			direction.x < 0.0
 
 
-func _enter_chase_state() -> void:
+# =========================================================
+# IDLE
+# =========================================================
+
+func _enter_idle_state() -> void:
 	if current_state == State.DEAD:
 		return
 
-	current_state = State.CHASE
+	current_state = State.IDLE
+
 	velocity = Vector2.ZERO
-	_deactivate_attack_hitbox()
 
-	if not is_instance_valid(target):
-		_play_animation(&"idle")
-		return
+	do_damage.deactivate()
 
-	var direction := global_position.direction_to(
-		target.global_position
-	)
+	_play_animation(&"idle")
 
-	_update_facing(direction)
 
-	if global_position.distance_to(
-		target.global_position
-	) > attack_range:
-		_play_animation(&"walk")
-	else:
-		_play_animation(&"idle")
-
+# =========================================================
+# ATTACK STATE
+# =========================================================
 
 func _enter_attack_state() -> void:
 	if current_state == State.DEAD:
 		return
 
-	current_state = State.ATTACK
-	velocity = Vector2.ZERO
-	_deactivate_attack_hitbox()
+	if not is_instance_valid(target):
+		return
 
-	if is_instance_valid(target):
-		_update_facing(
-			global_position.direction_to(
-				target.global_position
-			)
+	if not _has_line_of_sight_to_player():
+		return
+
+	current_state = State.ATTACK
+
+	velocity = Vector2.ZERO
+
+	do_damage.deactivate()
+
+	attack_damage_applied = false
+
+	_update_facing(
+		global_position.direction_to(
+			target.global_position
 		)
+	)
 
 	if use_first_attack:
+
 		active_attack_animation = &"atk1"
+
 	else:
+
 		active_attack_animation = &"atk2"
 
 	use_first_attack = not use_first_attack
 
-	if not _play_animation(active_attack_animation, true):
-		cooldown_remaining = attack_cooldown
-		_enter_chase_state()
+	if is_instance_valid(attack_sound):
+		attack_sound.play()
 
+	if not _play_animation(
+		active_attack_animation,
+		true
+	):
+
+		cooldown_remaining = attack_cooldown
+
+		_enter_idle_state()
+
+
+# =========================================================
+# HURT
+# =========================================================
 
 func _enter_hurt_state() -> void:
 	if current_state == State.DEAD:
 		return
 
 	current_state = State.HURT
+
 	velocity = Vector2.ZERO
-	_deactivate_attack_hitbox()
 
-	if not _play_animation(&"hurt", true):
-		_enter_chase_state()
+	do_damage.deactivate()
+
+	if animated_sprite.sprite_frames.has_animation(&"hurt"):
+		animated_sprite.play(&"hurt")
+		animated_sprite.set_frame_and_progress(0, 0.0)
+	else:
+		push_warning("BloodyHell missing hurt animation")
+		current_state = State.CHASE
 
 
-func _enter_dead_state() -> void:
-	if current_state == State.DEAD:
-		return
-
-	current_state = State.DEAD
-	_start_death()
-
+# =========================================================
+# ANIMATION
+# =========================================================
 
 func _play_animation(
 	animation_name: StringName,
 	restart: bool = false
 ) -> bool:
+
 	if not animated_sprite.sprite_frames.has_animation(
 		animation_name
 	):
+
 		push_warning(
-			"Missing animation: %s" % animation_name
+			"Missing BloodyHell animation: %s"
+			% animation_name
 		)
+
 		return false
 
 	if restart:
+
 		animated_sprite.play(animation_name)
-		animated_sprite.set_frame_and_progress(0, 0.0)
+
+		animated_sprite.set_frame_and_progress(
+			0,
+			0.0
+		)
+
 		return true
 
 	if animated_sprite.animation != animation_name:
+
 		animated_sprite.play(animation_name)
 
 	return true
 
 
+# =========================================================
+# ATTACK FRAME
+# =========================================================
+
 func _on_animation_frame_changed() -> void:
 	if current_state != State.ATTACK:
 		return
 
-	if animated_sprite.animation != active_attack_animation:
+	if (
+		animated_sprite.animation
+		!=
+		active_attack_animation
+	):
 		return
 
-	var current_frame := animated_sprite.frame
+	var frame := animated_sprite.frame
 
-	var should_activate := (
-		current_frame >= attack_hit_start_frame
-		and current_frame <= attack_hit_end_frame
-	)
+	if (
+		frame >= attack_hit_start_frame
+		and
+		frame <= attack_hit_end_frame
+	):
+		_damage_real_player()
 
-	if should_activate:
-		_activate_attack_hitbox()
-	else:
-		_deactivate_attack_hitbox()
 
+# =========================================================
+# PLAYER-ONLY DAMAGE
+# =========================================================
+
+func _damage_real_player() -> void:
+	if attack_damage_applied:
+		return
+
+	if not is_instance_valid(target):
+		return
+
+	if not _has_line_of_sight_to_player():
+		return
+
+	if global_position.distance_to(
+		target.global_position
+	) > attack_range:
+		return
+
+	if target.has_method("take_damage"):
+
+		attack_damage_applied = true
+
+		target.call(
+			"take_damage",
+			attack_damage,
+			global_position,
+			0.0
+		)
+
+
+# =========================================================
+# ANIMATION FINISHED
+# =========================================================
 
 func _on_animation_finished() -> void:
 	match current_state:
+
 		State.ATTACK:
-			if animated_sprite.animation != active_attack_animation:
+
+			if (
+				animated_sprite.animation
+				!=
+				active_attack_animation
+			):
 				return
 
-			_deactivate_attack_hitbox()
-			cooldown_remaining = attack_cooldown
-			_enter_chase_state()
+			cooldown_remaining = \
+				attack_cooldown
+
+			if _can_detect_player():
+				current_state = State.CHASE
+			else:
+				_enter_idle_state()
+
 
 		State.HURT:
+
 			if animated_sprite.animation == &"hurt":
-				_enter_chase_state()
+
+				if _can_detect_player():
+					current_state = State.CHASE
+				else:
+					_enter_idle_state()
+
 
 		State.DEAD:
+
 			if animated_sprite.animation == &"die":
 				queue_free()
 
 
-func _activate_attack_hitbox() -> void:
-	if attack_hitbox_active:
-		return
+# =========================================================
+# TAKE DAMAGE
+# =========================================================
 
-	attack_hitbox_active = true
-	do_damage.activate()
-	do_damage.damage_current_overlaps()
+func take_damage(
+	amount: int,
+	source_position: Vector2 = Vector2.ZERO,
+	knockback_force: float = 0.0
+) -> void:
 
-
-func _deactivate_attack_hitbox() -> void:
-	attack_hitbox_active = false
-	do_damage.deactivate()
-
-
-func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO, knockback_force: float = 0.0) -> void:
 	if current_state == State.DEAD:
 		return
 
@@ -354,39 +656,52 @@ func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO, knockback
 	)
 
 	if current_health <= 0:
+
 		_enter_dead_state()
+
 	else:
+
 		_enter_hurt_state()
 
 
-func heal(amount: int) -> void:
+# =========================================================
+# DEATH
+# =========================================================
+
+func _enter_dead_state() -> void:
 	if current_state == State.DEAD:
 		return
 
-	if amount <= 0:
-		return
+	current_state = State.DEAD
 
-	current_health = mini(
-		current_health + amount,
-		maximum_health
-	)
-
-	health_changed.emit(
-		current_health,
-		maximum_health
-	)
-
-
-func _start_death() -> void:
 	died.emit()
 
 	velocity = Vector2.ZERO
-	_deactivate_attack_hitbox()
 
-	body_collision.set_deferred("disabled", true)
-	take_damage_collision.set_deferred("disabled", true)
-	take_damage_area.set_deferred("monitorable", false)
-	take_damage_area.set_deferred("monitoring", false)
+	do_damage.deactivate()
 
-	if not _play_animation(&"die", true):
+	body_collision.set_deferred(
+		"disabled",
+		true
+	)
+
+	take_damage_collision.set_deferred(
+		"disabled",
+		true
+	)
+
+	take_damage_area.set_deferred(
+		"monitoring",
+		false
+	)
+
+	take_damage_area.set_deferred(
+		"monitorable",
+		false
+	)
+
+	if not _play_animation(
+		&"die",
+		true
+	):
 		queue_free()
