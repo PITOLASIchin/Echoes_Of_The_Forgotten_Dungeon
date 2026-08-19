@@ -48,16 +48,6 @@ func _on_enemy_died() -> void:
 	if enemies_alive <= 0:
 		_reveal_bridge()
 
-	player.health_changed.connect(hud.update_health)
-	player.coins_changed.connect(hud.update_coins)
-	player.player_died.connect(_on_player_died)
-	hud.update_potions(potion_count)
-
-	if merchant != null:
-		merchant.purchased.connect(_on_merchant_purchased)
-
-	room_exit.player_entered.connect(_on_win)
-
 func _unhandled_input(event: InputEvent) -> void:
 	if game_over:
 		return
