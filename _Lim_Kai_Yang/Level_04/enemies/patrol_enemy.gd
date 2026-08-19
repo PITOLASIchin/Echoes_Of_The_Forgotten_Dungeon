@@ -51,6 +51,8 @@ var points: Array[Vector2] = []
 var current_point := 0
 var can_attack := true
 
+signal died
+
 func _ready() -> void:
 	health = max_health
 	add_to_group("Enemy")
@@ -166,6 +168,7 @@ func _flash_hit() -> void:
 
 func _die() -> void:
 	state = State.DEAD
+	died.emit()
 	do_damage.deactivate()
 	body_collision.set_deferred("disabled", true)
 	take_damage_area.get_node("CollisionShape2D").set_deferred("disabled", true)

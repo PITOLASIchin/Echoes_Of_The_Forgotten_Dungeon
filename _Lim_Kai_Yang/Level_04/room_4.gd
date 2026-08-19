@@ -13,11 +13,40 @@ var player: Node2D = null
 var game_over := false  # 现在只代表"通关了", 不再代表"死了"
 var potion_count := 0
 
+@onready var bridge: StaticBody2D = $Bridge
+
+
+
+func _reveal_bridge() -> void:
+	bridge.reveal()
+	
+var enemies_alive := 0
+
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
 	if player == null:
 		push_error("Room4: 场景里没有找到 player 组的节点, 先确认 Player 节点分组")
 		return
+
+	var enemies := get_tree().get_nodes_in_group("Enemy")
+	enemies_alive = enemies.size()
+	for enemy in enemies:
+		enemy.died.connect(_on_enemy_died)
+
+	player.health_changed.connect(hud.update_health)
+	player.coins_changed.connect(hud.update_coins)
+	player.player_died.connect(_on_player_died)
+	hud.update_potions(potion_count)
+
+	if merchant != null:
+		merchant.purchased.connect(_on_merchant_purchased)
+
+	room_exit.player_entered.connect(_on_win)
+
+func _on_enemy_died() -> void:
+	enemies_alive -= 1
+	if enemies_alive <= 0:
+		_reveal_bridge()
 
 	player.health_changed.connect(hud.update_health)
 	player.coins_changed.connect(hud.update_coins)
