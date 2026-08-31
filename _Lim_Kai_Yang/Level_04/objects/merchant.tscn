@@ -89,3 +89,19 @@ shape = SubResource("CircleShape2D_5mohl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=314683080]
 shape = SubResource("CircleShape2D_ana8w")
+
+[node name="HintLabel" type="Label" parent="." unique_id=1580392327]
+top_level = true
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -94.0
+offset_top = -15.0
+offset_right = 94.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.5, 0.5)
+text = "Can buy somethings at here"
+horizontal_alignment = 1

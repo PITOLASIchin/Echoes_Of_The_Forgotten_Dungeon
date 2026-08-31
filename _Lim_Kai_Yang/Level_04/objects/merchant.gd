@@ -1,22 +1,10 @@
 extends StaticBody2D
-## 商人 NPC:玩家靠近后按 E 打开商品弹窗, 弹窗开着时再按一次 E 购买。
-## 参考 lever.gd / chest.gd 的 "Area2D + interact" 套路。
-##
-## 场景树:
-## Merchant (StaticBody2D)
-## ├── AnimatedSprite2D
-## ├── CollisionShape2D      (本体, 挡路)
-## └── Area2D                (侦测玩家)
-##     └── CollisionShape2D
-##
-## popup_path 要在 Inspector 里手动指到 Room4HUD 底下的 ShopPopup,
-## 比如 "../Room4HUD/ShopPopup"(实际路径依你场景摆放的层级为准)。
 
 signal purchased(item_name: String, reward_type: int)
 signal purchase_failed(item_name: String, reason: String)
 
 enum RewardType { KEY, HEAL, POTION, CUSTOM }
-
+@export var hint_text: String = "Press E to Buy"
 @export var item_name: String = "Health Potion"
 @export var item_cost: int = 5
 @export var reward_type: RewardType = RewardType.POTION
@@ -25,6 +13,7 @@ enum RewardType { KEY, HEAL, POTION, CUSTOM }
 @export var popup_path: NodePath
 
 @onready var interaction_area: Area2D = $Area2D
+@onready var hint_label: Label = $HintLabel
 
 var popup: Control = null
 var player: Node2D = null
@@ -37,10 +26,14 @@ func _ready() -> void:
 	interaction_area.body_exited.connect(_on_body_exited)
 
 	if popup_path.is_empty():
-		push_warning("Merchant: popup_path 没设定, 商品弹窗不会显示")
+		push_warning("Merchant: popup_path havent set, popup path no show")
 	else:
 		popup = get_node(popup_path) as Control
 		popup.close()
+		
+	hint_label.text = hint_text
+	hint_label.global_position = global_position + Vector2(-40, -50)
+	hint_label.hide()
 
 func _process(_delta: float) -> void:
 	if not player_near or sold_out or popup == null:
@@ -56,6 +49,7 @@ func _process(_delta: float) -> void:
 func _open_shop() -> void:
 	shop_open = true
 	popup.open(item_name, item_cost, item_icon)
+	hint_label.hide()
 
 func _close_shop() -> void:
 	shop_open = false
@@ -63,7 +57,7 @@ func _close_shop() -> void:
 
 func _try_purchase() -> void:
 	if player == null or not player.has_method("spend_coins"):
-		push_warning("Merchant: player 没有 spend_coins(), 先去 knight_1.gd 补上")
+		push_warning("Merchant: player no spend_coins()")
 		return
 
 	if not player.spend_coins(item_cost):
@@ -82,7 +76,7 @@ func _try_purchase() -> void:
 			if player.has_method("heal"):
 				player.heal(1)
 		RewardType.POTION, RewardType.CUSTOM:
-			pass # 药水数量记在 Room4 自己身上(room_4.gd), 不记进共用的 knight_1.gd
+			pass
 
 	if stock > 0:
 		stock -= 1
@@ -93,8 +87,10 @@ func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		player = body
 		player_near = true
+		hint_label.show()
 
 func _on_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		player_near = false
 		_close_shop()
+		hint_label.show() if false else hint_label.hide()

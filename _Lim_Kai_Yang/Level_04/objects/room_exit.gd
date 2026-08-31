@@ -1,9 +1,4 @@
 extends Area2D
-## 关卡出口:玩家走进来就发出信号, 通知 Room4 总管"到达出口了"。
-## 场景树:
-## RoomExit (Area2D) [挂本脚本]
-## ├── Sprite2D 或 AnimatedSprite2D   (出口贴图)
-## └── CollisionShape2D
 
 @export_file("*.tscn") var next_scene_path: String = ""
 

@@ -78,3 +78,10 @@ collision_layer = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PushZoneRight" unique_id=1150271291]
 position = Vector2(16, 0.25)
 shape = SubResource("RectangleShape2D_ty85o")
+
+[node name="HintLabel" type="Label" parent="." unique_id=1554383630]
+top_level = true
+offset_right = 40.0
+offset_bottom = 15.0
+scale = Vector2(0.5, 0.5)
+horizontal_alignment = 1

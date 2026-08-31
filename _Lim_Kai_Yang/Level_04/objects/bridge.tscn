@@ -26,6 +26,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lwm8w"]
 size = Vector2(50, 50)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ywog7"]
+size = Vector2(78, 72)
+
 [node name="Bridge" type="StaticBody2D" unique_id=285959874]
 script = ExtResource("1_ywog7")
 
@@ -36,3 +39,15 @@ frame_progress = 0.4750007
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=88752502]
 shape = SubResource("RectangleShape2D_lwm8w")
+
+[node name="HintLabel" type="Label" parent="." unique_id=1078946329]
+top_level = true
+offset_right = 40.0
+offset_bottom = 15.0
+scale = Vector2(0.5, 0.5)
+horizontal_alignment = 1
+
+[node name="HintArea" type="Area2D" parent="." unique_id=1556249285]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HintArea" unique_id=2036097655]
+shape = SubResource("RectangleShape2D_ywog7")
