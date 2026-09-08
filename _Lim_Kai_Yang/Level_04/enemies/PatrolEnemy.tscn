@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://by7i1vhq6om2f" path="res://_Lim_Kai_Yang/Level_04/assets/Tiny Swords (Free Pack)/Units/Black Units/Warrior/Warrior_Run.png" id="4_bawfb"]
 [ext_resource type="PackedScene" uid="uid://dajk030sfow7a" path="res://Damage_Area/do_damage.tscn" id="5_t7nmv"]
 [ext_resource type="PackedScene" uid="uid://co6lsi7is61pi" path="res://Damage_Area/take_damage.tscn" id="6_2h6bm"]
+[ext_resource type="AudioStream" uid="uid://b87vbrm4bm0xv" path="res://_Lim_Kai_Yang/Level_04/assets/daviddumaisaudio-sword-slash-and-swing-185432.mp3" id="7_xv2l1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cjhk7"]
 atlas = ExtResource("2_3o5af")
@@ -185,3 +186,7 @@ shape = SubResource("CircleShape2D_8idri")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="take_damage" unique_id=313421013]
 shape = SubResource("CircleShape2D_a6gik")
+
+[node name="AttackSound" type="AudioStreamPlayer2D" parent="." unique_id=1361294091]
+stream = ExtResource("7_xv2l1")
+volume_db = -3.0
