@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dc8uas360ih6u" path="res://_Cheok_Kai_Ren/character/Swordsman_lvl2_Run_without_shadow.png" id="6_74mp2"]
 [ext_resource type="Texture2D" uid="uid://djjpbfpu4de67" path="res://_Cheok_Kai_Ren/character/Swordsman_lvl2_Walk_without_shadow.png" id="7_oikmp"]
 [ext_resource type="Texture2D" uid="uid://dk22lieoukquh" path="res://_Cheok_Kai_Ren/character/dodge_clean.png" id="9_fmdh3"]
+[ext_resource type="AudioStream" uid="uid://du8m570x1an0x" path="res://_Lim_Kai_Yang/Level_04/assets/yodguard-potion-drink-3-540167.mp3" id="10_fp8yf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fmdh3"]
 radius = 11.785112
@@ -1661,3 +1662,6 @@ position = Vector2(-8.333334, -13.333333)
 scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_yoe0r")
 animation = &"dodge_up"
+
+[node name="PotionDrinkSound" type="AudioStreamPlayer" parent="." unique_id=753207610]
+stream = ExtResource("10_fp8yf")

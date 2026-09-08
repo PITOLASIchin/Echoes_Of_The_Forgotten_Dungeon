@@ -119,7 +119,7 @@ var dodge_cooldown: float = 0.25
 @onready var attack_collision: CollisionShape2D = (
 	$AttackHitBox/CollisionShape2D
 )
-
+@onready var potion_drink_sound: AudioStreamPlayer = $PotionDrinkSound
 
 # ============================================================
 # BASIC PLAYER STATE
@@ -924,24 +924,27 @@ func add_potions(amount: int) -> void:
 		potions
 	)
 
-
 func use_potion() -> bool:
 
 	if potions <= 0:
-
+		print("No Potion")
 		return false
 
+	if is_dead:
+		return false
+
+	if current_health >= max_health:
+		print("Blood Full")
+		return false
 
 	potions -= 1
 
-
-	potions_changed.emit(
-		potions
-	)
-
+	heal(1)
+	
+	potion_drink_sound.play()
+	potions_changed.emit(potions)
 
 	return true
-
 
 # ============================================================
 # ATTACK
