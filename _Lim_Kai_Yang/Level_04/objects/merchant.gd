@@ -72,10 +72,16 @@ func _try_purchase() -> void:
 		RewardType.KEY:
 			if player.has_method("add_keys"):
 				player.add_keys(1)
+
 		RewardType.HEAL:
 			if player.has_method("heal"):
 				player.heal(1)
-		RewardType.POTION, RewardType.CUSTOM:
+
+		RewardType.POTION:
+			if player.has_method("add_potions"):
+				player.add_potions(1)
+
+		RewardType.CUSTOM:
 			pass
 
 	if stock > 0:

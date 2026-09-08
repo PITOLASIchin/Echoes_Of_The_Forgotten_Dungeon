@@ -189,4 +189,4 @@ shape = SubResource("CircleShape2D_a6gik")
 
 [node name="AttackSound" type="AudioStreamPlayer2D" parent="." unique_id=1361294091]
 stream = ExtResource("7_xv2l1")
-volume_db = -3.0
+volume_db = -4.0
