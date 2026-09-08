@@ -1,23 +1,30 @@
 extends Node2D
-## Room 4 总管。玩家换成 Cheok Kai Ren 的 player.gd 之后:
-## - 分组改认小写 "player"
-## - 死亡不再是"game over等按E重来", 这个新角色死了会自动原地复活(player.gd 自己的 respawn()),
-##   所以这里只监听 player_died 信号做个提示, 不再强制重整个场景
-## - 喝药水改呼叫 player.heal(1), 因为新角色没有 .health 这个属性, 只有 current_health
 
 @onready var hud: Control = $Hud/hud
 @onready var room_exit: Area2D = $RoomExit
 @onready var merchant: StaticBody2D = $Merchant
+@onready var bridge: StaticBody2D = $Bridge
 
 var player: Node2D = null
-var game_over := false  # 现在只代表"通关了", 不再代表"死了"
+var game_over := false  
 var potion_count := 0
+
+func _reveal_bridge() -> void:
+	bridge.reveal()
+	
+var enemies_alive := 0
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player")
 	if player == null:
-		push_error("Room4: 场景里没有找到 player 组的节点, 先确认 Player 节点分组")
+		push_error("Room4: No Player")
 		return
+
+	var check_timer := Timer.new()
+	check_timer.wait_time = 0.3
+	check_timer.timeout.connect(_check_enemies_remaining)
+	add_child(check_timer)
+	check_timer.start()
 
 	player.health_changed.connect(hud.update_health)
 	player.coins_changed.connect(hud.update_coins)
@@ -29,6 +36,19 @@ func _ready() -> void:
 
 	room_exit.player_entered.connect(_on_win)
 
+var bridge_revealed := false
+
+func _check_enemies_remaining() -> void:
+	if bridge_revealed:
+		return
+	if get_tree().get_nodes_in_group("BridgeGate").is_empty():
+		bridge_revealed = true
+		_reveal_bridge()
+func _on_enemy_died() -> void:
+	enemies_alive -= 1
+	if enemies_alive <= 0:
+		_reveal_bridge()
+
 func _unhandled_input(event: InputEvent) -> void:
 	if game_over:
 		return
@@ -38,12 +58,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _drink_potion() -> void:
 	if potion_count <= 0:
-		print("没有药水可以喝")
+		print("No Potion")
 		return
 	if player == null or not is_instance_valid(player):
 		return
 	if player.current_health >= player.max_health:
-		print("血是满的, 先不喝")
+		print("Blood full")
 		return
 
 	potion_count -= 1
@@ -51,16 +71,15 @@ func _drink_potion() -> void:
 	player.heal(1)
 
 func _on_merchant_purchased(_item_name: String, reward_type: int) -> void:
-	if reward_type == 2:  # merchant.gd 里 RewardType.POTION
+	if reward_type == 2:  
 		potion_count += 1
 		hud.update_potions(potion_count)
 
 func _on_player_died() -> void:
-	print("你被打倒了, 复活中...")
-	# 新角色会自己 respawn(), 这里不用做任何强制重来的处理
+	print("You died...")
 
 func _on_win() -> void:
 	if game_over:
 		return
 	game_over = true
-	print("通关! 按 E 再玩一次")
+	print("Congratulation")

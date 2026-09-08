@@ -1,6 +1,4 @@
 extends Control
-## Room4 自己的 HUD:血条 + 金币 + 药水数量 + 暂停菜单。
-## 暂停这块是从队友 ui.gd 合并进来的, 逻辑不变, 只是换了挂载位置。
 
 @export var full_heart_texture: Texture2D
 @export var empty_heart_texture: Texture2D

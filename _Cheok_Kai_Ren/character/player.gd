@@ -901,7 +901,6 @@ func add_coins(
 
 	coins += amount
 
-
 	coins_changed.emit(
 		coins
 	)
@@ -911,12 +910,15 @@ func add_coins(
 # POTIONS
 # ============================================================
 
-func add_potions(
-	amount: int
-) -> void:
-
+func spend_coins(amount: int) -> bool:
+	if coins < amount:
+		return false
+	coins -= amount
+	coins_changed.emit(coins)
+	return true
+	
+func add_potions(amount: int) -> void:
 	potions += amount
-
 
 	potions_changed.emit(
 		potions

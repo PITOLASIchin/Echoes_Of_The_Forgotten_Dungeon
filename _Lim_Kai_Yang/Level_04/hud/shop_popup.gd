@@ -1,13 +1,4 @@
 extends Control
-## 商人的商品弹窗, 平常隐藏, Merchant 呼叫 open()/close() 控制显示。
-##
-## 场景树:
-## ShopPopup (Control)   [挂本脚本, 一开始 visible=false]
-## └── Panel
-##     ├── ItemIcon   (TextureRect)
-##     ├── ItemName   (Label)
-##     ├── ItemCost   (Label)
-##     └── HintLabel  (Label, 显示"按 E 购买"/"金币不够!"/"购买成功!")
 
 @onready var item_icon: TextureRect = $Panel/ItemIcon
 @onready var item_name_label: Label = $Panel/ItemName

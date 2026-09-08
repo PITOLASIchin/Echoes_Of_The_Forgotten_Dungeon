@@ -8,6 +8,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ol1vm"]
 size = Vector2(40, 40)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c31nj"]
+size = Vector2(60, 59)
+
 [node name="PressurePlate" type="Area2D" unique_id=557394425]
 collision_layer = 0
 script = ExtResource("1_2gqp7")
@@ -21,3 +24,16 @@ texture = ExtResource("4_46heq")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=667890550]
 position = Vector2(-1, 4.5)
 shape = SubResource("RectangleShape2D_ol1vm")
+
+[node name="HintArea" type="Area2D" parent="." unique_id=1459385499]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HintArea" unique_id=911759511]
+position = Vector2(-1, 5.5)
+shape = SubResource("RectangleShape2D_c31nj")
+
+[node name="HintLabel" type="Label" parent="." unique_id=1279416096]
+top_level = true
+offset_right = 40.0
+offset_bottom = 15.0
+scale = Vector2(0.5, 0.5)
+horizontal_alignment = 1
