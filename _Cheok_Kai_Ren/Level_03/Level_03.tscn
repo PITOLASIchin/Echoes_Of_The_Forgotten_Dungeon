@@ -231,7 +231,11 @@ automatic = true
 automatic = true
 
 [node name="spikes7" parent="Spike" unique_id=1340851657 instance=ExtResource("5_5g1bh")]
-position = Vector2(270, -72)
+position = Vector2(270, -77)
+automatic = true
+
+[node name="spikes15" parent="Spike" unique_id=1277942022 instance=ExtResource("5_5g1bh")]
+position = Vector2(270, -55)
 automatic = true
 
 [node name="spikes8" parent="Spike" unique_id=1653792246 instance=ExtResource("5_5g1bh")]
