@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://bxwclqss0yxyq"]
 
+[ext_resource type="Script" uid="uid://c4fn7jqextg33" path="res://_Cheok_Kai_Ren/Level_03/level_03.gd" id="1_5g1bh"]
 [ext_resource type="Texture2D" uid="uid://bjfsgbalaxe70" path="res://General_Assets/dungeon_assests/Dungeon Gathering Free Version/Set 1.0.png" id="1_lco74"]
 [ext_resource type="Texture2D" uid="uid://1qdbdp4fkyg6" path="res://General_Assets/dungeon_assests/dungeon_tileset.png" id="2_rn3dg"]
 [ext_resource type="Texture2D" uid="uid://je3ckgp8e772" path="res://General_Assets/dungeon_assests/Dungeon Gathering Free Version/Set 4.5.png" id="3_lfvn2"]
@@ -7,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://6i0m5actye4q" path="res://Dungeon_Elements/spikes/spikes.tscn" id="5_5g1bh"]
 [ext_resource type="PackedScene" uid="uid://cq4g5tvjxwbvx" path="res://Dungeon_Elements/gate/gate.tscn" id="6_agg47"]
 [ext_resource type="PackedScene" uid="uid://bameu058wrl87" path="res://_Cheok_Kai_Ren/character/player.tscn" id="7_4fscl"]
+[ext_resource type="PackedScene" uid="uid://vit1pvfq2lmo" path="res://_Chin_Yee_Sui/enemies/golem/golem.tscn" id="8_5g1bh"]
 [ext_resource type="PackedScene" uid="uid://dklqoxwvxkevq" path="res://_Chin_Yee_Sui/enemies/skull/skull.tscn" id="8_6t0hd"]
 [ext_resource type="PackedScene" uid="uid://b5egts6thrie7" path="res://_Cheok_Kai_Ren/Laser/laser_turret.tscn" id="9_vjd5g"]
 [ext_resource type="PackedScene" uid="uid://w7bnhh7rea75" path="res://_Cheok_Kai_Ren/Laser/laser_beam.tscn" id="10_57iot"]
@@ -14,6 +16,8 @@
 [ext_resource type="PackedScene" uid="uid://w1dg1y515cwf" path="res://Dungeon_Elements/collectable/coin.tscn" id="12_5wul5"]
 [ext_resource type="PackedScene" uid="uid://t4j6o7j1vo4b" path="res://Dungeon_Elements/lever/lever.tscn" id="14_5s4c8"]
 [ext_resource type="Script" uid="uid://cvgq042qvf3fk" path="res://_Cheok_Kai_Ren/Level_03/laser_puzzle_manager.gd" id="15_32j48"]
+[ext_resource type="PackedScene" uid="uid://tckssgwlq7ih" path="res://_Lim_Kai_Yang/Level_04/hud/hud.tscn" id="15_lco74"]
+[ext_resource type="PackedScene" uid="uid://ee4yakytsltj" path="res://_Chin_Yee_Sui/enemies/slime/slime.tscn" id="16_lfvn2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_03fkr"]
 texture = ExtResource("1_lco74")
@@ -176,6 +180,10 @@ sources/1 = SubResource("TileSetAtlasSource_rt4tw")
 sources/2 = SubResource("TileSetAtlasSource_t2lo6")
 
 [node name="Room3" type="Node2D" unique_id=36572739]
+script = ExtResource("1_5g1bh")
+
+[node name="Player" parent="." unique_id=409912757 instance=ExtResource("7_4fscl")]
+position = Vector2(184, 198)
 
 [node name="TileMap" type="TileMap" parent="." unique_id=1099924902]
 tile_set = SubResource("TileSet_a05cn")
@@ -204,6 +212,21 @@ turret_direction = 3
 [node name="FireTurret6" parent="Turrets" unique_id=1207757564 instance=ExtResource("4_tgi63")]
 position = Vector2(445, 84)
 turret_direction = 1
+
+[node name="FireTurret8" parent="Turrets" unique_id=744395981 instance=ExtResource("4_tgi63")]
+position = Vector2(635, 326)
+turret_direction = 1
+
+[node name="FireTurret9" parent="Turrets" unique_id=471836111 instance=ExtResource("4_tgi63")]
+position = Vector2(708, 327)
+turret_direction = 1
+
+[node name="FireTurret10" parent="Turrets" unique_id=1458132511 instance=ExtResource("4_tgi63")]
+position = Vector2(582, 363)
+
+[node name="FireTurret11" parent="Turrets" unique_id=962694278 instance=ExtResource("4_tgi63")]
+position = Vector2(737, 408)
+turret_direction = 3
 
 [node name="FireTurret4" parent="Turrets" unique_id=1624092515 instance=ExtResource("4_tgi63")]
 position = Vector2(519, 84)
@@ -238,6 +261,38 @@ automatic = true
 position = Vector2(270, -55)
 automatic = true
 
+[node name="spikes16" parent="Spike" unique_id=658362380 instance=ExtResource("5_5g1bh")]
+position = Vector2(-125, 224)
+automatic = true
+
+[node name="spikes17" parent="Spike" unique_id=2074086752 instance=ExtResource("5_5g1bh")]
+position = Vector2(-125, 240)
+automatic = true
+
+[node name="spikes18" parent="Spike" unique_id=1681746989 instance=ExtResource("5_5g1bh")]
+position = Vector2(-1, 240)
+automatic = true
+
+[node name="spikes19" parent="Spike" unique_id=506035860 instance=ExtResource("5_5g1bh")]
+position = Vector2(84, 225)
+automatic = true
+
+[node name="spikes20" parent="Spike" unique_id=962318978 instance=ExtResource("5_5g1bh")]
+position = Vector2(233, 204)
+automatic = true
+
+[node name="spikes21" parent="Spike" unique_id=1663339182 instance=ExtResource("5_5g1bh")]
+position = Vector2(336, 233)
+automatic = true
+
+[node name="spikes22" parent="Spike" unique_id=1134828083 instance=ExtResource("5_5g1bh")]
+position = Vector2(280, 181)
+automatic = true
+
+[node name="spikes23" parent="Spike" unique_id=1229135811 instance=ExtResource("5_5g1bh")]
+position = Vector2(287, 221)
+automatic = true
+
 [node name="spikes8" parent="Spike" unique_id=1653792246 instance=ExtResource("5_5g1bh")]
 position = Vector2(97, 182)
 automatic = true
@@ -266,17 +321,17 @@ automatic = true
 position = Vector2(212, 94)
 automatic = true
 
+[node name="golem" parent="Spike" unique_id=569447969 instance=ExtResource("8_5g1bh")]
+position = Vector2(357, 193)
+
 [node name="Gate" type="Node2D" parent="." unique_id=1268210111]
 
 [node name="gate3" parent="Gate" unique_id=580253196 instance=ExtResource("6_agg47")]
 position = Vector2(783, 304)
 
-[node name="Player" parent="Gate" unique_id=409912757 instance=ExtResource("7_4fscl")]
-position = Vector2(771, 177)
-
 [node name="Enemies" type="Node2D" parent="." unique_id=1932412641]
 
-[node name="skull2" parent="Enemies" unique_id=569447969 instance=ExtResource("8_6t0hd")]
+[node name="skull2" parent="Enemies" unique_id=1652776955 instance=ExtResource("8_6t0hd")]
 position = Vector2(484, 160)
 
 [node name="skull" parent="Enemies" unique_id=1596988816 instance=ExtResource("8_6t0hd")]
@@ -436,6 +491,9 @@ hitbox_length = 192.0
 [node name="BigChest" parent="ChestRoom" unique_id=128118316 instance=ExtResource("11_iwawd")]
 position = Vector2(304, 149)
 
+[node name="BigChest2" parent="ChestRoom" unique_id=1269889143 instance=ExtResource("11_iwawd")]
+position = Vector2(778, 214)
+
 [node name="coin1" parent="ChestRoom" unique_id=790741249 instance=ExtResource("12_5wul5")]
 position = Vector2(272, 188)
 
@@ -450,6 +508,33 @@ position = Vector2(272, 173)
 
 [node name="coin5" parent="ChestRoom" unique_id=1155931192 instance=ExtResource("12_5wul5")]
 position = Vector2(305, 172)
+
+[node name="coin11" parent="ChestRoom" unique_id=743164431 instance=ExtResource("12_5wul5")]
+position = Vector2(753, 238)
+
+[node name="coin12" parent="ChestRoom" unique_id=2068173865 instance=ExtResource("12_5wul5")]
+position = Vector2(776, 238)
+
+[node name="coin13" parent="ChestRoom" unique_id=1652596233 instance=ExtResource("12_5wul5")]
+position = Vector2(805, 239)
+
+[node name="coin14" parent="ChestRoom" unique_id=204440568 instance=ExtResource("12_5wul5")]
+position = Vector2(806, 257)
+
+[node name="coin15" parent="ChestRoom" unique_id=527971947 instance=ExtResource("12_5wul5")]
+position = Vector2(778, 257)
+
+[node name="coin16" parent="ChestRoom" unique_id=1512001370 instance=ExtResource("12_5wul5")]
+position = Vector2(755, 257)
+
+[node name="coin17" parent="ChestRoom" unique_id=822199553 instance=ExtResource("12_5wul5")]
+position = Vector2(754, 280)
+
+[node name="coin18" parent="ChestRoom" unique_id=1517712443 instance=ExtResource("12_5wul5")]
+position = Vector2(777, 277)
+
+[node name="coin19" parent="ChestRoom" unique_id=605515177 instance=ExtResource("12_5wul5")]
+position = Vector2(807, 280)
 
 [node name="coin6" parent="ChestRoom" unique_id=1026252268 instance=ExtResource("12_5wul5")]
 position = Vector2(341, 172)
@@ -499,3 +584,11 @@ laser5 = NodePath("../Lasers/laserNo5")
 laser6 = NodePath("../Lasers/laserNo6")
 laser7 = NodePath("../Lasers/laserNo7")
 laser8 = NodePath("../Lasers/laserNo8")
+
+[node name="rimuru" parent="." unique_id=1265494123 instance=ExtResource("16_lfvn2")]
+position = Vector2(209, 123)
+
+[node name="Hud" parent="." unique_id=148244219 instance=ExtResource("15_lco74")]
+visible = false
+
+[editable path="Hud"]

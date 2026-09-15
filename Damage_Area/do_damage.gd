@@ -1,14 +1,18 @@
 class_name DoDamage
 extends Area2D
 
-#Default damage value
+# Default damage value
 @export var damage: int = 1
 
-#Able to do repeated damage
+# Able to do repeated damage
 @export var repeat_damage: bool = false
 
 # Time between repeated hits
 @export var damage_interval: float = 1.0
+
+# Optional group this damage is allowed to hit.
+# Leave empty to damage anything.
+@export var target_group: StringName = &""
 
 @onready var owner_entity: Node = get_parent()
 
@@ -99,6 +103,15 @@ func damage_target(target: TakeDamage) -> void:
 
 	if is_own_take_damage_area(target):
 		return
+
+	# If a target group is specified, only damage
+	# entities belonging to that group.
+	if target_group != &"":
+		if not is_instance_valid(target.owner_entity):
+			return
+
+		if not target.owner_entity.is_in_group(target_group):
+			return
 
 	target.receive_damage(damage)
 
