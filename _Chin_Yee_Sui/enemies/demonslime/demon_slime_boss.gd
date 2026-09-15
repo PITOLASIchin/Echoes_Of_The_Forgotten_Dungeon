@@ -69,6 +69,95 @@ enum State {
 
 
 # =========================================================
+# RADIAL PROJECTILE ATTACK
+# =========================================================
+
+const RADIAL_PROJECTILE_COUNT: int = 12
+
+@export_category("Radial Projectile Attack")
+
+# Assign the existing BeholderProjectile scene here.
+@export var projectile_scene: PackedScene
+
+# Delay starts when the cleave animation finishes.
+@export var volley_delay: float = 1.0
+
+# Distance from the boss center to each projectile spawn point.
+@export var projectile_spawn_radius: float = 32.0
+
+
+# =========================================================
+# CLEAVE FIRE TRAIL
+# =========================================================
+
+@export_category("Cleave Fire Trail")
+
+# Assign the Ember Runner fire trail scene here.
+@export var flame_trail_scene: PackedScene
+
+# Number of flames placed in a straight line.
+@export var fire_trail_count: int = 5
+
+# Distance from the boss center where the first flame appears.
+@export var fire_trail_start_offset: float = 32.0
+
+# Maximum distance the fire line can search for a wall.
+@export var fire_trail_max_distance: float = 240.0
+
+# Keeps the final flame slightly away from the wall.
+@export var fire_trail_wall_padding: float = 10.0
+
+# Set this to your wall/world physics layer.
+# Default value 2 means physics Layer 2.
+@export_flags_2d_physics var fire_trail_wall_mask: int = 2
+
+
+# =========================================================
+# DEATH FIRE TRAIL RING
+# =========================================================
+
+@export_category("Death Fire Trail Ring")
+
+# Uses the same Ember Runner fire trail scene.
+# Set this to 8 or 10 in the Inspector.
+@export var death_fire_trail_count: int = 10
+
+# Distance from the boss death position.
+@export var death_fire_trail_radius: float = 52.0
+
+# Optional rotation for the fire ring.
+@export var death_fire_trail_angle_offset_degrees: float = 0.0
+
+
+# =========================================================
+# SKULL SUMMON
+# =========================================================
+
+@export_category("Skull Summon")
+
+# Assign your existing Skull enemy scene here.
+@export var skull_scene: PackedScene
+
+# Boss must keep detecting the Player for this long
+# before the first skull wave appears.
+@export var skull_summon_detection_delay: float = 5.0
+
+# After the first wave, spawn another wave every this many seconds
+# while the boss can still detect the Player.
+@export var skull_summon_interval: float = 5.0
+
+# Number of skulls spawned each wave.
+@export var skulls_per_summon: int = 2
+
+# Distance from the boss center where skulls appear.
+@export var skull_spawn_radius: float = 56.0
+
+# Optional angle adjustment for the spawn circle.
+# Leave at 0 unless the skulls spawn in bad positions.
+@export var skull_spawn_angle_offset_degrees: float = 0.0
+
+
+# =========================================================
 # SPRITE
 # =========================================================
 
@@ -120,6 +209,22 @@ var cooldown_remaining: float = 0.0
 
 var attack_damage_applied: bool = false
 
+var last_attack_direction: Vector2 = Vector2.DOWN
+
+
+# Each queued volley has its own remaining delay.
+# This prevents a later attack from cancelling an earlier volley.
+var pending_volleys: Array[float] = []
+
+# Counts how long the boss has continuously detected the Player.
+var skull_detection_time: float = 0.0
+
+# Counts the repeat interval after the first skull summon.
+var skull_repeat_time: float = 0.0
+
+# Prevents the first 5-second summon from firing more than once.
+var first_skull_wave_spawned: bool = false
+
 
 # =========================================================
 # READY
@@ -150,6 +255,21 @@ func _ready() -> void:
 
 	_enter_idle()
 
+	if projectile_scene == null:
+		push_warning(
+			"Demon Slime Boss: Assign the Beholder projectile scene."
+		)
+
+	if flame_trail_scene == null:
+		push_warning(
+			"Demon Slime Boss: Assign the Ember Runner fire trail scene."
+		)
+
+	if skull_scene == null:
+		push_warning(
+			"Demon Slime Boss: Assign your Skull enemy scene."
+		)
+
 	health_changed.emit(
 		current_health,
 		maximum_health
@@ -164,6 +284,8 @@ func _physics_process(delta: float) -> void:
 	if current_state == State.DEAD:
 		return
 
+	_process_pending_volleys(delta)
+
 	cooldown_remaining = maxf(
 		cooldown_remaining - delta,
 		0.0
@@ -174,6 +296,8 @@ func _physics_process(delta: float) -> void:
 
 	if not is_instance_valid(target):
 
+		_reset_skull_summon_timer()
+
 		if current_state not in [
 			State.ATTACK,
 			State.HURT
@@ -181,6 +305,8 @@ func _physics_process(delta: float) -> void:
 			_enter_idle()
 
 		return
+
+	_process_skull_summon(delta)
 
 	if current_state == State.ATTACK:
 		_process_attack()
@@ -386,11 +512,14 @@ func _enter_attack() -> void:
 
 	attack_damage_applied = false
 
-	_update_facing(
-		global_position.direction_to(
-			target.global_position
-		)
+	var attack_direction: Vector2 = global_position.direction_to(
+		target.global_position
 	)
+
+	if attack_direction.length_squared() > 0.001:
+		last_attack_direction = attack_direction.normalized()
+
+	_update_facing(last_attack_direction)
 
 	if not _play_animation(
 		&"cleave",
@@ -403,23 +532,409 @@ func _enter_attack() -> void:
 
 
 func _process_attack() -> void:
+	# Once the boss has committed to the cleave,
+	# do not cancel the animation just because the
+	# Player moves away or breaks line of sight.
+	#
+	# Player detection is still used BEFORE starting
+	# the attack inside _enter_attack().
+	# The actual melee damage check still happens in
+	# _damage_real_player(), so the Player can dodge
+	# out of range and avoid the hit.
 	velocity = Vector2.ZERO
 
-	if not is_instance_valid(target):
-		_enter_idle()
+
+# =========================================================
+# SKULL SUMMON
+# =========================================================
+
+func _process_skull_summon(delta: float) -> void:
+	if current_state == State.DEAD:
 		return
 
-	if (
-		global_position.distance_to(
-			target.global_position
-		) > attack_cancel_distance
-		or
-		not _has_line_of_sight_to_player()
+	if skull_scene == null:
+		_reset_skull_summon_timer()
+		return
+
+	if not is_instance_valid(target):
+		_reset_skull_summon_timer()
+		return
+
+	# Keep using the boss's normal detection system.
+	# If the Player is no longer detected, the 5-second timer resets.
+	if not _can_detect_player():
+		_reset_skull_summon_timer()
+		return
+
+	if not first_skull_wave_spawned:
+
+		skull_detection_time += delta
+
+		if skull_detection_time >= maxf(
+			skull_summon_detection_delay,
+			0.0
+		):
+			_spawn_skull_wave()
+			first_skull_wave_spawned = true
+			skull_repeat_time = 0.0
+
+		return
+
+	# After the first summon, keep summoning every interval
+	# while the boss still detects the Player.
+	skull_repeat_time += delta
+
+	if skull_repeat_time >= maxf(
+		skull_summon_interval,
+		0.1
 	):
+		skull_repeat_time = 0.0
+		_spawn_skull_wave()
 
-		cooldown_remaining = attack_cooldown
 
-		_enter_idle()
+func _reset_skull_summon_timer() -> void:
+	skull_detection_time = 0.0
+	skull_repeat_time = 0.0
+	first_skull_wave_spawned = false
+
+
+func _spawn_skull_wave() -> void:
+	if current_state == State.DEAD:
+		return
+
+	if skull_scene == null:
+		return
+
+	var level: Node = get_tree().current_scene
+
+	if level == null:
+		level = get_parent()
+
+	if level == null:
+		return
+
+	var count: int = maxi(skulls_per_summon, 1)
+	var radius: float = maxf(skull_spawn_radius, 0.0)
+
+	# Spawn direction is based on the boss-to-player direction.
+	# For 2 skulls, they appear to the left and right side of that line.
+	var base_direction: Vector2 = Vector2.RIGHT
+
+	if is_instance_valid(target):
+		var direction_to_player: Vector2 = global_position.direction_to(
+			target.global_position
+		)
+
+		if direction_to_player.length_squared() > 0.001:
+			base_direction = direction_to_player.normalized()
+
+	var base_angle: float = (
+		base_direction.angle()
+		+ deg_to_rad(skull_spawn_angle_offset_degrees)
+	)
+
+	for index in range(count):
+		var angle: float = base_angle + TAU * (
+			float(index) / float(count)
+		)
+
+		# With 2 skulls, rotate 90 degrees so they do not spawn
+		# directly on top of the Player or directly behind the boss.
+		if count == 2:
+			angle += PI * 0.5
+
+		var spawn_direction: Vector2 = Vector2.RIGHT.rotated(angle)
+		var spawn_position: Vector2 = (
+			global_position + spawn_direction * radius
+		)
+
+		_spawn_single_skull(spawn_position)
+
+
+func _spawn_single_skull(spawn_position: Vector2) -> void:
+	if skull_scene == null:
+		return
+
+	var level: Node = get_tree().current_scene
+
+	if level == null:
+		level = get_parent()
+
+	if level == null:
+		return
+
+	var instance: Node = skull_scene.instantiate()
+
+	if not instance is Node2D:
+		if instance != null:
+			instance.queue_free()
+
+		push_error(
+			"Demon Slime Boss: Skull scene must have a Node2D root."
+		)
+		return
+
+	var skull: Node2D = instance as Node2D
+
+	level.add_child(skull)
+
+	skull.global_position = spawn_position
+
+
+# =========================================================
+# DELAYED RADIAL VOLLEY
+# =========================================================
+
+func _queue_radial_volley() -> void:
+	if current_state == State.DEAD:
+		return
+
+	if projectile_scene == null:
+		return
+
+	pending_volleys.append(maxf(volley_delay, 0.0))
+
+
+func _process_pending_volleys(delta: float) -> void:
+	# Count down every attack independently. A later melee attack
+	# does not reset the delay of a previously scheduled volley.
+	for index in range(pending_volleys.size() - 1, -1, -1):
+		pending_volleys[index] -= delta
+
+		if pending_volleys[index] <= 0.0:
+			pending_volleys.remove_at(index)
+			_fire_radial_volley()
+
+
+func _fire_radial_volley() -> void:
+	if current_state == State.DEAD:
+		return
+
+	if projectile_scene == null:
+		return
+
+	var level: Node = get_tree().current_scene
+
+	if level == null:
+		level = get_parent()
+
+	if level == null:
+		return
+
+	var angle_step: float = TAU / float(RADIAL_PROJECTILE_COUNT)
+	var spawn_radius: float = maxf(projectile_spawn_radius, 0.0)
+
+	for index in range(RADIAL_PROJECTILE_COUNT):
+		var instance: Node = projectile_scene.instantiate()
+
+		if not instance is Area2D:
+			if instance != null:
+				instance.queue_free()
+
+			push_error(
+				"Demon Slime Boss: Projectile scene must have an Area2D root."
+			)
+			return
+
+		var projectile: Area2D = instance as Area2D
+
+		# Twelve evenly spaced directions around the boss.
+		var angle: float = float(index) * angle_step
+		var direction: Vector2 = Vector2.RIGHT.rotated(angle)
+
+		# The existing Beholder projectile script owns movement,
+		# collision, damage, animation, and lifetime.
+		projectile.set("direction", direction)
+
+		level.add_child(projectile)
+
+		projectile.global_position = (
+			global_position + direction * spawn_radius
+		)
+
+
+# =========================================================
+# CLEAVE FIRE TRAIL
+# =========================================================
+
+func _spawn_cleave_fire_trail() -> void:
+	if current_state == State.DEAD:
+		return
+
+	if flame_trail_scene == null:
+		return
+
+	var direction: Vector2 = last_attack_direction
+
+	if (
+		direction.length_squared() <= 0.001
+		and
+		is_instance_valid(target)
+	):
+		direction = global_position.direction_to(
+			target.global_position
+		)
+
+	if direction.length_squared() <= 0.001:
+		return
+
+	direction = direction.normalized()
+
+	var max_distance: float = maxf(
+		fire_trail_max_distance,
+		fire_trail_start_offset
+	)
+
+	var wall_distance: float = _get_fire_trail_wall_distance(
+		direction,
+		max_distance
+	)
+
+	if wall_distance <= 0.0:
+		return
+
+	var start_distance: float = minf(
+		maxf(fire_trail_start_offset, 0.0),
+		wall_distance
+	)
+
+	var end_distance: float = maxf(
+		start_distance,
+		wall_distance - maxf(fire_trail_wall_padding, 0.0)
+	)
+
+	var count: int = maxi(fire_trail_count, 1)
+
+	for index in range(count):
+		var ratio: float = 0.0
+
+		if count > 1:
+			ratio = float(index) / float(count - 1)
+
+		var distance: float = lerpf(
+			start_distance,
+			end_distance,
+			ratio
+		)
+
+		_spawn_single_flame_trail(
+			global_position + direction * distance
+		)
+
+
+func _get_fire_trail_wall_distance(
+	direction: Vector2,
+	max_distance: float
+) -> float:
+
+	# If no wall mask is assigned, use the maximum distance.
+	if fire_trail_wall_mask == 0:
+		return max_distance
+
+	var start_position: Vector2 = global_position
+	var end_position: Vector2 = (
+		global_position + direction * max_distance
+	)
+
+	var query := PhysicsRayQueryParameters2D.create(
+		start_position,
+		end_position,
+		fire_trail_wall_mask,
+		_get_fire_trail_excludes()
+	)
+
+	query.collide_with_bodies = true
+	query.collide_with_areas = false
+
+	var hit := get_world_2d().direct_space_state.intersect_ray(
+		query
+	)
+
+	if hit.is_empty():
+		return max_distance
+
+	var wall_position: Vector2 = hit["position"]
+
+	return maxf(
+		start_position.distance_to(wall_position),
+		0.0
+	)
+
+
+func _get_fire_trail_excludes() -> Array[RID]:
+	var result: Array[RID] = _get_vision_excludes()
+
+	# The line should pass through the Player and continue
+	# until the wall/world layer blocks it.
+	if target is CollisionObject2D:
+		result.append(
+			(target as CollisionObject2D).get_rid()
+		)
+
+	return result
+
+
+func _spawn_single_flame_trail(
+	spawn_position: Vector2
+) -> void:
+
+	if flame_trail_scene == null:
+		return
+
+	var level: Node = get_tree().current_scene
+
+	if level == null:
+		level = get_parent()
+
+	if level == null:
+		return
+
+	var instance: Node = flame_trail_scene.instantiate()
+
+	if not instance is Node2D:
+		if instance != null:
+			instance.queue_free()
+
+		push_error(
+			"Demon Slime Boss: Flame trail scene must have a Node2D root."
+		)
+		return
+
+	var flame: Node2D = instance as Node2D
+
+	level.add_child(flame)
+
+	flame.global_position = spawn_position
+
+
+# =========================================================
+# DEATH FIRE TRAIL RING
+# =========================================================
+
+func _spawn_death_fire_ring() -> void:
+	if flame_trail_scene == null:
+		push_warning(
+			"Demon Slime Boss: Assign the Ember Runner fire trail scene."
+		)
+		return
+
+	var count: int = maxi(death_fire_trail_count, 1)
+	var radius: float = maxf(death_fire_trail_radius, 0.0)
+	var angle_offset: float = deg_to_rad(
+		death_fire_trail_angle_offset_degrees
+	)
+
+	for index in range(count):
+		var angle: float = angle_offset + TAU * (
+			float(index) / float(count)
+		)
+
+		var spawn_position: Vector2 = (
+			global_position
+			+ Vector2.RIGHT.rotated(angle) * radius
+		)
+
+		_spawn_single_flame_trail(spawn_position)
 
 
 # =========================================================
@@ -567,6 +1082,14 @@ func _on_animation_finished() -> void:
 			if animated_sprite.animation != &"cleave":
 				return
 
+			# One second after this completed melee attack,
+			# fire one round of twelve projectiles.
+			_queue_radial_volley()
+
+			# Also create five Ember Runner fire trails
+			# in the cleave direction toward the wall.
+			_spawn_cleave_fire_trail()
+
 			cooldown_remaining = \
 				attack_cooldown
 
@@ -640,7 +1163,15 @@ func _enter_dead() -> void:
 
 	velocity = Vector2.ZERO
 
+	# Cancel any delayed volleys and skull summoning when the boss dies.
+	pending_volleys.clear()
+	_reset_skull_summon_timer()
+
 	do_damage.deactivate()
+
+	# Spawn 8 or 10 Ember Runner fire trails around
+	# the exact place where the boss died.
+	_spawn_death_fire_ring()
 
 	body_collision.set_deferred(
 		"disabled",

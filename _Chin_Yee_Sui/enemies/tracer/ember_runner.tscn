@@ -1,0 +1,130 @@
+[gd_scene format=3 uid="uid://dirsqw8o2117a"]
+
+[ext_resource type="Script" uid="uid://ccf4gdfgs8yij" path="res://_Chin_Yee_Sui/enemies/tracer/ember_runner.gd" id="1_sm7mj"]
+[ext_resource type="Script" uid="uid://5k41cnvtsrd3" path="res://Damage_Area/take_damage.gd" id="2_sm7mj"]
+[ext_resource type="Texture2D" uid="uid://cwu1tye0urmtj" path="res://_Chin_Yee_Sui/enemies/tracer/03.png" id="3_80arl"]
+[ext_resource type="Texture2D" uid="uid://cpvpp3dg5nlvj" path="res://_Chin_Yee_Sui/enemies/tracer/FlameDemon.png" id="3_cm3od"]
+[ext_resource type="Texture2D" uid="uid://ct8gltx66fwla" path="res://_Chin_Yee_Sui/enemies/tracer/FlameDemon Evolved.png" id="4_80arl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pdlkx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_14f5k"]
+radius = 18.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_upnvs"]
+atlas = ExtResource("3_80arl")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xxuej"]
+atlas = ExtResource("3_80arl")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h5t7j"]
+atlas = ExtResource("3_80arl")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkry8"]
+atlas = ExtResource("3_80arl")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14a4v"]
+atlas = ExtResource("3_80arl")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qkmbb"]
+atlas = ExtResource("3_80arl")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w01ym"]
+atlas = ExtResource("3_80arl")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b1f2n"]
+atlas = ExtResource("3_80arl")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yeuq2"]
+atlas = ExtResource("3_80arl")
+region = Rect2(768, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_upnvs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_upnvs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xxuej")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h5t7j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkry8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_14a4v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qkmbb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w01ym")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b1f2n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yeuq2")
+}],
+"loop": false,
+"name": &"die",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_cm3od")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_80arl")
+}],
+"loop": false,
+"name": &"run",
+"speed": 10.0
+}]
+
+[node name="EmberRunner" type="CharacterBody2D" unique_id=291757586 groups=["Enemy"]]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_sm7mj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=802986095]
+shape = SubResource("CircleShape2D_pdlkx")
+
+[node name="SightRay" type="RayCast2D" parent="." unique_id=589563767]
+collision_mask = 3
+
+[node name="PauseTimer" type="Timer" parent="." unique_id=54087340]
+wait_time = 1.5
+one_shot = true
+
+[node name="TrailTimer" type="Timer" parent="." unique_id=2005488888]
+wait_time = 0.2
+
+[node name="TakeDamageArea" type="Area2D" parent="." unique_id=1695218232]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("2_sm7mj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TakeDamageArea" unique_id=748032673]
+shape = SubResource("CircleShape2D_14f5k")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=310646954]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_upnvs")
+animation = &"die"

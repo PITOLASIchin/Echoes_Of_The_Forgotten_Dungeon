@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b6ojt6mfhq0n7" path="res://_Chin_Yee_Sui/enemies/golem/golem.gd" id="1_lm0pb"]
 [ext_resource type="Texture2D" uid="uid://bhsja4s3wks57" path="res://_Chin_Yee_Sui/enemies/golem/Golem_1_attack.png" id="2_cbgvr"]
+[ext_resource type="PackedScene" uid="uid://btuxiklqt1m1r" path="res://_Chin_Yee_Sui/enemies/golem/golem_rock_spike.tscn" id="2_sf521"]
 [ext_resource type="Texture2D" uid="uid://bn3xpyr5fkygx" path="res://_Chin_Yee_Sui/enemies/golem/Golem_1_die.png" id="3_wmiy8"]
 [ext_resource type="Texture2D" uid="uid://b74rua8qvml67" path="res://_Chin_Yee_Sui/enemies/golem/Golem_1_hurt.png" id="4_5l1xv"]
 [ext_resource type="Texture2D" uid="uid://c1h0wmotns5lj" path="res://_Chin_Yee_Sui/enemies/golem/Golem_1_idle.png" id="5_siynu"]
@@ -230,7 +231,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_cpmwe")
 }],
 "loop": false,
-"name": &"attacks",
+"name": &"attack",
 "speed": 10.0
 }, {
 "frames": [{
@@ -319,7 +320,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ol8wo")
 }],
-"loop": true,
+"loop": false,
 "name": &"idle",
 "speed": 10.0
 }, {
@@ -360,34 +361,33 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5l1xv"]
-size = Vector2(59, 55)
+size = Vector2(5, 5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cbgvr"]
-size = Vector2(31.30435, 42.712822)
+size = Vector2(12.14047, 7.249768)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wmiy8"]
-size = Vector2(58, 52)
+size = Vector2(11, 7)
 
 [node name="golem" type="CharacterBody2D" unique_id=569447969]
 script = ExtResource("1_lm0pb")
+attack_range = 100.0
+rock_spike_scene = ExtResource("2_sf521")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1086411793]
-position = Vector2(-1.9999981, -21.999998)
-scale = Vector2(1.4475055, 1.3984375)
+position = Vector2(5.9604645e-08, -3)
+scale = Vector2(0.18274249, 0.17654786)
 sprite_frames = SubResource("SpriteFrames_7nw5e")
-animation = &"idle"
-autoplay = "idle"
+animation = &"attack"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=3660326]
-visible = false
-position = Vector2(-5.5, -3.5)
+position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_5l1xv")
 
 [node name="do_damage" parent="." unique_id=273551396 instance=ExtResource("6_tehw5")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="do_damage" unique_id=12369819]
-visible = false
-position = Vector2(11.793386, 0.80218124)
+position = Vector2(-5.703724e-07, -0.29945505)
 rotation = -3.1415925
 scale = Vector2(1.4826444, -1.020873)
 shape = SubResource("RectangleShape2D_cbgvr")
@@ -395,6 +395,5 @@ shape = SubResource("RectangleShape2D_cbgvr")
 [node name="take_damage" parent="." unique_id=1699602000 instance=ExtResource("7_1xh8u")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="take_damage" unique_id=475511389]
-visible = false
-position = Vector2(-3, -3)
+position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_wmiy8")
