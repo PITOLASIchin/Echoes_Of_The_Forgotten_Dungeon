@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://vit1pvfq2lmo" path="res://_Chin_Yee_Sui/enemies/golem/golem.tscn" id="15_6dkn5"]
 [ext_resource type="PackedScene" uid="uid://b54udk7sct3rn" path="res://_Chin_Yee_Sui/enemies/bloodyhell/bloodyhell.tscn" id="16_k6jdw"]
 [ext_resource type="PackedScene" uid="uid://6pxsgjnc52tp" path="res://_Chin_Yee_Sui/enemies/demonslime/demon_slime_boss.tscn" id="17_8l0xw"]
+[ext_resource type="AudioStream" uid="uid://bkkg2i3pp64xu" path="res://_Lim_Kai_Yang/Level_04/assets/whispers_in_the_fog.ogg" id="18_k6jdw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sodji"]
 texture = ExtResource("1_r0y7c")
@@ -2435,15 +2436,6 @@ position = Vector2(406, 249)
 [node name="PatrolEnemy" parent="." unique_id=255464665 groups=["BridgeGate", "Enemy"] instance=ExtResource("8_1e42b")]
 position = Vector2(173, 248)
 scale = Vector2(0.3, 0.3)
-patrol_speed = null
-chase_speed = null
-max_health = null
-detection_radius = null
-attack_radius = null
-attack_cooldown = null
-damage_area_duration = null
-hit_stagger_duration = null
-death_fade_duration = null
 waypoints = Array[NodePath]([NodePath("../Marker2D"), NodePath("../Marker2D2"), NodePath("../Marker2D3")])
 
 [node name="Marker2D4" type="Marker2D" parent="." unique_id=7647421]
@@ -2461,15 +2453,6 @@ scale = Vector2(0.3, 0.3)
 [node name="PatrolEnemy2" parent="." unique_id=846658789 groups=["BridgeGate", "Enemy"] instance=ExtResource("8_1e42b")]
 position = Vector2(589, 120)
 scale = Vector2(0.3, 0.3)
-patrol_speed = null
-chase_speed = null
-max_health = null
-detection_radius = null
-attack_radius = null
-attack_cooldown = null
-damage_area_duration = null
-hit_stagger_duration = null
-death_fade_duration = null
 waypoints = Array[NodePath]([NodePath("../Marker2D4"), NodePath("../Marker2D4"), NodePath("../Marker2D4")])
 
 [node name="Marker2D7" type="Marker2D" parent="." unique_id=960271939]
@@ -2487,15 +2470,6 @@ scale = Vector2(0.09, 0.09)
 [node name="PatrolEnemy3" parent="." unique_id=1358186740 groups=["BridgeGate", "Enemy"] instance=ExtResource("8_1e42b")]
 position = Vector2(467, 305)
 scale = Vector2(0.3, 0.3)
-patrol_speed = null
-chase_speed = null
-max_health = null
-detection_radius = null
-attack_radius = null
-attack_cooldown = null
-damage_area_duration = null
-hit_stagger_duration = null
-death_fade_duration = null
 waypoints = Array[NodePath]([NodePath("../Marker2D"), NodePath("../Marker2D2"), NodePath("../Marker2D3")])
 
 [node name="Marker2D10" type="Marker2D" parent="." unique_id=1287822430]
@@ -2513,15 +2487,6 @@ scale = Vector2(0.027000003, 0.027000003)
 [node name="PatrolEnemy4" parent="." unique_id=1723245604 groups=["BridgeGate", "Enemy"] instance=ExtResource("8_1e42b")]
 position = Vector2(702, 190.99998)
 scale = Vector2(0.3, 0.3)
-patrol_speed = null
-chase_speed = null
-max_health = null
-detection_radius = null
-attack_radius = null
-attack_cooldown = null
-damage_area_duration = null
-hit_stagger_duration = null
-death_fade_duration = null
 waypoints = Array[NodePath]([NodePath("../Marker2D"), NodePath("../Marker2D2"), NodePath("../Marker2D3")])
 
 [node name="Bridge" parent="." unique_id=285959874 instance=ExtResource("9_4ojfc")]
@@ -2566,5 +2531,11 @@ position = Vector2(338, 110)
 
 [node name="DemonSlimeBoss" parent="." unique_id=672707081 instance=ExtResource("17_8l0xw")]
 position = Vector2(1122, 671)
+
+[node name="Level4BGM" type="AudioStreamPlayer2D" parent="." unique_id=2055333002]
+stream = ExtResource("18_k6jdw")
+volume_db = -5.0
+autoplay = true
+parameters/looping = true
 
 [editable path="Hud"]

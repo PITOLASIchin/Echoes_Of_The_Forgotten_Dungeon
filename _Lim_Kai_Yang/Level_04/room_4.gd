@@ -6,8 +6,7 @@ extends Node2D
 @onready var bridge: StaticBody2D = $Bridge
 
 var player: Node2D = null
-var game_over := false  
-var potion_count := 0
+var game_over := false 
 
 func _reveal_bridge() -> void:
 	bridge.reveal()
@@ -28,11 +27,10 @@ func _ready() -> void:
 
 	player.health_changed.connect(hud.update_health)
 	player.coins_changed.connect(hud.update_coins)
+	player.potions_changed.connect(hud.update_potions)
 	player.player_died.connect(_on_player_died)
-	hud.update_potions(potion_count)
+	hud.update_potions(player.potions)
 
-	if merchant != null:
-		merchant.purchased.connect(_on_merchant_purchased)
 
 	room_exit.player_entered.connect(_on_win)
 
@@ -54,26 +52,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.physical_keycode == KEY_C:
-			_drink_potion()
-
-func _drink_potion() -> void:
-	if potion_count <= 0:
-		print("No Potion")
-		return
-	if player == null or not is_instance_valid(player):
-		return
-	if player.current_health >= player.max_health:
-		print("Blood full")
-		return
-
-	potion_count -= 1
-	hud.update_potions(potion_count)
-	player.heal(1)
-
-func _on_merchant_purchased(_item_name: String, reward_type: int) -> void:
-	if reward_type == 2:  
-		potion_count += 1
-		hud.update_potions(potion_count)
+			if player != null and is_instance_valid(player):
+				player.use_potion()
 
 func _on_player_died() -> void:
 	print("You died...")

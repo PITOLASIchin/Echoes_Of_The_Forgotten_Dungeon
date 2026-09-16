@@ -18,6 +18,7 @@ enum State { PATROL, CHASE, ATTACK, HIT, DEAD }
 @onready var do_damage: DoDamage = $do_damage
 @onready var take_damage_area: TakeDamage = $take_damage
 @onready var player: Node2D = get_tree().get_first_node_in_group("player")
+@onready var attack_sound: AudioStreamPlayer2D = $AttackSound
 
 var state: State = State.PATROL
 var health: int
@@ -101,6 +102,7 @@ func _start_attack() -> void:
 	can_attack = false
 	velocity = Vector2.ZERO
 	animated_sprite.play("attack")
+	attack_sound.play()
 	_do_attack_damage()
 	await animated_sprite.animation_finished
 	if state != State.DEAD:
@@ -143,7 +145,7 @@ func _die() -> void:
 	died.emit()
 	do_damage.deactivate()
 	body_collision.set_deferred("disabled", true)
-	take_damage_area.get_node("CollisionShape2D").set_deferred("disabled", true)dwdwadwa
+	take_damage_area.get_node("CollisionShape2D").set_deferred("disabled", true)
 	var tween := create_tween()
 	tween.tween_property(animated_sprite, "modulate:a", 0.0, death_fade_duration)
 	await tween.finished
