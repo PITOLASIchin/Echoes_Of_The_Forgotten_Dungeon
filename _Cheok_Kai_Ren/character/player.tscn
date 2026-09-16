@@ -1646,7 +1646,7 @@ position = Vector2(0, 11)
 shape = SubResource("CircleShape2D_a3d8c")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1292914854]
-zoom = Vector2(6, 6)
+zoom = Vector2(2, 2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=320196287]
 position = Vector2(1.9073486e-06, -1.1444092e-05)
