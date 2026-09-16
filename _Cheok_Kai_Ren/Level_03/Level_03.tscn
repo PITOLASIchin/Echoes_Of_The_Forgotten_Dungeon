@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://cvgq042qvf3fk" path="res://_Cheok_Kai_Ren/Level_03/laser_puzzle_manager.gd" id="15_32j48"]
 [ext_resource type="PackedScene" uid="uid://tckssgwlq7ih" path="res://_Lim_Kai_Yang/Level_04/hud/hud.tscn" id="15_lco74"]
 [ext_resource type="PackedScene" uid="uid://ee4yakytsltj" path="res://_Chin_Yee_Sui/enemies/slime/slime.tscn" id="16_lfvn2"]
+[ext_resource type="PackedScene" uid="uid://btjdetllqpu6" path="res://_Lim_Kai_Yang/Level_04/objects/RoomExit.tscn" id="19_5g1bh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_03fkr"]
 texture = ExtResource("1_lco74")
@@ -183,7 +184,7 @@ sources/2 = SubResource("TileSetAtlasSource_t2lo6")
 script = ExtResource("1_5g1bh")
 
 [node name="Player" parent="." unique_id=409912757 instance=ExtResource("7_4fscl")]
-position = Vector2(184, 198)
+position = Vector2(751, 176.00002)
 
 [node name="TileMap" type="TileMap" parent="." unique_id=1099924902]
 tile_set = SubResource("TileSet_a05cn")
@@ -491,9 +492,6 @@ hitbox_length = 192.0
 [node name="BigChest" parent="ChestRoom" unique_id=128118316 instance=ExtResource("11_iwawd")]
 position = Vector2(304, 149)
 
-[node name="BigChest2" parent="ChestRoom" unique_id=1269889143 instance=ExtResource("11_iwawd")]
-position = Vector2(778, 214)
-
 [node name="coin1" parent="ChestRoom" unique_id=790741249 instance=ExtResource("12_5wul5")]
 position = Vector2(272, 188)
 
@@ -510,31 +508,31 @@ position = Vector2(272, 173)
 position = Vector2(305, 172)
 
 [node name="coin11" parent="ChestRoom" unique_id=743164431 instance=ExtResource("12_5wul5")]
-position = Vector2(753, 238)
+position = Vector2(752, 245)
 
 [node name="coin12" parent="ChestRoom" unique_id=2068173865 instance=ExtResource("12_5wul5")]
-position = Vector2(776, 238)
+position = Vector2(777, 252)
 
 [node name="coin13" parent="ChestRoom" unique_id=1652596233 instance=ExtResource("12_5wul5")]
-position = Vector2(805, 239)
+position = Vector2(806, 252)
 
 [node name="coin14" parent="ChestRoom" unique_id=204440568 instance=ExtResource("12_5wul5")]
-position = Vector2(806, 257)
+position = Vector2(808, 272)
 
 [node name="coin15" parent="ChestRoom" unique_id=527971947 instance=ExtResource("12_5wul5")]
-position = Vector2(778, 257)
+position = Vector2(778, 269)
 
 [node name="coin16" parent="ChestRoom" unique_id=1512001370 instance=ExtResource("12_5wul5")]
-position = Vector2(755, 257)
+position = Vector2(755, 268)
 
 [node name="coin17" parent="ChestRoom" unique_id=822199553 instance=ExtResource("12_5wul5")]
-position = Vector2(754, 280)
+position = Vector2(754, 289)
 
 [node name="coin18" parent="ChestRoom" unique_id=1517712443 instance=ExtResource("12_5wul5")]
-position = Vector2(777, 277)
+position = Vector2(777, 285)
 
 [node name="coin19" parent="ChestRoom" unique_id=605515177 instance=ExtResource("12_5wul5")]
-position = Vector2(807, 280)
+position = Vector2(807, 288)
 
 [node name="coin6" parent="ChestRoom" unique_id=1026252268 instance=ExtResource("12_5wul5")]
 position = Vector2(341, 172)
@@ -573,7 +571,7 @@ lever_id = 5
 position = Vector2(408, 360)
 lever_id = 3
 
-[node name="LaserPuzzleManager" type="Node" parent="." unique_id=254911808 node_paths=PackedStringArray("laser_levers", "laser1", "laser2", "laser3", "laser4", "laser5", "laser6", "laser7", "laser8")]
+[node name="LaserPuzzleManager" type="Node" parent="." unique_id=254911808 node_paths=PackedStringArray("laser_levers", "laser1", "laser2", "laser3", "laser4", "laser5", "laser6", "laser7", "laser8", "final_gate")]
 script = ExtResource("15_32j48")
 laser_levers = NodePath("../LaserLevers")
 laser1 = NodePath("../Lasers/laserNo1")
@@ -584,11 +582,17 @@ laser5 = NodePath("../Lasers/laserNo5")
 laser6 = NodePath("../Lasers/laserNo6")
 laser7 = NodePath("../Lasers/laserNo7")
 laser8 = NodePath("../Lasers/laserNo8")
+final_gate = NodePath("../Gate/gate3")
 
 [node name="rimuru" parent="." unique_id=1265494123 instance=ExtResource("16_lfvn2")]
 position = Vector2(209, 123)
 
 [node name="Hud" parent="." unique_id=148244219 instance=ExtResource("15_lco74")]
 visible = false
+
+[node name="RoomExit" parent="." unique_id=624007568 instance=ExtResource("19_5g1bh")]
+position = Vector2(776.00006, 213)
+scale = Vector2(0.3, 0.3)
+next_scene_path = "uid://d003ku23ryaf3"
 
 [editable path="Hud"]
