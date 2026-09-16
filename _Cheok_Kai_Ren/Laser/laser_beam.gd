@@ -74,8 +74,7 @@ var hitbox_made_unique: bool = false
 
 
 func _ready() -> void:
-	# VERY IMPORTANT:
-	# Give this laser instance its own RectangleShape2D.
+
 	make_hitbox_unique()
 
 	update_visual()
@@ -100,6 +99,7 @@ func _ready() -> void:
 
 
 func make_hitbox_unique() -> void:
+
 	if collision_shape == null:
 		return
 
@@ -109,6 +109,7 @@ func make_hitbox_unique() -> void:
 	var old_shape: Shape2D = collision_shape.shape
 
 	if old_shape != null:
+
 		var new_shape: Shape2D = old_shape.duplicate(
 			true
 		) as Shape2D
@@ -116,16 +117,16 @@ func make_hitbox_unique() -> void:
 		collision_shape.shape = new_shape
 
 	else:
+
 		collision_shape.shape = RectangleShape2D.new()
 
-	# Makes sure Godot treats this resource as local
-	# to this particular laser scene instance.
 	collision_shape.shape.resource_local_to_scene = true
 
 	hitbox_made_unique = true
 
 
 func update_visual() -> void:
+
 	if beam_sprite == null:
 		return
 
@@ -136,21 +137,17 @@ func update_visual() -> void:
 
 
 func update_laser_shape() -> void:
+
 	if beam_sprite == null:
 		return
 
 	if collision_shape == null:
 		return
 
-	# Make sure this laser has its own hitbox resource.
 	make_hitbox_unique()
 
-
-	# --------------------------------------------
-	# DIRECTION
-	# --------------------------------------------
-
 	match laser_direction:
+
 		LaserDirection.UP:
 			rotation_degrees = 0.0
 
@@ -163,17 +160,14 @@ func update_laser_shape() -> void:
 		LaserDirection.LEFT:
 			rotation_degrees = -90.0
 
-
-	# --------------------------------------------
-	# GET ORIGINAL BEAM TEXTURE SIZE
-	# --------------------------------------------
-
 	var frame_texture: Texture2D = null
 
 	if beam_sprite.sprite_frames != null:
+
 		if beam_sprite.sprite_frames.has_animation(
 			beam_sprite.animation
 		):
+
 			frame_texture = (
 				beam_sprite.sprite_frames.get_frame_texture(
 					beam_sprite.animation,
@@ -181,11 +175,11 @@ func update_laser_shape() -> void:
 				)
 			)
 
-
 	var original_height: float = 16.0
 	var original_width: float = 4.0
 
 	if frame_texture != null:
+
 		original_height = float(
 			frame_texture.get_height()
 		)
@@ -200,11 +194,6 @@ func update_laser_shape() -> void:
 	if original_width <= 0.0:
 		original_width = 4.0
 
-
-	# --------------------------------------------
-	# VISUAL BEAM
-	# --------------------------------------------
-
 	beam_sprite.scale = Vector2(
 		beam_width / original_width,
 		beam_length / original_height
@@ -215,21 +204,16 @@ func update_laser_shape() -> void:
 		-beam_length * 0.5
 	)
 
-
-	# --------------------------------------------
-	# HITBOX
-	# --------------------------------------------
-
 	var rectangle: RectangleShape2D = (
 		collision_shape.shape as RectangleShape2D
 	)
 
 	if rectangle == null:
+
 		rectangle = RectangleShape2D.new()
 		rectangle.resource_local_to_scene = true
 
 		collision_shape.shape = rectangle
-
 
 	rectangle.size = Vector2(
 		hitbox_width,
@@ -243,6 +227,7 @@ func update_laser_shape() -> void:
 
 
 func turn_on() -> void:
+
 	is_active = true
 	starts_active = true
 
@@ -250,6 +235,7 @@ func turn_on() -> void:
 		beam_sprite.play("active")
 
 	if not Engine.is_editor_hint():
+
 		collision_shape.set_deferred(
 			"disabled",
 			false
@@ -257,6 +243,7 @@ func turn_on() -> void:
 
 
 func turn_off() -> void:
+
 	is_active = false
 	starts_active = false
 
@@ -264,6 +251,7 @@ func turn_off() -> void:
 		beam_sprite.play("off")
 
 	if not Engine.is_editor_hint():
+
 		collision_shape.set_deferred(
 			"disabled",
 			true
@@ -271,6 +259,7 @@ func turn_off() -> void:
 
 
 func toggle_laser() -> void:
+
 	if is_active:
 		turn_off()
 	else:
@@ -278,22 +267,32 @@ func toggle_laser() -> void:
 
 
 func set_activated(active: bool) -> void:
+
 	if active:
 		turn_on()
 	else:
 		turn_off()
 
 
-func _on_body_entered(body: Node2D) -> void:
+func _on_body_entered(
+	body: Node2D
+) -> void:
+
 	if not is_active:
 		return
 
-	if not body.is_in_group("player"):
+	if not body.is_in_group(
+		"player"
+	):
 		return
 
-	if body.has_method("take_damage"):
+	if body.has_method(
+		"take_damage"
+	):
+
 		body.take_damage(
 			damage,
 			global_position,
-			knockback_force
+			knockback_force,
+			true
 		)

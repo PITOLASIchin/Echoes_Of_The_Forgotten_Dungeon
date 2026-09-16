@@ -1629,6 +1629,9 @@ scale = Vector2(0.6, 0.6)
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_a3d8c")
+movement_speed = 90.0
+sprint_speed = 120.0
+received_knockback_decay = 500.0
 dodge_speed = 150.0
 dodge_duration = 0.25
 
